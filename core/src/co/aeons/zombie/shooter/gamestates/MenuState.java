@@ -32,7 +32,6 @@ public class MenuState extends GameState {
 	private ShapeRenderer sr;
 	
 	private BitmapFont titleFont;
-	private BitmapFont font;
 	private Skin skin;
 	
 	private final String title = "UglyZ";
@@ -74,6 +73,7 @@ public class MenuState extends GameState {
 		};
 
 		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
+		Gdx.input.setInputProcessor(this.stage);
 		
 
 	}
@@ -116,8 +116,7 @@ public class MenuState extends GameState {
 		singleplayerButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				//app.gsm.setScreen(GameScreenManager.STATE.SINGLE_PLAYER);
-				//((Game)Gdx.app.getApplicationListener()).setScreen(new PlayScreen(app));
+				gsm.setState(GameStateManager.PLAY);
 			}
 		});
 		//TODO: Add multiplayer listener
@@ -142,9 +141,9 @@ public class MenuState extends GameState {
 		this.stage.act();
 		this.stage.draw();
 	}
-	
+
 	public void handleInput() {
-		
+
 		if(GameKeys.isPressed(GameKeys.UP)) {
 			if(currentItem > 0) {
 				currentItem--;
@@ -158,9 +157,9 @@ public class MenuState extends GameState {
 		if(GameKeys.isPressed(GameKeys.ENTER)) {
 			select();
 		}
-		
+
 	}
-	
+
 	private void select() {
 		// play
 		if(currentItem == 0) {
@@ -179,7 +178,7 @@ public class MenuState extends GameState {
 		sb.dispose();
 		sr.dispose();
 		titleFont.dispose();
-		font.dispose();
+		stage.dispose();
 	}
 
 }
