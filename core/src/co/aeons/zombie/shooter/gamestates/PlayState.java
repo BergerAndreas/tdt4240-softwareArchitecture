@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import co.aeons.zombie.shooter.ZombieShooter;
@@ -36,7 +37,7 @@ public class PlayState extends GameState {
     private FlyingSaucer flyingSaucer;
     private float fsTimer;
     private float fsTime;
-
+    private Rectangle playerLane;
 
     private int level;
     private int totalAsteroids;
@@ -80,7 +81,8 @@ public class PlayState extends GameState {
         currentDelay = maxDelay;
         bgTimer = maxDelay;
         playLowPulse = true;
-
+        playerLane = new Rectangle(0, 0, ZombieShooter.WIDTH/3,
+                ZombieShooter.HEIGHT);
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int x, int y, int pointer, int button) {
@@ -99,12 +101,11 @@ public class PlayState extends GameState {
                 //translateScreenToWorldCoordinates(x, y);
                 //stage.getViewport().unproject(tmpVec2.set(x, y));
 
-                //if (playerLaneTouched(tmpVec2.x, tmpVec2.y)) {
+                if (playerLane.contains(x, y)) {
                 //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
-                System.out.println(y);
 
                 player.setPosition(player.getx(), ZombieShooter.HEIGHT-y);
-                //}
+                }
                 return true;
             }
         });
