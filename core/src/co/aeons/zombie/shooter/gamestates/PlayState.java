@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.MathUtils;
 import co.aeons.zombie.shooter.entities.Asteroid;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.FlyingSaucer;
-import co.aeons.zombie.shooter.entities.Particle;
 import co.aeons.zombie.shooter.entities.Player;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
@@ -33,8 +32,7 @@ public class PlayState extends GameState {
 	private float fsTimer;
 	private float fsTime;
 	
-	private ArrayList<Particle> particles;
-	
+
 	private int level;
 	private int totalAsteroids;
 	private int numAsteroidsLeft;
@@ -61,8 +59,7 @@ public class PlayState extends GameState {
 		
 		asteroids = new ArrayList<Asteroid>();
 		
-		particles = new ArrayList<Particle>();
-		
+
 		level = 1;
 		spawnAsteroids();
 		
@@ -80,15 +77,9 @@ public class PlayState extends GameState {
 		playLowPulse = true;
 		
 	}
-	
-	private void createParticles(float x, float y) {
-		for(int i = 0; i < 6; i++) {
-			particles.add(new Particle(x, y));
-		}
-	}
+
 	
 	private void splitAsteroids(Asteroid a) {
-		createParticles(a.getx(), a.gety());
 		numAsteroidsLeft--;
 		currentDelay = ((maxDelay - minDelay) *
 				numAsteroidsLeft / totalAsteroids)
@@ -219,15 +210,7 @@ public class PlayState extends GameState {
 				i--;
 			}
 		}
-		
-		// update particles
-		for(int i = 0; i < particles.size(); i++) {
-			particles.get(i).update(dt);
-			if(particles.get(i).shouldRemove()) {
-				particles.remove(i);
-				i--;
-			}
-		}
+
 		
 		// check collision
 		checkCollisions();
@@ -286,8 +269,6 @@ public class PlayState extends GameState {
 		if(flyingSaucer != null) {
 			if(player.intersects(flyingSaucer)) {
 				player.hit();
-				createParticles(player.getx(), player.gety());
-				createParticles(flyingSaucer.getx(), flyingSaucer.gety());
 				flyingSaucer = null;
 				Jukebox.stop("smallsaucer");
 				Jukebox.stop("largesaucer");
@@ -302,10 +283,7 @@ public class PlayState extends GameState {
 				if(flyingSaucer.contains(b.getx(), b.gety())) {
 					bullets.remove(i);
 					i--;
-					createParticles(
-						flyingSaucer.getx(),
-						flyingSaucer.gety()
-					);
+
 					player.incrementScore(flyingSaucer.getScore());
 					flyingSaucer = null;
 					Jukebox.stop("smallsaucer");
@@ -338,11 +316,6 @@ public class PlayState extends GameState {
 					asteroids.remove(i);
 					i--;
 					splitAsteroids(a);
-					createParticles(a.getx(), a.gety());
-					createParticles(
-						flyingSaucer.getx(),
-						flyingSaucer.gety()
-					);
 					flyingSaucer = null;
 					Jukebox.stop("smallsaucer");
 					Jukebox.stop("largesaucer");
@@ -363,7 +336,6 @@ public class PlayState extends GameState {
 					splitAsteroids(a);
 					enemyBullets.remove(i);
 					i--;
-					createParticles(a.getx(), a.gety());
 					Jukebox.play("explode");
 					break;
 				}
@@ -399,16 +371,11 @@ public class PlayState extends GameState {
 		for(int i = 0; i < asteroids.size(); i++) {
 			asteroids.get(i).draw(sr);
 		}
-		
-		// draw particles
-		for(int i = 0; i < particles.size(); i++) {
-			particles.get(i).draw(sr);
-		}
+
 		
 		// draw score
 		sb.setColor(1, 1, 1, 1);
 		sb.begin();
-		font.draw(sb, Long.toString(player.getScore()), 40, 390);
 		sb.end();
 		
 		// draw lives

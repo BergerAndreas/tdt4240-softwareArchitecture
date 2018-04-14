@@ -16,7 +16,7 @@ public class GameStateManager {
 	public static final int GAMEOVER = 928478;
 	
 	public GameStateManager() {
-		setState(MENU);
+		setState(PLAY);
 	}
 	
 	public void setState(int state) {
