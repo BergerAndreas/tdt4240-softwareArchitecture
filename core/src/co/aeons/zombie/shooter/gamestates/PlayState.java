@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
 import co.aeons.zombie.shooter.ZombieShooter;
-import co.aeons.zombie.shooter.entities.Asteroid;
+import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.FlyingSaucer;
 import co.aeons.zombie.shooter.entities.Player;
@@ -26,7 +26,7 @@ public class PlayState extends GameState {
 
     private Player player;
     private ArrayList<Bullet> bullets;
-    private ArrayList<Asteroid> asteroids;
+    private ArrayList<Zombie> zombies;
     private ArrayList<Bullet> enemyBullets;
 
     private FlyingSaucer flyingSaucer;
@@ -58,7 +58,7 @@ public class PlayState extends GameState {
 
         player = new Player(bullets);
 
-        asteroids = new ArrayList<Asteroid>();
+        zombies = new ArrayList<Zombie>();
 
 
         level = 1;
@@ -80,28 +80,28 @@ public class PlayState extends GameState {
     }
 
 
-    private void splitAsteroids(Asteroid a) {
+    private void splitAsteroids(Zombie a) {
         numAsteroidsLeft--;
         currentDelay = ((maxDelay - minDelay) *
                 numAsteroidsLeft / totalAsteroids)
                 + minDelay;
-        if (a.getType() == Asteroid.LARGE) {
-            asteroids.add(
-                    new Asteroid(a.getx(), a.gety(), Asteroid.MEDIUM));
-            asteroids.add(
-                    new Asteroid(a.getx(), a.gety(), Asteroid.MEDIUM));
+        if (a.getType() == Zombie.LARGE) {
+            zombies.add(
+                    new Zombie(a.getx(), a.gety(), Zombie.MEDIUM));
+            zombies.add(
+                    new Zombie(a.getx(), a.gety(), Zombie.MEDIUM));
         }
-        if (a.getType() == Asteroid.MEDIUM) {
-            asteroids.add(
-                    new Asteroid(a.getx(), a.gety(), Asteroid.SMALL));
-            asteroids.add(
-                    new Asteroid(a.getx(), a.gety(), Asteroid.SMALL));
+        if (a.getType() == Zombie.MEDIUM) {
+            zombies.add(
+                    new Zombie(a.getx(), a.gety(), Zombie.SMALL));
+            zombies.add(
+                    new Zombie(a.getx(), a.gety(), Zombie.SMALL));
         }
     }
 
     private void spawnAsteroids() {
 
-        asteroids.clear();
+        zombies.clear();
 
         int numToSpawn = 4 + level - 1;
         totalAsteroids = numToSpawn * 7;
@@ -125,7 +125,7 @@ public class PlayState extends GameState {
                 dist = (float) Math.sqrt(dx * dx + dy * dy);
             }
 
-            asteroids.add(new Asteroid(x, y, Asteroid.LARGE));
+            zombies.add(new Zombie(x, y, Zombie.LARGE));
 
         }
 
@@ -137,7 +137,7 @@ public class PlayState extends GameState {
         handleInput();
 
         // next level
-        if (asteroids.size() == 0) {
+        if (zombies.size() == 0) {
             level++;
             spawnAsteroids();
         }
@@ -203,11 +203,11 @@ public class PlayState extends GameState {
             }
         }
 
-        // update asteroids
-        for (int i = 0; i < asteroids.size(); i++) {
-            asteroids.get(i).update(dt);
-            if (asteroids.get(i).shouldRemove()) {
-                asteroids.remove(i);
+        // update zombies
+        for (int i = 0; i < zombies.size(); i++) {
+            zombies.get(i).update(dt);
+            if (zombies.get(i).shouldRemove()) {
+                zombies.remove(i);
                 i--;
             }
         }
@@ -234,11 +234,11 @@ public class PlayState extends GameState {
 
         // player-asteroid collision
         if (!player.isHit()) {
-            for (int i = 0; i < asteroids.size(); i++) {
-                Asteroid a = asteroids.get(i);
+            for (int i = 0; i < zombies.size(); i++) {
+                Zombie a = zombies.get(i);
                 if (a.intersects(player)) {
                     player.hit();
-                    asteroids.remove(i);
+                    zombies.remove(i);
                     i--;
                     splitAsteroids(a);
                     Jukebox.play("explode");
@@ -250,12 +250,12 @@ public class PlayState extends GameState {
         // bullet-asteroid collision
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
-            for (int j = 0; j < asteroids.size(); j++) {
-                Asteroid a = asteroids.get(j);
+            for (int j = 0; j < zombies.size(); j++) {
+                Zombie a = zombies.get(j);
                 if (a.contains(b.getx(), b.gety())) {
                     bullets.remove(i);
                     i--;
-                    asteroids.remove(j);
+                    zombies.remove(j);
                     j--;
                     splitAsteroids(a);
                     player.incrementScore(a.getScore());
@@ -310,10 +310,10 @@ public class PlayState extends GameState {
 
         // flying saucer-asteroid collision
         if (flyingSaucer != null) {
-            for (int i = 0; i < asteroids.size(); i++) {
-                Asteroid a = asteroids.get(i);
+            for (int i = 0; i < zombies.size(); i++) {
+                Zombie a = zombies.get(i);
                 if (a.intersects(flyingSaucer)) {
-                    asteroids.remove(i);
+                    zombies.remove(i);
                     i--;
                     splitAsteroids(a);
                     flyingSaucer = null;
@@ -328,10 +328,10 @@ public class PlayState extends GameState {
         // asteroid-enemy bullet collision
         for (int i = 0; i < enemyBullets.size(); i++) {
             Bullet b = enemyBullets.get(i);
-            for (int j = 0; j < asteroids.size(); j++) {
-                Asteroid a = asteroids.get(j);
+            for (int j = 0; j < zombies.size(); j++) {
+                Zombie a = zombies.get(j);
                 if (a.contains(b.getx(), b.gety())) {
-                    asteroids.remove(j);
+                    zombies.remove(j);
                     j--;
                     splitAsteroids(a);
                     enemyBullets.remove(i);
@@ -363,13 +363,13 @@ public class PlayState extends GameState {
         }
 
         // draw fs bullets
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            enemyBullets.get(i).draw(sr);
-        }
+       // for (int i = 0; i < enemyBullets.size(); i++) {
+         //   enemyBullets.get(i).draw(sr);
+        //}
 
-        // draw asteroids
-        for (int i = 0; i < asteroids.size(); i++) {
-            asteroids.get(i).draw(sr);
+        // draw zombies
+        for (int i = 0; i < zombies.size(); i++) {
+            zombies.get(i).draw(sr);
         }
 
 

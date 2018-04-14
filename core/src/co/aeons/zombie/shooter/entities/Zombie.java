@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 
-public class Asteroid extends SpaceObject {
+public class Zombie extends SpaceObject {
 	
 	private int type;
 	public static final int SMALL = 0;
@@ -18,7 +18,7 @@ public class Asteroid extends SpaceObject {
 	
 	private boolean remove;
 	
-	public Asteroid(float x, float y, int type) {
+	public Zombie(float x, float y, int type) {
 		
 		this.x = x;
 		this.y = y;
@@ -46,8 +46,8 @@ public class Asteroid extends SpaceObject {
 		rotationSpeed = MathUtils.random(-1, 1);
 		
 		radians = MathUtils.random(2 * 3.1415f);
-		dx = MathUtils.cos(radians) * speed;
-		dy = MathUtils.sin(radians) * speed;
+		dx = -50;
+		dy = 0;
 		
 		shapex = new float[numPoints];
 		shapey = new float[numPoints];
