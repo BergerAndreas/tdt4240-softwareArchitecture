@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.aeons.zombie.shooter.zombie.shooter" >
+    package="co.aeons.zombie.shooter" >
 
     <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="27" />
 

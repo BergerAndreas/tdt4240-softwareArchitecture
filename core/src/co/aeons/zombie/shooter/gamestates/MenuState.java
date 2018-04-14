@@ -58,7 +58,7 @@ public class MenuState extends GameState {
 
 		sb.begin();
 
-		float width = 300;
+		float width = titleFont.getSpaceWidth();
 		titleFont.draw(
 				sb,
 				title,

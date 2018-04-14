@@ -18,7 +18,7 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "co.aeons.zombie.shooter.zombie.shooter"
+        applicationId "co.aeons.zombie.shooter"
         minSdkVersion 9
         targetSdkVersion 27
         versionCode 1
@@ -79,7 +79,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'co.aeons.zombie.shooter.zombie.shooter/co.aeons.zombie.shooter.zombie.shooter.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'co.aeons.zombie.shooter/co.aeons.zombie.shooter.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.
