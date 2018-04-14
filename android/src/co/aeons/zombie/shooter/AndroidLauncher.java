@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.zombie.shooter.ZombieShooter;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
