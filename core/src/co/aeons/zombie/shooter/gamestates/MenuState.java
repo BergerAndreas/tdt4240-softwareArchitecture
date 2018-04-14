@@ -4,20 +4,36 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.ZombieShooter;
 
 public class MenuState extends GameState {
-	
+
+	// Cameras and viewport
+	private OrthographicCamera gameCam;
+	private Viewport gamePort;
+	private Stage stage;
+
 	private SpriteBatch sb;
 	private ShapeRenderer sr;
 	
 	private BitmapFont titleFont;
 	private BitmapFont font;
+	private Skin skin;
 	
 	private final String title = "UglyZ";
 	
@@ -29,9 +45,25 @@ public class MenuState extends GameState {
 	}
 	
 	public void init() {
+
+		this.gameCam = new OrthographicCamera();
+
+		// Initializes a new viewport
+		this.gamePort = new FitViewport(
+				ZombieShooter.WIDTH,
+				ZombieShooter.HEIGHT,
+				gameCam
+		);
+		gamePort.apply();
+
+		//sets up camera
+		gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
+		gameCam.update();
 		
 		sb = new SpriteBatch();
 		sr = new ShapeRenderer();
+
+		stage = new Stage(gamePort, sb);
 
 		titleFont = new BitmapFont();
 		titleFont.setColor(Color.WHITE);
@@ -41,6 +73,7 @@ public class MenuState extends GameState {
 			"Quit"
 		};
 
+		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
 		
 
 	}
@@ -48,7 +81,7 @@ public class MenuState extends GameState {
 	public void update(float dt) {
 		
 		handleInput();
-		
+
 	}
 	
 	public void draw() {
@@ -63,11 +96,51 @@ public class MenuState extends GameState {
 				sb,
 				title,
 				(ZombieShooter.WIDTH-width)/2,
-				300
+				350
 		);
-		
 		sb.end();
-		
+
+		Table mainTable = new Table();
+		//Set table to fill stage
+		mainTable.setFillParent(true);
+		//Set alignment of contents in the table.
+		mainTable.center();
+		//Create buttons
+
+		TextButton singleplayerButton = new TextButton("Singleplayer", skin);
+		TextButton multiplayerButton = new TextButton("Multiplayer", skin);
+		TextButton optionsButton = new TextButton("Options", skin);
+		TextButton exitButton = new TextButton("Exit", skin);
+
+//Add listeners to buttons
+		singleplayerButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				//app.gsm.setScreen(GameScreenManager.STATE.SINGLE_PLAYER);
+				//((Game)Gdx.app.getApplicationListener()).setScreen(new PlayScreen(app));
+			}
+		});
+		//TODO: Add multiplayer listener
+		exitButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
+
+
+		//Add buttons to table
+		mainTable.add(singleplayerButton);
+		mainTable.row();
+		mainTable.add(multiplayerButton);
+		mainTable.row();
+		mainTable.add(optionsButton);
+		mainTable.row();
+		mainTable.add(exitButton);
+		stage.addActor(mainTable);
+		//Make stage show stuff
+		this.stage.act();
+		this.stage.draw();
 	}
 	
 	public void handleInput() {
