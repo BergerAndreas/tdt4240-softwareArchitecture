@@ -1,7 +1,11 @@
 package co.aeons.zombie.shooter.entities;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Zombie extends SpaceObject {
@@ -10,14 +14,19 @@ public class Zombie extends SpaceObject {
 	public static final int SMALL = 0;
 	public static final int MEDIUM = 1;
 	public static final int LARGE = 2;
-	
+
+	private Animation<TextureRegion> runningAnimation;
+	TextureAtlas atlas;
+	// A variable for tracking elapsed time for the animation
+	float stateTime;
+
 	private int numPoints;
 	private float[] dists;
 	
 	private int score;
-	
+
 	private boolean remove;
-	
+
 	public Zombie(float x, float y, int type) {
 		
 		this.x = x;
@@ -59,8 +68,20 @@ public class Zombie extends SpaceObject {
 		}
 		
 		setShape();
+		createIdleAnimation();
 		
 	}
+
+	private void createIdleAnimation() {
+		//Opens textureAtlas containing enemy spritesheet information
+		atlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
+		//Fetches all sprites matchin keyword 'spoder'
+		runningAnimation =
+				new Animation<TextureRegion>(0.1f, atlas.findRegions("spoder"), Animation.PlayMode.LOOP);
+		//Initializes statetime for this animation
+		stateTime = 0f;
+	}
+
 	
 	private void setShape() {
 		float angle = 0;
@@ -87,16 +108,12 @@ public class Zombie extends SpaceObject {
 		
 	}
 	
-	public void draw(ShapeRenderer sr) {
-		sr.setColor(1, 1, 1, 1);
-		sr.begin(ShapeType.Line);
-		for(int i = 0, j = shapex.length - 1;
-			i < shapex.length;
-			j = i++) {
-			
-			sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
-		}
-		sr.end();
+	public void draw(SpriteBatch batch) {
+		batch.begin();
+		stateTime += Gdx.graphics.getDeltaTime();
+		TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
+		batch.draw(currentFrame, x, y, width, height);
+		batch.end();
 	}
 	
 }
