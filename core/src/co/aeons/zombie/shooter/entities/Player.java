@@ -17,9 +17,7 @@ public class Player extends SpaceObject {
 	private final int MAX_BULLETS = 4;
 	private ArrayList<Bullet> bullets;
 	
-	private float[] flamex;
-	private float[] flamey;
-	
+
 	private boolean left;
 	private boolean right;
 	private boolean up;
@@ -45,7 +43,7 @@ public class Player extends SpaceObject {
 		
 		this.bullets = bullets;
 		
-		x = ZombieShooter.WIDTH / 2;
+		x = 50;
 		y = ZombieShooter.HEIGHT / 2;
 		
 		maxSpeed = 300;
@@ -54,9 +52,7 @@ public class Player extends SpaceObject {
 		
 		shapex = new float[4];
 		shapey = new float[4];
-		flamex = new float[3];
-		flamey = new float[3];
-		
+
 		radians = 3.1415f / 2;
 		rotationSpeed = 3;
 		
@@ -83,20 +79,7 @@ public class Player extends SpaceObject {
 		shapex[3] = x + MathUtils.cos(radians + 4 * 3.1415f / 5) * 8;
 		shapey[3] = y + MathUtils.sin(radians + 4 * 3.1415f / 5) * 8;
 	}
-	
-	private void setFlame() {
-		flamex[0] = x + MathUtils.cos(radians - 5 * 3.1415f / 6) * 5;
-		flamey[0] = y + MathUtils.sin(radians - 5 * 3.1415f / 6) * 5;
-		
-		flamex[1] = x + MathUtils.cos(radians - 3.1415f) *
-					(6 + acceleratingTimer * 50);
-		flamey[1] = y + MathUtils.sin(radians - 3.1415f) *
-				(6 + acceleratingTimer * 50);
-		
-		flamex[2] = x + MathUtils.cos(radians + 5 * 3.1415f / 6) * 5;
-		flamey[2] = y + MathUtils.sin(radians + 5 * 3.1415f / 6) * 5;
-	}
-	
+
 	public void setLeft(boolean b) { left = b; }
 	public void setRight(boolean b) { right = b; }
 	public void setUp(boolean b) {
@@ -117,7 +100,7 @@ public class Player extends SpaceObject {
 	public boolean isHit() { return hit; }
 	public boolean isDead() { return dead; }
 	public void reset() {
-		x = ZombieShooter.WIDTH / 2;
+		x = 50;
 		y = ZombieShooter.HEIGHT / 2;
 		setShape();
 		hit = dead = false;
@@ -238,11 +221,7 @@ public class Player extends SpaceObject {
 		
 		// set shape
 		setShape();
-		
-		// set flame
-		if(up) {
-			setFlame();
-		}
+
 		
 		// screen wrap
 		wrap();
@@ -276,17 +255,6 @@ public class Player extends SpaceObject {
 			
 			sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
 			
-		}
-		
-		// draw flames
-		if(up) {
-			for(int i = 0, j = flamex.length - 1;
-				i < flamex.length;
-				j = i++) {
-				
-				sr.line(flamex[i], flamey[i], flamex[j], flamey[j]);
-				
-			}
 		}
 		
 		
