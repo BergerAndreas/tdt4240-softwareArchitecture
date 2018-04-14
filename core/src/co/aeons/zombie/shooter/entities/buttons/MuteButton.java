@@ -1,7 +1,7 @@
-package co.aeons.zombie.shooter.actors.buttons;
+package co.aeons.zombie.shooter.entities.buttons;
 
 import com.badlogic.gdx.math.Rectangle;
-import co.aeons.zombie.shooter.utils.AudioUtils;
+
 
 /**
  * Created by Erikkvo on 12-Apr-18.
@@ -25,9 +25,9 @@ public class MuteButton extends GameButton {
     //Used to define what sprite to draw
     @Override
     protected String getTexturePath() {
-        if(AudioUtils.getInstance().getIsMuted()){
-            return "buttons/muted.png";
-        }
+       // if(AudioUtils.getInstance().getIsMuted()){
+        //    return "buttons/muted.png";
+       // }
         return "buttons/unmuted.png";
     }
 

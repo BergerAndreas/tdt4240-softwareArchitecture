@@ -4,18 +4,25 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.FlyingSaucer;
 import co.aeons.zombie.shooter.entities.Player;
+import co.aeons.zombie.shooter.entities.buttons.FireButton;
+import co.aeons.zombie.shooter.entities.buttons.InstaKill;
+import co.aeons.zombie.shooter.entities.buttons.MuteButton;
 import co.aeons.zombie.shooter.managers.GameInputProcessor;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
@@ -37,7 +44,18 @@ public class PlayState extends GameState {
     private FlyingSaucer flyingSaucer;
     private float fsTimer;
     private float fsTime;
+
+    //Boundaries
     private Rectangle playerLane;
+    private Rectangle fireBounds;
+    private Rectangle instakillBounds;
+    private Rectangle muteBounds;
+
+
+    //buttons
+    private FireButton fireButton;
+    private InstaKill instakillButton;
+    private MuteButton muteButton;
 
     private int level;
     private int totalAsteroids;
@@ -49,6 +67,12 @@ public class PlayState extends GameState {
     private float bgTimer;
     private boolean playLowPulse;
 
+    //Camera
+    // Cameras and viewport
+    private OrthographicCamera gameCam;
+    private Viewport gamePort;
+    private Stage stage;
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
     }
@@ -57,7 +81,20 @@ public class PlayState extends GameState {
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
+        this.gameCam = new OrthographicCamera();
 
+        // Initializes a new viewport
+        this.gamePort = new FitViewport(
+                ZombieShooter.WIDTH,
+                ZombieShooter.HEIGHT,
+                gameCam
+        );
+        gamePort.apply();
+
+        //sets up camera
+        gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
+        gameCam.update();
+        stage = new Stage(gamePort, sb);
 
         bullets = new ArrayList<Bullet>();
 
@@ -75,17 +112,39 @@ public class PlayState extends GameState {
         fsTime = 15;
         enemyBullets = new ArrayList<Bullet>();
 
+
+        //Button initialization
+        //Create bounds for buttons
+        fireBounds = new Rectangle(this.gameCam.viewportWidth - 200, 0,
+                this.gameCam.viewportWidth / 8, this.gameCam.viewportHeight / 6);
+        muteBounds = new Rectangle(this.gameCam.viewportWidth - 100, this.gameCam.viewportHeight - 75,
+                this.gameCam.viewportWidth / 16, this.gameCam.viewportHeight / 16);
+        playerLane = new Rectangle(0, 0, ZombieShooter.WIDTH/3,
+                ZombieShooter.HEIGHT);
+        //Create buttons with above bounds
+        fireButton = new FireButton(fireBounds, new GameFireButtonListener());
+        muteButton = new MuteButton(muteBounds, new GameMuteButtonListener());
+
         // set up bg music
         maxDelay = 1;
         minDelay = 0.25f;
         currentDelay = maxDelay;
         bgTimer = maxDelay;
         playLowPulse = true;
-        playerLane = new Rectangle(0, 0, ZombieShooter.WIDTH/3,
-                ZombieShooter.HEIGHT);
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int x, int y, int pointer, int button) {
+                // Passes touch control to button observer thingy ¯\_(ツ)_/¯
+                if (fireButton.getBounds().contains(x,y)){
+                    System.out.println("test");
+                    stage.touchDown(x,y,pointer,button);
+                }
+                //if (fireButton.getBounds().contains(x, y) || instakillButton.getBounds().contains(x, y)) {
+                 //   stage.touchDown(x, y, pointer, button);
+                //}
+                if (muteButton.getBounds().contains(x, y)) {
+                    stage.touchDown(x, y, pointer, button);
+                }
                 return true;
             }
 
@@ -379,11 +438,12 @@ public class PlayState extends GameState {
 
     public void draw() {
 
-        sb.setProjectionMatrix(ZombieShooter.cam.combined);
-        sr.setProjectionMatrix(ZombieShooter.cam.combined);
+        sb.setProjectionMatrix(this.gameCam.combined);
+        sr.setProjectionMatrix(this.gameCam.combined);
 
         // draw player
         player.draw(sr);
+
 
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
@@ -407,8 +467,10 @@ public class PlayState extends GameState {
 
 
         // draw score
-        sb.setColor(1, 1, 1, 1);
+        sb.setColor(0, 1, 1, 1);
         sb.begin();
+        fireButton.draw(sb,1);
+        muteButton.draw(sb,1);
         sb.end();
 
         // draw lives
@@ -437,6 +499,58 @@ public class PlayState extends GameState {
         sb.dispose();
         sr.dispose();
         font.dispose();
+    }
+
+    // Button listeners
+
+    //Firebutton listener class
+    private class GameFireButtonListener implements FireButton.FireButtonListener {
+
+        // Adds observer
+        @Override
+        public void onFire() {
+            //Calls this method when button is pressed
+            onFireButtonPressed();
+        }
+    }
+
+    //Method called when FireButton pressed
+    private void onFireButtonPressed() {
+        //TODO: implement fire button logic
+        System.out.println("FireButton pressed");
+    }
+
+    //Mutebutton listener class
+    private class GameMuteButtonListener implements MuteButton.MuteButtonListener {
+
+        // Adds observer
+        @Override
+        public void onMute() {
+            //Calls this method when button is pressed
+            onMuteButtonPressed();
+        }
+    }
+
+    //Method called when FireButton pressed
+    private void onMuteButtonPressed() {
+        //TODO: implement mute button logic
+        //AudioUtils.getInstance().toggleMuteMusic();
+    }
+
+    //Instakill listener class
+    private class GameInstaKillListener implements InstaKill.InstakillListener {
+
+        @Override
+        public void instaKillActivate() {
+            InstakillPressed();
+        }
+    }
+
+    private void InstakillPressed() {
+        //TODO: Fix button
+        System.out.println("Instakill activated");
+        instakillButton.remove();
+        //isClicked = true;
     }
 
 

@@ -1,4 +1,4 @@
-package co.aeons.zombie.shooter.actors.buttons;
+package co.aeons.zombie.shooter.entities.buttons;
 
 import com.badlogic.gdx.math.Rectangle;
 
