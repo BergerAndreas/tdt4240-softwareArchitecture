@@ -2,16 +2,20 @@ package co.aeons.zombie.shooter.gamestates;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.FlyingSaucer;
 import co.aeons.zombie.shooter.entities.Player;
+import co.aeons.zombie.shooter.managers.GameInputProcessor;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
@@ -76,6 +80,34 @@ public class PlayState extends GameState {
         currentDelay = maxDelay;
         bgTimer = maxDelay;
         playLowPulse = true;
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDown(int x, int y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public boolean touchUp(int x, int y, int pointer, int button) {
+                // your touch up code here
+                return true; // return true to indicate the event was handled
+            }
+
+            @Override
+            public boolean touchDragged(int x, int y, int pointer) {
+                Vector2 tmpVec2 = new Vector2();
+                //translateScreenToWorldCoordinates(x, y);
+                //stage.getViewport().unproject(tmpVec2.set(x, y));
+
+                //if (playerLaneTouched(tmpVec2.x, tmpVec2.y)) {
+                //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
+                System.out.println(y);
+
+                player.setPosition(player.getx(), ZombieShooter.HEIGHT-y);
+                //}
+                return true;
+            }
+        });
 
     }
 
@@ -363,8 +395,8 @@ public class PlayState extends GameState {
         }
 
         // draw fs bullets
-       // for (int i = 0; i < enemyBullets.size(); i++) {
-         //   enemyBullets.get(i).draw(sr);
+        // for (int i = 0; i < enemyBullets.size(); i++) {
+        //   enemyBullets.get(i).draw(sr);
         //}
 
         // draw zombies
@@ -388,6 +420,7 @@ public class PlayState extends GameState {
 
     public void handleInput() {
 
+        //Handle input logic
         if (!player.isHit()) {
             player.setLeft(GameKeys.isDown(GameKeys.LEFT));
             player.setRight(GameKeys.isDown(GameKeys.RIGHT));
@@ -404,6 +437,7 @@ public class PlayState extends GameState {
         sr.dispose();
         font.dispose();
     }
+
 
 }
 

@@ -93,7 +93,7 @@ public class Player extends SpaceObject {
 	}
 	
 	public void setPosition(float x, float y) {
-		super.setPosition(x, y);
+		super.setPosition(this.x, y);
 		setShape();
 	}
 	
