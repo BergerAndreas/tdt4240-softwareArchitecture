@@ -1,5 +1,8 @@
 package co.aeons.zombie.shooter.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,6 +13,8 @@ public class Bullet extends SpaceObject {
 	private float lifeTimer;
 	
 	private boolean remove;
+
+	private Sprite bullet;
 	
 	public Bullet(float x, float y, float radians) {
 		
@@ -25,6 +30,7 @@ public class Bullet extends SpaceObject {
 		
 		lifeTimer = 0;
 		lifeTime = 1;
+		bullet = new Sprite(new Texture("pistol1.png"));
 		
 	}
 	
@@ -44,10 +50,10 @@ public class Bullet extends SpaceObject {
 		
 	}
 	
-	public void draw(ShapeRenderer sr) {
-		sr.setColor(1, 1, 1, 1);
-		sr.begin();
-		sr.end();
+	public void draw(SpriteBatch sb) {
+		sb.begin();
+        sb.draw(bullet,x-width/2, y-height/2);
+		sb.end();
 	}
 	
 }

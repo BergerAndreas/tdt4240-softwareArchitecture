@@ -135,9 +135,11 @@ public class PlayState extends GameState {
             @Override
             public boolean touchDown(int x, int y, int pointer, int button) {
                 // Passes touch control to button observer thingy ¯\_(ツ)_/¯
-                if (fireButton.getBounds().contains(x,y)){
-                    System.out.println("test");
-                    stage.touchDown(x,y,pointer,button);
+                Vector2 tmpVec2 = new Vector2();
+                stage.getViewport().unproject(tmpVec2.set(x, y));
+
+                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)){
+                    player.shoot();
                 }
                 //if (fireButton.getBounds().contains(x, y) || instakillButton.getBounds().contains(x, y)) {
                  //   stage.touchDown(x, y, pointer, button);
@@ -447,7 +449,7 @@ public class PlayState extends GameState {
 
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).draw(sr);
+            bullets.get(i).draw(sb);
         }
 
         // draw flying saucer
