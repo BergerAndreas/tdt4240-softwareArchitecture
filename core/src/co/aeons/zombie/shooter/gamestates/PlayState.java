@@ -464,7 +464,7 @@ public class PlayState extends GameState {
 
         // draw zombies
         for (int i = 0; i < zombies.size(); i++) {
-            zombies.get(i).draw(sr);
+            zombies.get(i).draw(sb);
         }
 
 
