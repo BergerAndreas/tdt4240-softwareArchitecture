@@ -53,7 +53,7 @@ public class Player extends SpaceObject {
 		shapex = new float[4];
 		shapey = new float[4];
 
-		radians = 3.1415f / 2;
+		radians = 0;
 		rotationSpeed = 3;
 		
 		hit = false;
