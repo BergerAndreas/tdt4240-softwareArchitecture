@@ -3,14 +3,13 @@ package co.aeons.zombie.shooter.gamestates;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import co.aeons.zombie.shooter.entities.Asteroid;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
-import co.aeons.zombie.shooter.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.ZombieShooter;
 
 public class MenuState extends GameState {
 	
@@ -20,12 +19,10 @@ public class MenuState extends GameState {
 	private BitmapFont titleFont;
 	private BitmapFont font;
 	
-	private final String title = "Asteroids";
+	private final String title = "UglyZ";
 	
 	private int currentItem;
 	private String[] menuItems;
-	
-	private ArrayList<Asteroid> asteroids;
 	
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
@@ -35,26 +32,15 @@ public class MenuState extends GameState {
 		
 		sb = new SpriteBatch();
 		sr = new ShapeRenderer();
-		
 
-
-
+		titleFont = new BitmapFont();
+		titleFont.setColor(Color.WHITE);
 		menuItems = new String[] {
 			"Play",
 			"Highscores",
 			"Quit"
 		};
-		
-		asteroids = new ArrayList<Asteroid>();
-		for(int i = 0; i < 6; i++) {
-			asteroids.add(
-				new Asteroid(
-					MathUtils.random(ZombieShooter.WIDTH),
-					MathUtils.random(ZombieShooter.HEIGHT),
-					Asteroid.LARGE
-				)
-			);
-		}
+
 		
 
 	}
@@ -63,24 +49,22 @@ public class MenuState extends GameState {
 		
 		handleInput();
 		
-		for(int i = 0 ; i < asteroids.size(); i++) {
-			asteroids.get(i).update(dt);
-		}
-		
 	}
 	
 	public void draw() {
 		
 		sb.setProjectionMatrix(ZombieShooter.cam.combined);
 		sr.setProjectionMatrix(ZombieShooter.cam.combined);
-		
-		// draw asteroids
-		for(int i = 0; i < asteroids.size(); i++) {
-			asteroids.get(i).draw(sr);
-		}
-		
+
 		sb.begin();
 
+		float width = 300;
+		titleFont.draw(
+				sb,
+				title,
+				(ZombieShooter.WIDTH-width)/2,
+				300
+		);
 		
 		sb.end();
 		

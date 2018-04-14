@@ -1,7 +1,6 @@
 package co.aeons.zombie.shooter.entities;
 
-
-import co.aeons.zombie.shooter.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.ZombieShooter;
 
 public class SpaceObject {
 

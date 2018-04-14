@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 
+import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.Jukebox;
-import co.aeons.zombie.shooter.zombie.shooter.ZombieShooter;
+
 
 public class FlyingSaucer extends SpaceObject {
 	

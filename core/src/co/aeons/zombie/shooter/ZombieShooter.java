@@ -1,4 +1,4 @@
-package co.aeons.zombie.shooter.zombie.shooter;
+package co.aeons.zombie.shooter;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

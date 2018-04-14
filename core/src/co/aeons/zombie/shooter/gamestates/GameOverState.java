@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
-import co.aeons.zombie.shooter.zombie.shooter.ZombieShooter;
+
 
 public class GameOverState extends GameState {
 	
