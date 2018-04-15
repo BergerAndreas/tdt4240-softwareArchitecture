@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,8 +14,10 @@ import co.aeons.zombie.shooter.managers.GameInputProcessor;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.service.ISettingsService;
+import co.aeons.zombie.shooter.service.network.INetworkService;
 
-public class ZombieShooter extends ApplicationAdapter {
+public class ZombieShooter extends Game implements INetworkService.IGameListener {
 
 	public static int WIDTH;
 	public static int HEIGHT;
@@ -23,6 +26,17 @@ public class ZombieShooter extends ApplicationAdapter {
 	public static Viewport gamePort;
 
 	private GameStateManager gsm;
+	private static final String TAG = ZombieShooter.class.getSimpleName();
+
+	//Google play services stuff
+	private INetworkService networkService;
+	private ISettingsService settingsService;
+
+	//FIXME: Uncomment this to unfuck android
+	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
+		this.networkService = networkService;
+		this.settingsService = settingsService;
+	}
 
 	public void create() {
 
@@ -80,5 +94,12 @@ public class ZombieShooter extends ApplicationAdapter {
 	public void pause() {}
 	public void resume() {}
 	public void dispose() {}
+
+	@Override
+	public void onMultiplayerGameStarting() {
+		Gdx.app.debug(TAG, "onMultiplayerGameStarting: ");
+		//TODO: Implement multiplayer here
+		//setScreen(new MpGamePresenter(this, new MainMenuPresenter(this)));
+	}
 
 }
