@@ -5,7 +5,6 @@ import co.aeons.zombie.shooter.service.Injectors.DaggerAppComponent;
 import co.aeons.zombie.shooter.service.network.INetworkService;
 
 
-
 public abstract class ServiceLocator {
 
     //public static EntityComponent entityComponent;
@@ -28,6 +27,7 @@ public abstract class ServiceLocator {
     public static void initializeAppComponent(INetworkService networkService, ISettingsService settingsService) {
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(networkService, settingsService)).build();
     }
+
     public static AppComponent getAppComponent() {
         return appComponent;
     }

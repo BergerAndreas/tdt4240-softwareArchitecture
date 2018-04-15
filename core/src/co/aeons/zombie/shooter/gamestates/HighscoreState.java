@@ -25,7 +25,7 @@ import static com.badlogic.gdx.Gdx.app;
  * Created by Erikkvo on 15-Apr-18.
  */
 
-public class HighscoreState extends GameState{
+public class HighscoreState extends GameState {
 
     private BitmapFont font;
     private GlyphLayout layout;
@@ -38,7 +38,7 @@ public class HighscoreState extends GameState{
     private String[] names;
 
 
-    public HighscoreState(GameStateManager gsm){
+    public HighscoreState(GameStateManager gsm) {
         super(gsm);
     }
 
@@ -64,7 +64,8 @@ public class HighscoreState extends GameState{
             }
         });
 
-        backButton.setPosition((cam.viewportWidth - backButton.getWidth())/2,50);
+
+        backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth()) / 2, 50);
         stage.addActor(backButton);
 
     }
@@ -86,6 +87,7 @@ public class HighscoreState extends GameState{
         float width = layout.width;
 
 //        Draw highscores on screen
+
         font.draw(sb, s, (cam.viewportWidth - width)/2, cam.viewportHeight - 25);
         font.getData().setScale(1, 1);
         for(int i=0; i<highscores.length; i++){
@@ -93,6 +95,7 @@ public class HighscoreState extends GameState{
             layout.setText(font, s);
             float w = layout.width;
             font.draw(sb, s, (cam.viewportWidth- w)/2, cam.viewportHeight - 75 - 20*i);
+
         }
         sb.end();
         stage.act();
@@ -101,7 +104,7 @@ public class HighscoreState extends GameState{
 
     @Override
     public void handleInput() {
-        if(GameKeys.isPressed(GameKeys.ENTER) || GameKeys.isPressed(GameKeys.ESCAPE)){
+        if (GameKeys.isPressed(GameKeys.ENTER) || GameKeys.isPressed(GameKeys.ESCAPE)) {
             gsm.setState(GameStateManager.MENU);
         }
     }

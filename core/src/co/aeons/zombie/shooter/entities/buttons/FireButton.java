@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
  * Created by Torstein on 4/8/2018.
  */
 
-public class FireButton extends GameButton{
+public class FireButton extends GameButton {
 
     //Creates the listener interface fo r this button
 

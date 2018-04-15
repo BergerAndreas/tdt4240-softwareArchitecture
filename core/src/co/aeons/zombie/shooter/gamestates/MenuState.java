@@ -22,110 +22,109 @@ import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
 public class MenuState extends GameState {
 
-	// Cameras and viewport
-	private Stage stage;
+    // Cameras and viewport
+    private Stage stage;
 
-	private SpriteBatch sb;
-	private ShapeRenderer sr;
-	
-	private Skin skin;
-	private TextureAtlas atlas;
-	
+    private SpriteBatch sb;
+    private ShapeRenderer sr;
 
-
-	public MenuState(GameStateManager gsm) {
-		super(gsm);
-	}
-	
-	public void init() {
-		
-		sb = new SpriteBatch();
-		sr = new ShapeRenderer();
-
-		stage = new Stage(gamePort);
-
-		atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
-		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
-		Gdx.input.setInputProcessor(this.stage);
+    private Skin skin;
+    private TextureAtlas atlas;
 
 
-		Table mainTable = new Table();
-		//Set table to fill stage
-		mainTable.setFillParent(true);
-		//Set alignment of contents in the table.
-		mainTable.center();
-		//Create buttons
+    public MenuState(GameStateManager gsm) {
+        super(gsm);
+    }
 
-		TextButton singleplayerButton = new TextButton("Singleplayer", skin);
-		TextButton multiplayerButton = new TextButton("Multiplayer", skin);
-		TextButton optionsButton = new TextButton("Options", skin);
-		TextButton exitButton = new TextButton("Exit", skin);
+    public void init() {
 
-		//Add listeners to buttons
-		singleplayerButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				gsm.setState(GameStateManager.PLAY);
-			}
-		});
-		multiplayerButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				//TODO: Add multiplayer listener
-				ServiceLocator.getAppComponent().getNetworkService().startSelectOpponents(true);
+        sb = new SpriteBatch();
+        sr = new ShapeRenderer();
 
-			}
-		});
-		exitButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
-			}
-		});
+        stage = new Stage(gamePort);
+
+        atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
+        skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
+        Gdx.input.setInputProcessor(this.stage);
 
 
-		//Add buttons to table
-		mainTable.add(singleplayerButton);
-		mainTable.row();
-		mainTable.add(multiplayerButton);
-		mainTable.row();
-		mainTable.add(optionsButton);
-		mainTable.row();
-		mainTable.add(exitButton);
-		stage.addActor(mainTable);
+        Table mainTable = new Table();
+        //Set table to fill stage
+        mainTable.setFillParent(true);
+        //Set alignment of contents in the table.
+        mainTable.center();
+        //Create buttons
+
+        TextButton singleplayerButton = new TextButton("Singleplayer", skin);
+        TextButton multiplayerButton = new TextButton("Multiplayer", skin);
+        TextButton optionsButton = new TextButton("Options", skin);
+        TextButton exitButton = new TextButton("Exit", skin);
+
+        //Add listeners to buttons
+        singleplayerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.PLAY);
+            }
+        });
+        multiplayerButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //TODO: Add multiplayer listener
+                ServiceLocator.getAppComponent().getNetworkService().startSelectOpponents(true);
+
+            }
+        });
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
 
 
-	}
-	
-	public void update(float dt) {
-		
-		handleInput();
-
-	}
-
-
-	public void draw() {
-		
-		sb.setProjectionMatrix(ZombieShooter.cam.combined);
-		sr.setProjectionMatrix(ZombieShooter.cam.combined);
+        //Add buttons to table
+        mainTable.add(singleplayerButton);
+        mainTable.row();
+        mainTable.add(multiplayerButton);
+        mainTable.row();
+        mainTable.add(optionsButton);
+        mainTable.row();
+        mainTable.add(exitButton);
+        stage.addActor(mainTable);
 
 
-		//Make stage show stuff
-		this.stage.act();
-		this.stage.draw();
-	}
+    }
 
-	@Override
-	public void handleInput() {
+    public void update(float dt) {
 
-	}
+        handleInput();
+
+    }
 
 
-	public void dispose() {
-		sb.dispose();
-		sr.dispose();
-		stage.dispose();
-	}
+    public void draw() {
+
+        sb.setProjectionMatrix(ZombieShooter.cam.combined);
+        sr.setProjectionMatrix(ZombieShooter.cam.combined);
+
+
+        //Make stage show stuff
+        this.stage.act();
+        this.stage.draw();
+    }
+
+    @Override
+    public void handleInput() {
+
+    }
+
+
+    public void dispose() {
+        sb.dispose();
+        sr.dispose();
+        stage.dispose();
+    }
 
 }
 

@@ -133,12 +133,124 @@ public class GameOverState extends GameState {
 		mainTable.center();
 		//Create buttons
 
-		TextButton restartButton = new TextButton("Restart", skin);
-        TextButton highscoreButton = new TextButton("Highscores", skin);
-		TextButton QuitGameButton = new TextButton("Quit Game", skin);
+    private SpriteBatch sb;
+    private ShapeRenderer sr;
+    private Skin skin;
 
-		//Add listeners to buttons
+    private boolean newHighScore;
+    private char[] newName;
+    private int currentChar;
+
+    private BitmapFont font;
+    private GlyphLayout layout;
+
+    private Stage stage;
+
+    public GameOverState(GameStateManager gsm) {
+        super(gsm);
+    }
+
+    public void init() {
+
+        sb = new SpriteBatch();
+        sr = new ShapeRenderer();
+        font = new BitmapFont();
+        layout = new GlyphLayout();
+        stage = new Stage(gamePort);
+        skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
+        System.out.println("GAMEOVER");
+
+        // Control inputs
+        Gdx.input.setInputProcessor(this.stage);
+        InitMenu();
+
+    }
+
+    public void update(float dt) {
+        handleInput();
+    }
+
+    public void draw() {
+
+        sb.setProjectionMatrix(ZombieShooter.cam.combined);
+
+        sb.begin();
+
+        String s = "Game Over";
+        font.getData().setScale(2, 2);
+        layout.setText(font, s);
+        float width = layout.width;
+
+//        Draw on screen
+        font.draw(sb, s, (ZombieShooter.WIDTH - width) / 2, ZombieShooter.HEIGHT - 25);
+
+        sb.end();
+
+        stage.act();
+        stage.draw();
+
+    }
+
+    public void handleInput() {
+
+        if (GameKeys.isPressed(GameKeys.ENTER)) {
+
+            gsm.setState(GameStateManager.MENU);
+        }
+
+        if (GameKeys.isPressed(GameKeys.UP)) {
+            if (newName[currentChar] == ' ') {
+                newName[currentChar] = 'Z';
+            } else {
+                newName[currentChar]--;
+                if (newName[currentChar] < 'A') {
+                    newName[currentChar] = ' ';
+                }
+            }
+        }
+
+        if (GameKeys.isPressed(GameKeys.DOWN)) {
+            if (newName[currentChar] == ' ') {
+                newName[currentChar] = 'A';
+            } else {
+                newName[currentChar]++;
+                if (newName[currentChar] > 'Z') {
+                    newName[currentChar] = ' ';
+                }
+            }
+        }
+
+        if (GameKeys.isPressed(GameKeys.RIGHT)) {
+            if (currentChar < newName.length - 1) {
+                currentChar++;
+            }
+        }
+
+        if (GameKeys.isPressed(GameKeys.LEFT)) {
+            if (currentChar > 0) {
+                currentChar--;
+            }
+        }
+
+    }
+
+    private void InitMenu() {
+        //Add stuff here
+        //Create Table
+        Table mainTable = new Table();
+        //Set table to fill stage
+        mainTable.setFillParent(true);
+        //Set alignment of contents in the table.
+        mainTable.center();
+        //Create buttons
+
+        TextButton restartButton = new TextButton("Restart", skin);
+        TextButton highscoreButton = new TextButton("Highscores", skin);
+        TextButton QuitGameButton = new TextButton("Quit Game", skin);
+
+        //Add listeners to buttons
 //		Restart takes player to new game
+
 		restartButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -154,16 +266,21 @@ public class GameOverState extends GameState {
 		highscoreButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+
+        restartButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
 //				gsm.resetPlayScreen();
-				gsm.setState(GameStateManager.HIGHSCORE);
-			}
-		});
+                gsm.setState(GameStateManager.PLAY);
+            }
+        });
 
 //        Quit Game takes player to main menu screen
-		QuitGameButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
+        QuitGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
 //				gsm.resetPlayScreen();
+
 //				Stop gameover music, and start ingame music
 				Jukebox.getGameoverMusic().stop();
 				Jukebox.playIngameMusic();
@@ -171,23 +288,26 @@ public class GameOverState extends GameState {
 			}
 		});
 
+                gsm.setState(GameStateManager.MENU);
+            }
+        });
 
-		//Add buttons to table
-		mainTable.add(restartButton);
-		mainTable.row();
+        //Add buttons to table
+        mainTable.add(restartButton);
+        mainTable.row();
         mainTable.add(highscoreButton);
         mainTable.row();
-		mainTable.add(QuitGameButton);
+        mainTable.add(QuitGameButton);
 
-		// Adds maintable to stage
-		stage.addActor(mainTable);
-	}
-	
-	public void dispose() {
-		sb.dispose();
-		sr.dispose();
-	}
-	
+        // Adds maintable to stage
+        stage.addActor(mainTable);
+    }
+
+    public void dispose() {
+        sb.dispose();
+        sr.dispose();
+    }
+
 }
 
 
