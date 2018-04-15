@@ -27,7 +27,7 @@ public class MuteButton extends GameButton {
     //Used to define what sprite to draw
     @Override
     protected String getTexturePath() {
-        if(Jukebox.isMuted()){
+        if (Jukebox.isMuted()) {
             return "buttons/muted.png";
         }
         return "buttons/unmuted.png";

@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 
-public class Wall extends SpaceObject{
+public class Wall extends SpaceObject {
 
     private Texture wallTexture;
     private int health;
 
-    public Wall(){
+    public Wall() {
 
         //TODO: MOVE TO GAME CONSTANTS
         this.x = 75;
@@ -25,7 +25,7 @@ public class Wall extends SpaceObject{
         setShape();
     }
 
-    private void setShape(){
+    private void setShape() {
 
         shapex[0] = this.x;
         shapex[1] = this.x + this.width;
@@ -45,7 +45,7 @@ public class Wall extends SpaceObject{
     }
 
 
-    public void takeDamage(int damage){
+    public void takeDamage(int damage) {
         this.health -= damage;
         System.out.println(this.health);
     }
