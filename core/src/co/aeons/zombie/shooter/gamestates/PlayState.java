@@ -411,9 +411,6 @@ public class PlayState extends GameState {
 
         //Handle input logic
         if (!player.isHit()) {
-            player.setLeft(GameKeys.isDown(GameKeys.LEFT));
-            player.setRight(GameKeys.isDown(GameKeys.RIGHT));
-            player.setUp(GameKeys.isDown(GameKeys.UP));
             if (GameKeys.isPressed(GameKeys.SPACE)) {
                 player.shoot();
             }
