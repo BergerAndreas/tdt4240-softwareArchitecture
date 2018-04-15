@@ -297,38 +297,6 @@ public class PlayState extends GameState {
                 }
             }
         }
-      
-        // player-enemy bullets collision
-        if (!player.isHit()) {
-            for (int i = 0; i < enemyBullets.size(); i++) {
-                Bullet b = enemyBullets.get(i);
-                if (player.contains(b.getx(), b.gety())) {
-                    player.hit();
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("zombieHit");
-                    break;
-                }
-            }
-        }
-
-        // asteroid-enemy bullet collision
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            Bullet b = enemyBullets.get(i);
-            for (int j = 0; j < zombies.size(); j++) {
-                Zombie a = zombies.get(j);
-                if (a.contains(b.getx(), b.gety())) {
-                    zombies.remove(j);
-                    j--;
-                    splitAsteroids(a);
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
     }
 
     public void draw() {
