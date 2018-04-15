@@ -75,9 +75,7 @@ public class PlayState extends GameState {
     private boolean isClicked;
 
     //Camera
-    // Cameras and viewport
-    private OrthographicCamera gameCam;
-    private Viewport gamePort;
+
 
     private Stage stage;
 
@@ -288,8 +286,8 @@ public class PlayState extends GameState {
 
         // update instakill
         if (timer > spawnDelay && isClicked) {
-            instakillBounds = new Rectangle(randInt(100,(int) this.gameCam.viewportWidth - 100), randInt(100, (int) this.gameCam.viewportHeight - 100),
-                    this.gameCam.viewportWidth / 8, this.gameCam.viewportHeight / 6);
+            instakillBounds = new Rectangle(randInt(100,(int) cam.viewportWidth - 100), randInt(100, (int) cam.viewportHeight - 100),
+                    cam.viewportWidth / 8, cam.viewportHeight / 6);
             //Creates a new instakill button with above bounds
             instakillButton = new InstaKill(instakillBounds, new GameInstaKillListener());
             //Adds instakill button to stage
