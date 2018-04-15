@@ -74,9 +74,6 @@ public class PlayState extends GameState {
     //Flag to check if powerup is used
     private boolean isClicked;
 
-    //Camera
-    // Cameras and viewport
-
     private Stage stage;
 
     public PlayState(GameStateManager gsm) {

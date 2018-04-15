@@ -16,11 +16,15 @@ public class Zombie extends SpaceObject {
 	public static final int LARGE = 2;
 	private boolean isStopped = false;
 
+	// Anitmations
 	private Animation<TextureRegion> runningAnimation;
-	TextureAtlas atlas;
-	private Texture stopTexture;
-	// A variable for tracking elapsed time for the animation
-	float stateTime;
+	private Animation<TextureRegion> attackAnimation;
+	private TextureAtlas runningAtlas;
+	private TextureAtlas attackAtlas;
+
+	// Tracks elapsed time for animations
+	private float stateTimeRunning;
+	private float stateTimeAttacking;
 
 	private int numPoints;
 	private float[] dists;
@@ -70,19 +74,36 @@ public class Zombie extends SpaceObject {
 		}
 		
 		setShape();
-		createIdleAnimation();
-		stopTexture = new Texture("spoder2.png");
+		createRunningAnimation();
+		createAttackAnimation();
+
+
 	}
 
-	private void createIdleAnimation() {
+	private void createRunningAnimation() {
 		//Opens textureAtlas containing enemy spritesheet information
-		atlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
+		runningAtlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
 		//Fetches all sprites matchin keyword 'spoder'
-		runningAnimation =
-				new Animation<TextureRegion>(0.1f, atlas.findRegions("spoder"), Animation.PlayMode.LOOP);
-		//Initializes statetime for this animation
-		stateTime = 0f;
+		runningAnimation = new Animation<TextureRegion>(
+		        0.1f,
+                runningAtlas.findRegions("spoder"),
+                Animation.PlayMode.LOOP
+        );
+		//Initializes statetime for animations
+		stateTimeRunning = 0f;
+
 	}
+
+	private void createAttackAnimation() {
+	    attackAtlas = new TextureAtlas(Gdx.files.internal("spooder.atlas"));
+        attackAnimation = new Animation<TextureRegion>(
+                0.1f,
+                attackAtlas.findRegions("spooder"),
+                Animation.PlayMode.LOOP
+        );
+        stateTimeAttacking = 0f;
+
+    }
 
 	
 	private void setShape() {
@@ -107,7 +128,8 @@ public class Zombie extends SpaceObject {
 		y += dy * dt;
 
 		radians += rotationSpeed * dt;
-		stateTime += Gdx.graphics.getDeltaTime();
+		stateTimeRunning += dt;
+		stateTimeAttacking += dt;
 
 		setShape();
 	}
@@ -115,12 +137,13 @@ public class Zombie extends SpaceObject {
 	public void draw(SpriteBatch batch) {
 		batch.begin();
 		if(!isStopped){
-            TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
-            batch.draw(currentFrame, x, y, width, height);
+			System.out.println("Walk");
+            TextureRegion currentRunningFrame = runningAnimation.getKeyFrame(stateTimeRunning, true);
+            batch.draw(currentRunningFrame, x, y, width, height);
         }else {
-
-			//TODO: Replace with attack animation
-		    batch.draw(stopTexture, x, y, width, height);
+			System.out.println("Attack");
+            TextureRegion currentAttackFrame = attackAnimation.getKeyFrame(stateTimeAttacking, true);
+		    batch.draw(currentAttackFrame, x, y, width, height);
         }
 
 		batch.end();
@@ -131,7 +154,7 @@ public class Zombie extends SpaceObject {
 	}
 
 	public int attack(){
-		if(Math.floor(stateTime) % 2 == 0){
+		if(Math.floor(stateTimeAttacking) % 2 == 0){
 			System.out.println("Zombie attack");
 			return 1;
 		}
