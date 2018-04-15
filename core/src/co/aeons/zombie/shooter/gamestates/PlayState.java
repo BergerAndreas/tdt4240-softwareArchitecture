@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -34,7 +33,6 @@ public class PlayState extends GameState {
     private SpriteBatch sb;
     private ShapeRenderer sr;
 
-    private BitmapFont font;
     private Player hudPlayer;
 
     private Player player;
@@ -410,7 +408,6 @@ public class PlayState extends GameState {
     public void dispose() {
         sb.dispose();
         sr.dispose();
-        font.dispose();
     }
 
     // Button listeners
