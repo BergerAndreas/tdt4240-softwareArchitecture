@@ -247,7 +247,6 @@ public class PlayState extends GameState {
         }
 
 
-
         // update fs bullets
         for (int i = 0; i < enemyBullets.size(); i++) {
             enemyBullets.get(i).update(dt);
@@ -266,7 +265,6 @@ public class PlayState extends GameState {
             }
         }
 
-
         // check collision
         checkCollisions();
 
@@ -277,30 +275,13 @@ public class PlayState extends GameState {
                 Jukebox.play("despacito");
                 musicStarted = true;
             }
-
             bgTimer = 0;
         }
-
     }
 
     private void checkCollisions() {
 
-        // player-asteroid collision
-        if (!player.isHit()) {
-            for (int i = 0; i < zombies.size(); i++) {
-                Zombie a = zombies.get(i);
-                if (a.intersects(player)) {
-                    player.hit();
-                    zombies.remove(i);
-                    i--;
-                    splitAsteroids(a);
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
-        // bullet-asteroid collision
+        // bullet-zombie collision
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
             for (int j = 0; j < zombies.size(); j++) {
@@ -317,42 +298,6 @@ public class PlayState extends GameState {
                 }
             }
         }
-
-
-
-
-        // player-enemy bullets collision
-        if (!player.isHit()) {
-            for (int i = 0; i < enemyBullets.size(); i++) {
-                Bullet b = enemyBullets.get(i);
-                if (player.contains(b.getx(), b.gety())) {
-                    player.hit();
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
-
-        // asteroid-enemy bullet collision
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            Bullet b = enemyBullets.get(i);
-            for (int j = 0; j < zombies.size(); j++) {
-                Zombie a = zombies.get(j);
-                if (a.contains(b.getx(), b.gety())) {
-                    zombies.remove(j);
-                    j--;
-                    splitAsteroids(a);
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
     }
 
     public void draw() {
