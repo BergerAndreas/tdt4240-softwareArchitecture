@@ -17,6 +17,8 @@ import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 
+import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
+
 
 public class GameOverState extends GameState {
 	
@@ -43,7 +45,7 @@ public class GameOverState extends GameState {
 		sr = new ShapeRenderer();
 		font = new BitmapFont();
 		layout = new GlyphLayout();
-		stage = new Stage();
+		stage = new Stage(gamePort);
 		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
 		System.out.println("GAMEOVER");
 

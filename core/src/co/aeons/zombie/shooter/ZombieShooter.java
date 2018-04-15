@@ -34,11 +34,12 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	public ISettingsService settingsService;
 
 	//FIXME: Uncomment this to unfuck android
+	/*
 	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
 		this.networkService = networkService;
 		this.settingsService = settingsService;
 	}
-
+	*/
 
 	public void create() {
 
@@ -74,8 +75,11 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		Jukebox.load("sounds/thruster.ogg", "thruster");
 
 		//Initialize network and settings service
+		//FIXME: To get android working
+		/*
 		ServiceLocator.initializeAppComponent(networkService, settingsService);
 		ServiceLocator.getAppComponent().getNetworkService().setGameListener(this);
+		*/
 		//		Initialize background music
 		Jukebox.playMusic();
 
