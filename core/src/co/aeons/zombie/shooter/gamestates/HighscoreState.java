@@ -23,7 +23,7 @@ import static com.badlogic.gdx.Gdx.app;
  * Created by Erikkvo on 15-Apr-18.
  */
 
-public class HighscoreState  extends GameState{
+public class HighscoreState extends GameState{
 
     private BitmapFont font;
     private GlyphLayout layout;
@@ -53,6 +53,18 @@ public class HighscoreState  extends GameState{
 
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
         Gdx.input.setInputProcessor(this.stage);
+        TextButton backButton = new TextButton("Back", skin);
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.MENU);
+            }
+        });
+
+        backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth())/2,50);
+        stage.addActor(backButton);
+
     }
 
     @Override
@@ -81,17 +93,6 @@ public class HighscoreState  extends GameState{
         }
         sb.end();
 
-        TextButton backButton = new TextButton("Back", skin);
-
-        backButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.MENU);
-            }
-        });
-
-        backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth())/2,50);
-        stage.addActor(backButton);
         stage.act();
         stage.draw();
 

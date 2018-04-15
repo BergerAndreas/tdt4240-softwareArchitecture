@@ -66,6 +66,9 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		Jukebox.load("sounds/extralife.ogg", "extralife");
 		Jukebox.load("sounds/largesaucer.ogg", "largesaucer");
 		Jukebox.load("sounds/music.mp3", "despacito");
+		Jukebox.load("sounds/Gunshot.mp3", "gunshot");
+		Jukebox.load("sounds/ZombieHitSound.mp3", "zombieHit");
+		Jukebox.load("sounds/Powerup.mp3", "powerup");
 		Jukebox.load("sounds/saucershoot.ogg", "saucershoot");
 		Jukebox.load("sounds/shoot.ogg", "shoot");
 		Jukebox.load("sounds/smallsaucer.ogg", "smallsaucer");
@@ -74,6 +77,8 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		//Initialize network and settings service
 		ServiceLocator.initializeAppComponent(networkService, settingsService);
 		ServiceLocator.getAppComponent().getNetworkService().setGameListener(this);
+		//		Initialize background music
+		Jukebox.playMusic();
 
 		gsm = new GameStateManager();
 
@@ -82,7 +87,7 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	public void render() {
 
 		// clear screen to black
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 255, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		gsm.update(Gdx.graphics.getDeltaTime());

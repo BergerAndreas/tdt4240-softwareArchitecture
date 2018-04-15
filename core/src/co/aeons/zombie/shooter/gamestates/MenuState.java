@@ -47,6 +47,7 @@ public class MenuState extends GameState {
 		atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
 		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
 		Gdx.input.setInputProcessor(this.stage);
+
 		
 
 	}
@@ -103,6 +104,31 @@ public class MenuState extends GameState {
 		mainTable.row();
 		mainTable.add(exitButton);
 		stage.addActor(mainTable);
+
+	}
+	
+	public void update(float dt) {
+		
+		handleInput();
+
+	}
+	
+	public void draw() {
+		
+		sb.setProjectionMatrix(ZombieShooter.cam.combined);
+		sr.setProjectionMatrix(ZombieShooter.cam.combined);
+
+		sb.begin();
+
+		float width = titleFont.getSpaceWidth();
+		titleFont.draw(
+				sb,
+				title,
+				(ZombieShooter.WIDTH-width)/2,
+				350
+		);
+		sb.end();
+
 		//Make stage show stuff
 		this.stage.act();
 		this.stage.draw();

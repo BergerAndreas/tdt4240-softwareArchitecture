@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class FireButton extends GameButton{
 
-    //Creates the listener interface for this button
+    //Creates the listener interface fo r this button
 
     public interface FireButtonListener {
         public void onFire();
@@ -25,7 +25,7 @@ public class FireButton extends GameButton{
     //Used to define what sprite to draw
     @Override
     protected String getTexturePath() {
-        return "fireButton.png";
+        return "buttons/fireButton.png";
     }
 
     //Method called on listener when touched

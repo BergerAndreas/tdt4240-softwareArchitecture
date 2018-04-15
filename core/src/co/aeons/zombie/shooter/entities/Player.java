@@ -94,61 +94,10 @@ public class Player extends SpaceObject {
 	}
 	
 	public void hit() {
-		
-		if(hit) return;
-		
-		hit = true;
-		Jukebox.stop("thruster");
-		
-		hitLines = new Line2D.Float[4];
-		for(int i = 0, j = hitLines.length - 1;
-			i < hitLines.length;
-			j = i++) {
-			hitLines[i] = new Line2D.Float(
-						shapex[i], shapey[i], shapex[j], shapey[j]
-						);
-		}
-		
-		hitLinesVector = new Point2D.Float[4];
-		hitLinesVector[0] = new Point2D.Float(
-			MathUtils.cos(radians + 1.5f),
-			MathUtils.sin(radians + 1.5f)
-		);
-		hitLinesVector[1] = new Point2D.Float(
-			MathUtils.cos(radians - 1.5f),
-			MathUtils.sin(radians - 1.5f)
-		);
-		hitLinesVector[2] = new Point2D.Float(
-			MathUtils.cos(radians - 2.8f),
-			MathUtils.sin(radians - 2.8f)
-		);
-		hitLinesVector[3] = new Point2D.Float(
-			MathUtils.cos(radians + 2.8f),
-			MathUtils.sin(radians + 2.8f)
-		);
-		
 	}
 	
 	public void update(float dt) {
-		
-		// check if hit
-		if(hit) {
-			hitTimer += dt;
-			if(hitTimer > hitTime) {
-				dead = true;
-				hitTimer = 0;
-			}
-			for(int i = 0; i < hitLines.length; i++) {
-				hitLines[i].setLine(
-					hitLines[i].x1 + hitLinesVector[i].x * 10 * dt,
-					hitLines[i].y1 + hitLinesVector[i].y * 10 * dt,
-					hitLines[i].x2 + hitLinesVector[i].x * 10 * dt,
-					hitLines[i].y2 + hitLinesVector[i].y * 10 * dt
-				);
-			}
-			return;
-		}
-		
+
 		// check extra lives
 		if(score >= requiredScore) {
 			extraLives++;
@@ -159,11 +108,6 @@ public class Player extends SpaceObject {
 		
 		// set shape
 		setShape();
-
-		
-		// screen wrap
-		wrap();
-		
 	}
 	
 	public void draw(ShapeRenderer sr) {

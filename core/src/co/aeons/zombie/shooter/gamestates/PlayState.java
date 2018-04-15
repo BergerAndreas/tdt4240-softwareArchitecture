@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.Player;
@@ -39,6 +41,7 @@ public class PlayState extends GameState {
     private ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
     private ArrayList<Bullet> enemyBullets;
+    private Wall wall;
 
     private float fsTimer;
     private float fsTime;
@@ -48,7 +51,6 @@ public class PlayState extends GameState {
     private Rectangle fireBounds;
     private Rectangle instakillBounds;
     private Rectangle muteBounds;
-
 
     //buttons
     private FireButton fireButton;
@@ -64,6 +66,13 @@ public class PlayState extends GameState {
     private float currentDelay;
     private float bgTimer;
     private boolean musicStarted;
+
+    //Spawndelay for powerups
+    private int spawnDelay;
+    private float timer;
+
+    //Flag to check if powerup is used
+    private boolean isClicked;
 
     private Stage stage;
 
@@ -87,6 +96,7 @@ public class PlayState extends GameState {
 
         zombies = new ArrayList<Zombie>();
 
+        wall = new Wall();
 
         level = 1;
         spawnAsteroids();
@@ -96,6 +106,10 @@ public class PlayState extends GameState {
         fsTimer = 0;
         fsTime = 15;
         enemyBullets = new ArrayList<Bullet>();
+
+        //Set up variables for powerups
+        spawnDelay = randInt(0,10);
+        isClicked = true;
 
 
         //Button initialization
@@ -109,6 +123,8 @@ public class PlayState extends GameState {
         //Create buttons with above bounds
         fireButton = new FireButton(fireBounds, new GameFireButtonListener());
         muteButton = new MuteButton(muteBounds, new GameMuteButtonListener());
+        //Create empty button
+        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
 
         // set up bg music
         maxDelay = 1;
@@ -132,9 +148,15 @@ public class PlayState extends GameState {
                 }
 
                 //Mute button
-                if (muteButton.getBounds().contains(x, y)) {
+                if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
                     stage.touchDown(x, y, pointer, button);
                 }
+
+                //Instakill button
+                if (instakillButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    stage.touchDown(x, y, pointer, button);
+                }
+
                 return true;
             }
 
@@ -158,7 +180,6 @@ public class PlayState extends GameState {
                 return true;
             }
         });
-
     }
 
 
@@ -246,17 +267,6 @@ public class PlayState extends GameState {
             }
         }
 
-
-
-        // update fs bullets
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            enemyBullets.get(i).update(dt);
-            if (enemyBullets.get(i).shouldRemove()) {
-                enemyBullets.remove(i);
-                i--;
-            }
-        }
-
         // update zombies
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).update(dt);
@@ -266,6 +276,26 @@ public class PlayState extends GameState {
             }
         }
 
+        // update spawn powerup button timer
+        if (isClicked) {
+            this.timer += dt;
+        }
+
+        // update instakill
+        if (timer > spawnDelay && isClicked) {
+            instakillBounds = new Rectangle(randInt(100,(int) cam.viewportWidth - 100), randInt(100, (int) cam.viewportHeight - 100),
+                    cam.viewportWidth / 8, cam.viewportHeight / 6);
+            //Creates a new instakill button with above bounds
+            instakillButton = new InstaKill(instakillBounds, new GameInstaKillListener());
+            //Adds instakill button to stage
+            this.stage.addActor(instakillButton);
+
+            //Reset variables for next spawning
+            //TODO: Change spawndelay range later
+            isClicked = false;
+            spawnDelay = randInt(0,10);
+            timer = 0;
+            }
 
         // check collision
         checkCollisions();
@@ -273,34 +303,25 @@ public class PlayState extends GameState {
         // play bg music
         bgTimer += dt;
         if (!player.isHit() && bgTimer >= currentDelay) {
-            if (!musicStarted) {
-                Jukebox.play("despacito");
-                musicStarted = true;
-            }
-
+//            Jukebox.playMusic();
             bgTimer = 0;
         }
-
     }
 
     private void checkCollisions() {
+        //zombie-wall collision
+        for (int i = 0; i < zombies.size(); i++) {
+            Zombie zombie = zombies.get(i);
+            if(wall.intersects(zombie)){
+                zombie.setStopped(true);
 
-        // player-asteroid collision
-        if (!player.isHit()) {
-            for (int i = 0; i < zombies.size(); i++) {
-                Zombie a = zombies.get(i);
-                if (a.intersects(player)) {
-                    player.hit();
-                    zombies.remove(i);
-                    i--;
-                    splitAsteroids(a);
-                    Jukebox.play("explode");
-                    break;
-                }
+                //FIXME: The way attacks currently work
+                wall.takeDamage(zombie.attack());
             }
+
         }
 
-        // bullet-asteroid collision
+        // bullet-zombie collision
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
             for (int j = 0; j < zombies.size(); j++) {
@@ -312,47 +333,11 @@ public class PlayState extends GameState {
                     j--;
                     splitAsteroids(a);
                     player.incrementScore(a.getScore());
-                    Jukebox.play("explode");
+                    Jukebox.play("zombieHit");
                     break;
                 }
             }
         }
-
-
-
-
-        // player-enemy bullets collision
-        if (!player.isHit()) {
-            for (int i = 0; i < enemyBullets.size(); i++) {
-                Bullet b = enemyBullets.get(i);
-                if (player.contains(b.getx(), b.gety())) {
-                    player.hit();
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
-
-        // asteroid-enemy bullet collision
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            Bullet b = enemyBullets.get(i);
-            for (int j = 0; j < zombies.size(); j++) {
-                Zombie a = zombies.get(j);
-                if (a.contains(b.getx(), b.gety())) {
-                    zombies.remove(j);
-                    j--;
-                    splitAsteroids(a);
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
     }
 
     public void draw() {
@@ -362,23 +347,27 @@ public class PlayState extends GameState {
 
         // draw player
         player.draw(sr);
-
-
+        
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(sb);
         }
 
-
-        // draw fs bullets
-        // for (int i = 0; i < enemyBullets.size(); i++) {
-        //   enemyBullets.get(i).draw(sr);
-        //}
-
         // draw zombies
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).draw(sb);
         }
+
+        //Draw wall
+        wall.draw(sb);
+
+        // draw buttons
+        sb.setColor(0, 1, 1, 1);
+        sb.begin();
+        fireButton.draw(sb,1);
+        muteButton.draw(sb,1);
+        instakillButton.draw(sb,1);
+        sb.end();
 
         // draw lives
         for (int i = 0; i < player.getLives(); i++) {
@@ -410,6 +399,13 @@ public class PlayState extends GameState {
         sr.dispose();
     }
 
+    //Helper function to generate random integer
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
+
     // Button listeners
 
     //Firebutton listener class
@@ -427,6 +423,7 @@ public class PlayState extends GameState {
     private void onFireButtonPressed() {
         //TODO: implement fire button logic
         System.out.println("FireButton pressed");
+        Jukebox.play("gunshot");
     }
 
     //Mutebutton listener class
@@ -437,14 +434,14 @@ public class PlayState extends GameState {
         public void onMute() {
             //Calls this method when button is pressed
             onMuteButtonPressed();
-            System.out.println("tt");
+            System.out.println("Mute");
         }
     }
 
     //Method called when FireButton pressed
     private void onMuteButtonPressed() {
         //TODO: implement mute button logic
-        //AudioUtils.getInstance().toggleMuteMusic();
+        Jukebox.toggleMuteMusic();
     }
 
     //Instakill listener class
@@ -460,10 +457,9 @@ public class PlayState extends GameState {
         //TODO: Fix button
         System.out.println("Instakill activated");
         instakillButton.remove();
-        //isClicked = true;
+        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
+        isClicked = true;
     }
-
-
 }
 
 
