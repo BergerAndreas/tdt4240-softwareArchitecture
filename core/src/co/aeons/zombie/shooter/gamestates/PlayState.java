@@ -121,8 +121,8 @@ public class PlayState extends GameState {
         enemyBullets = new ArrayList<Bullet>();
 
         //Set up variables for powerups
-        spawnDelay = randInt(0,1);
-        isClicked = false;
+        spawnDelay = randInt(0,10);
+        isClicked = true;
 
 
         //Button initialization
@@ -329,13 +329,13 @@ public class PlayState extends GameState {
         }
 
         // update spawn powerup button timer
-        if (!isClicked) {
+        if (isClicked) {
             this.timer += dt;
             System.out.println(timer);
         }
 
         // update instakill
-        if (timer > spawnDelay && !isClicked) {
+        if (timer > spawnDelay && isClicked) {
             instakillBounds = new Rectangle(randInt(100,(int) this.gameCam.viewportWidth - 100), randInt(100, (int) this.gameCam.viewportHeight - 100),
                     this.gameCam.viewportWidth / 8, this.gameCam.viewportHeight / 6);
             //Creates a new instakill button with above bounds
@@ -344,8 +344,8 @@ public class PlayState extends GameState {
             this.stage.addActor(instakillButton);
 
             //Reset variables for next spawning
-            isClicked = true;
-            spawnDelay = randInt(0,1);
+            isClicked = false;
+            spawnDelay = randInt(0,10);
             timer = 0;
             }
 
@@ -602,6 +602,7 @@ public class PlayState extends GameState {
         //TODO: Fix button
         System.out.println("Instakill activated");
         instakillButton.remove();
+        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
         isClicked = true;
     }
 
