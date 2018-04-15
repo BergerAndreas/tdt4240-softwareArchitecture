@@ -132,7 +132,7 @@ public class PlayState extends GameState {
                 }
 
                 //Mute button
-                if (muteButton.getBounds().contains(x, y)) {
+                if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
                     stage.touchDown(x, y, pointer, button);
                 }
                 return true;
@@ -273,11 +273,7 @@ public class PlayState extends GameState {
         // play bg music
         bgTimer += dt;
         if (!player.isHit() && bgTimer >= currentDelay) {
-            if (!musicStarted) {
-                Jukebox.play("despacito");
-                musicStarted = true;
-            }
-
+            Jukebox.playMusic();
             bgTimer = 0;
         }
 
@@ -312,7 +308,7 @@ public class PlayState extends GameState {
                     j--;
                     splitAsteroids(a);
                     player.incrementScore(a.getScore());
-                    Jukebox.play("explode");
+                    Jukebox.play("zombieHit");
                     break;
                 }
             }
@@ -329,7 +325,7 @@ public class PlayState extends GameState {
                     player.hit();
                     enemyBullets.remove(i);
                     i--;
-                    Jukebox.play("explode");
+                    Jukebox.play("zombieHit");
                     break;
                 }
             }
@@ -427,6 +423,7 @@ public class PlayState extends GameState {
     private void onFireButtonPressed() {
         //TODO: implement fire button logic
         System.out.println("FireButton pressed");
+        Jukebox.play("gunshot");
     }
 
     //Mutebutton listener class
@@ -437,14 +434,14 @@ public class PlayState extends GameState {
         public void onMute() {
             //Calls this method when button is pressed
             onMuteButtonPressed();
-            System.out.println("tt");
+            System.out.println("Mute");
         }
     }
 
     //Method called when FireButton pressed
     private void onMuteButtonPressed() {
         //TODO: implement mute button logic
-        //AudioUtils.getInstance().toggleMuteMusic();
+        Jukebox.toggleMuteMusic();
     }
 
     //Instakill listener class
