@@ -17,6 +17,7 @@ import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Save;
 
+import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static com.badlogic.gdx.Gdx.app;
 
@@ -63,6 +64,7 @@ public class HighscoreState extends GameState {
             }
         });
 
+
         backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth()) / 2, 50);
         stage.addActor(backButton);
 
@@ -76,7 +78,7 @@ public class HighscoreState extends GameState {
 
     @Override
     public void draw() {
-        sb.setProjectionMatrix(ZombieShooter.cam.combined);
+        sb.setProjectionMatrix(cam.combined);
         sb.begin();
 
         String s = "Highscores";
@@ -85,18 +87,19 @@ public class HighscoreState extends GameState {
         float width = layout.width;
 
 //        Draw highscores on screen
-        font.draw(sb, s, (ZombieShooter.WIDTH - width) / 2, ZombieShooter.HEIGHT - 25);
-        for (int i = 0; i < highscores.length; i++) {
-            s = String.format("%2d. %7s %s", i + 1, highscores[i], names[i]);
+
+        font.draw(sb, s, (cam.viewportWidth - width)/2, cam.viewportHeight - 25);
+        font.getData().setScale(1, 1);
+        for(int i=0; i<highscores.length; i++){
+            s = String.format("%2d. %7s %s", i+1, highscores[i], names[i]);
             layout.setText(font, s);
             float w = layout.width;
-            font.draw(sb, s, (ZombieShooter.WIDTH - w) / 2, 400 - 30 * i);
+            font.draw(sb, s, (cam.viewportWidth- w)/2, cam.viewportHeight - 75 - 20*i);
+
         }
         sb.end();
-
         stage.act();
         stage.draw();
-
     }
 
     @Override

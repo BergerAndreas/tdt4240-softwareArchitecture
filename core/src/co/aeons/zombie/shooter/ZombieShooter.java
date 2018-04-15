@@ -66,6 +66,7 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		Jukebox.load("sounds/extralife.ogg", "extralife");
 		Jukebox.load("sounds/largesaucer.ogg", "largesaucer");
 		Jukebox.load("sounds/music.mp3", "despacito");
+		Jukebox.load("sounds/gameover.mp3", "gameover");
 		Jukebox.load("sounds/Gunshot.mp3", "gunshot");
 		Jukebox.load("sounds/ZombieHitSound.mp3", "zombieHit");
 		Jukebox.load("sounds/Powerup.mp3", "powerup");
@@ -81,7 +82,8 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		ServiceLocator.getAppComponent().getNetworkService().setGameListener(this);
 		*/
 		//		Initialize background music
-		Jukebox.playMusic();
+		Jukebox.playIngameMusic();
+//		Jukebox.playGameoverMusic();
 
 		gsm = new GameStateManager();
 

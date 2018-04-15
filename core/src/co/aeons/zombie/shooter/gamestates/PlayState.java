@@ -289,9 +289,9 @@ public class PlayState extends GameState {
             timer = 0;
         }
 
-        if (wall.getHealth() <= 0) {
-            gsm.setState(GameStateManager.GAMEOVER);
-        }
+        if(wall.getHealth() <= 0){
+            Jukebox.getIngameMusic().stop();
+            Jukebox.playGameoverMusic();
 
         // check collision
         checkCollisions();
