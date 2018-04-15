@@ -51,7 +51,6 @@ public class PlayState extends GameState {
     private Rectangle instakillBounds;
     private Rectangle muteBounds;
 
-
     //buttons
     private FireButton fireButton;
     private InstaKill instakillButton;
@@ -90,9 +89,6 @@ public class PlayState extends GameState {
         zombies = new ArrayList<Zombie>();
 
         wall = new Wall();
-
-
-
 
         level = 1;
         spawnAsteroids();
@@ -164,7 +160,6 @@ public class PlayState extends GameState {
                 return true;
             }
         });
-
     }
 
 
@@ -252,15 +247,6 @@ public class PlayState extends GameState {
             }
         }
 
-        // update fs bullets
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            enemyBullets.get(i).update(dt);
-            if (enemyBullets.get(i).shouldRemove()) {
-                enemyBullets.remove(i);
-                i--;
-            }
-        }
-
         // update zombies
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).update(dt);
@@ -269,7 +255,6 @@ public class PlayState extends GameState {
                 i--;
             }
         }
-
 
         // check collision
         checkCollisions();
@@ -281,15 +266,14 @@ public class PlayState extends GameState {
                 Jukebox.play("despacito");
                 musicStarted = true;
             }
-
             bgTimer = 0;
         }
-
     }
 
     private void checkCollisions() {
 
-        // bullet-asteroid collision
+
+        // bullet-zombie collision
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
             for (int j = 0; j < zombies.size(); j++) {
@@ -306,51 +290,6 @@ public class PlayState extends GameState {
                 }
             }
         }
-
-        //zombie-wall collision
-        for (int i = 0; i < zombies.size(); i++) {
-            Zombie zombie = zombies.get(i);
-            if(wall.intersects(zombie)){
-                zombie.setStopped(true);
-
-                //FIXME: The way attacks currently work
-                wall.takeDamage(zombie.attack());
-            }
-
-        }
-
-        // player-enemy bullets collision
-        if (!player.isHit()) {
-            for (int i = 0; i < enemyBullets.size(); i++) {
-                Bullet b = enemyBullets.get(i);
-                if (player.contains(b.getx(), b.gety())) {
-                    player.hit();
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
-
-        // asteroid-enemy bullet collision
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            Bullet b = enemyBullets.get(i);
-            for (int j = 0; j < zombies.size(); j++) {
-                Zombie a = zombies.get(j);
-                if (a.contains(b.getx(), b.gety())) {
-                    zombies.remove(j);
-                    j--;
-                    splitAsteroids(a);
-                    enemyBullets.remove(i);
-                    i--;
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
     }
 
     public void draw() {
@@ -360,18 +299,11 @@ public class PlayState extends GameState {
 
         // draw player
         player.draw(sr);
-
-
+        
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(sb);
         }
-
-
-        // draw fs bullets
-        // for (int i = 0; i < enemyBullets.size(); i++) {
-        //   enemyBullets.get(i).draw(sr);
-        //}
 
         // draw zombies
         for (int i = 0; i < zombies.size(); i++) {
@@ -470,8 +402,6 @@ public class PlayState extends GameState {
         instakillButton.remove();
         //isClicked = true;
     }
-
-
 }
 
 
