@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,8 +14,11 @@ import co.aeons.zombie.shooter.managers.GameInputProcessor;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.service.ISettingsService;
+import co.aeons.zombie.shooter.service.ServiceLocator;
+import co.aeons.zombie.shooter.service.network.INetworkService;
 
-public class ZombieShooter extends ApplicationAdapter {
+public class ZombieShooter extends Game implements INetworkService.IGameListener {
 
 	public static int WIDTH;
 	public static int HEIGHT;
@@ -23,11 +27,24 @@ public class ZombieShooter extends ApplicationAdapter {
 	public static Viewport gamePort;
 
 	private GameStateManager gsm;
+	private static final String TAG = ZombieShooter.class.getSimpleName();
+
+	//Google play services stuff
+	public INetworkService networkService;
+	public ISettingsService settingsService;
+
+	//FIXME: Uncomment this to unfuck android
+	/*
+	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
+		this.networkService = networkService;
+		this.settingsService = settingsService;
+	}
+	*/
 
 	public void create() {
 
-		WIDTH = Gdx.graphics.getWidth();
-		HEIGHT = Gdx.graphics.getHeight();
+		WIDTH = 640;
+		HEIGHT = 360;
 
 		cam = new OrthographicCamera(WIDTH, HEIGHT);
 		cam.translate(WIDTH / 2, HEIGHT / 2);
@@ -35,8 +52,8 @@ public class ZombieShooter extends ApplicationAdapter {
 
 		// Initializes a new viewport
 		gamePort = new FitViewport(
-				ZombieShooter.WIDTH,
-				ZombieShooter.HEIGHT,
+				WIDTH,
+				HEIGHT,
 				cam
 		);
 		gamePort.apply();
@@ -57,6 +74,12 @@ public class ZombieShooter extends ApplicationAdapter {
 		Jukebox.load("sounds/smallsaucer.ogg", "smallsaucer");
 		Jukebox.load("sounds/thruster.ogg", "thruster");
 
+		//Initialize network and settings service
+		//FIXME: To get android working
+		/*
+		ServiceLocator.initializeAppComponent(networkService, settingsService);
+		ServiceLocator.getAppComponent().getNetworkService().setGameListener(this);
+		*/
 		//		Initialize background music
 		Jukebox.playMusic();
 
@@ -86,5 +109,12 @@ public class ZombieShooter extends ApplicationAdapter {
 	public void pause() {}
 	public void resume() {}
 	public void dispose() {}
+
+	@Override
+	public void onMultiplayerGameStarting() {
+		Gdx.app.debug(TAG, "onMultiplayerGameStarting: ");
+		//TODO: Implement multiplayer here
+		//setScreen(new MpGamePresenter(this, new MainMenuPresenter(this)));
+	}
 
 }

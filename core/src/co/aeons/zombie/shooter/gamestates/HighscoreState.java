@@ -17,6 +17,7 @@ import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Save;
 
+import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static com.badlogic.gdx.Gdx.app;
 
 /**
@@ -43,7 +44,7 @@ public class HighscoreState extends GameState{
     public void init() {
         sb = new SpriteBatch();
         font = new BitmapFont();
-        stage = new Stage();
+        stage = new Stage(gamePort);
         layout = new GlyphLayout();
         System.out.println("HIGHSCORES");
 
