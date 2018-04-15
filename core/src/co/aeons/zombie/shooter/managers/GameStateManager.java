@@ -19,7 +19,7 @@ public class GameStateManager {
 	public static final int SPLASH = 3465283;
 
 	public GameStateManager() {
-		setState(GAMEOVER);
+		setState(SPLASH);
 	}
 	
 	public void setState(int state) {
