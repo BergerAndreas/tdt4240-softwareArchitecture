@@ -331,7 +331,6 @@ public class PlayState extends GameState {
         // update spawn powerup button timer
         if (isClicked) {
             this.timer += dt;
-            System.out.println(timer);
         }
 
         // update instakill
@@ -344,6 +343,7 @@ public class PlayState extends GameState {
             this.stage.addActor(instakillButton);
 
             //Reset variables for next spawning
+            //TODO: Change spawndelay range later
             isClicked = false;
             spawnDelay = randInt(0,10);
             timer = 0;
