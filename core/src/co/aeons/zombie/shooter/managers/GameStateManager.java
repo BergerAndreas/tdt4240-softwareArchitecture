@@ -2,6 +2,7 @@ package co.aeons.zombie.shooter.managers;
 
 import co.aeons.zombie.shooter.gamestates.GameOverState;
 import co.aeons.zombie.shooter.gamestates.GameState;
+import co.aeons.zombie.shooter.gamestates.HighscoreState;
 import co.aeons.zombie.shooter.gamestates.MenuState;
 import co.aeons.zombie.shooter.gamestates.PlayState;
 
@@ -26,6 +27,9 @@ public class GameStateManager {
 		}
 		if(state == PLAY) {
 			gameState = new PlayState(this);
+		}
+		if(state == HIGHSCORE){
+			gameState = new HighscoreState(this);
 		}
 		if(state == GAMEOVER) {
 			gameState = new GameOverState(this);

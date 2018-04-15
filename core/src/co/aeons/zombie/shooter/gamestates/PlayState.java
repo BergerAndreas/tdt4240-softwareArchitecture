@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -27,12 +26,14 @@ import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 
+import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
+import static co.aeons.zombie.shooter.ZombieShooter.cam;
+
 public class PlayState extends GameState {
 
     private SpriteBatch sb;
     private ShapeRenderer sr;
 
-    private BitmapFont font;
     private Player hudPlayer;
 
     private Player player;
@@ -66,10 +67,6 @@ public class PlayState extends GameState {
     private float bgTimer;
     private boolean musicStarted;
 
-    //Camera
-    // Cameras and viewport
-    private OrthographicCamera gameCam;
-    private Viewport gamePort;
     private Stage stage;
 
     public PlayState(GameStateManager gsm) {
@@ -80,19 +77,10 @@ public class PlayState extends GameState {
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
-        this.gameCam = new OrthographicCamera();
-
-        // Initializes a new viewport
-        this.gamePort = new FitViewport(
-                ZombieShooter.WIDTH,
-                ZombieShooter.HEIGHT,
-                gameCam
-        );
-        gamePort.apply();
 
         //sets up camera
-        gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
-        gameCam.update();
+        cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
+        cam.update();
         stage = new Stage(gamePort, sb);
 
         bullets = new ArrayList<Bullet>();
@@ -118,10 +106,10 @@ public class PlayState extends GameState {
 
         //Button initialization
         //Create bounds for buttons
-        fireBounds = new Rectangle(this.gameCam.viewportWidth - 200, 0,
-                this.gameCam.viewportWidth / 8, this.gameCam.viewportHeight / 6);
-        muteBounds = new Rectangle(this.gameCam.viewportWidth - 100, this.gameCam.viewportHeight - 75,
-                this.gameCam.viewportWidth / 16, this.gameCam.viewportHeight / 16);
+        fireBounds = new Rectangle(cam.viewportWidth - 200, 0,
+                cam.viewportWidth / 8, cam.viewportHeight / 6);
+        muteBounds = new Rectangle(cam.viewportWidth - 100, cam.viewportHeight - 75,
+                cam.viewportWidth / 16, cam.viewportHeight / 16);
         playerLane = new Rectangle(0, 0, ZombieShooter.WIDTH/3,
                 ZombieShooter.HEIGHT);
         //Create buttons with above bounds
@@ -145,6 +133,7 @@ public class PlayState extends GameState {
 
                 //Fire button
                 if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)){
+                    stage.touchDown(x,y,pointer,button);
                     player.shoot();
                 }
 
@@ -366,8 +355,8 @@ public class PlayState extends GameState {
 
     public void draw() {
 
-        sb.setProjectionMatrix(this.gameCam.combined);
-        sr.setProjectionMatrix(this.gameCam.combined);
+        sb.setProjectionMatrix(cam.combined);
+        sr.setProjectionMatrix(cam.combined);
 
         // draw player
         player.draw(sr);
@@ -405,6 +394,12 @@ public class PlayState extends GameState {
             hudPlayer.draw(sr);
         }
 
+        // Draw buttons
+        this.stage.addActor(fireButton);
+        this.stage.addActor(muteButton);
+        this.stage.act();
+        this.stage.draw();
+
     }
 
     public void handleInput() {
@@ -421,7 +416,6 @@ public class PlayState extends GameState {
     public void dispose() {
         sb.dispose();
         sr.dispose();
-        font.dispose();
     }
 
     // Button listeners
