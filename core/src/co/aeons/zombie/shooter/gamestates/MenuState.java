@@ -34,7 +34,7 @@ public class MenuState extends GameState {
 	private BitmapFont titleFont;
 	private Skin skin;
 	
-	private final String title = "UglyZ";
+	private final String title = "Ugly Z";
 	
 	private int currentItem;
 	private String[] menuItems;
@@ -52,6 +52,7 @@ public class MenuState extends GameState {
 
 		titleFont = new BitmapFont();
 		titleFont.setColor(Color.WHITE);
+		titleFont.getData().setScale(2);
 		menuItems = new String[] {
 			"Play",
 			"Highscores",
