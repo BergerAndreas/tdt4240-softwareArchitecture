@@ -34,15 +34,17 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	public ISettingsService settingsService;
 
 	//FIXME: Uncomment this to unfuck android
+	/*
 	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
 		this.networkService = networkService;
 		this.settingsService = settingsService;
 	}
+	*/
 
 	public void create() {
 
-		WIDTH = Gdx.graphics.getWidth();
-		HEIGHT = Gdx.graphics.getHeight();
+		WIDTH = 640;
+		HEIGHT = 360;
 
 		cam = new OrthographicCamera(WIDTH, HEIGHT);
 		cam.translate(WIDTH / 2, HEIGHT / 2);
