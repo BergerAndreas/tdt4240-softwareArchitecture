@@ -34,12 +34,11 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	public ISettingsService settingsService;
 
 	//FIXME: Uncomment this to unfuck android
-	/*
 	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
 		this.networkService = networkService;
 		this.settingsService = settingsService;
 	}
-	*/
+
 
 	public void create() {
 
