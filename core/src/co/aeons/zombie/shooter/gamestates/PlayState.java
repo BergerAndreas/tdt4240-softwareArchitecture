@@ -271,7 +271,17 @@ public class PlayState extends GameState {
     }
 
     private void checkCollisions() {
+        //zombie-wall collision
+        for (int i = 0; i < zombies.size(); i++) {
+            Zombie zombie = zombies.get(i);
+            if(wall.intersects(zombie)){
+                zombie.setStopped(true);
 
+                //FIXME: The way attacks currently work
+                wall.takeDamage(zombie.attack());
+            }
+
+        }
 
         // bullet-zombie collision
         for (int i = 0; i < bullets.size(); i++) {
