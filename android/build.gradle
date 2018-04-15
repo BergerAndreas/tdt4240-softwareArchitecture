@@ -1,6 +1,15 @@
 android {
-    buildToolsVersion "27.0.3"
-    compileSdkVersion 27
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('debug.keystore')
+            storePassword 'android'
+        }
+    }
+    buildToolsVersion build_tools_version
+    compileSdkVersion android_compile_version
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -19,15 +28,21 @@ android {
     }
     defaultConfig {
         applicationId "co.aeons.zombie.shooter"
-        minSdkVersion 9
-        targetSdkVersion 27
+        minSdkVersion android_min_version
+        targetSdkVersion android_compile_version
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
+            signingConfig signingConfigs.debug
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            proguardFile 'proguard-project.txt'
+            zipAlignEnabled true
         }
     }
 }
@@ -93,8 +108,8 @@ eclipse {
     }
 
     jdt {
-        sourceCompatibility = 1.6
-        targetCompatibility = 1.6
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
     }
 
     classpath {
@@ -134,4 +149,15 @@ idea {
             }
         }
     }
+}
+
+dependencies {
+    compile "com.android.support:appcompat-v7:${appcompat_library_version}"
+    compile "com.android.support:support-v4:${support_library_version}"
+    compile "com.google.android.gms:play-services-games:${gms_library_version}"
+    compile "com.google.android.gms:play-services-plus:${gms_library_version}"
+    //debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    //testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile project(path: ':BaseGameUtils')
 }

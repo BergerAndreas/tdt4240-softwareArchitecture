@@ -142,6 +142,7 @@ public class PlayState extends GameState {
 
                 //Fire button
                 if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)){
+                    stage.touchDown(x,y,pointer,button);
                     player.shoot();
                 }
 
@@ -468,19 +469,17 @@ public class PlayState extends GameState {
             zombies.get(i).draw(sb);
         }
 
-
-        // draw buttons
-        sb.setColor(0, 1, 1, 1);
-        sb.begin();
-        fireButton.draw(sb,1);
-        muteButton.draw(sb,1);
-        sb.end();
-
         // draw lives
         for (int i = 0; i < player.getLives(); i++) {
             hudPlayer.setPosition(40 + i * 10, 360);
             hudPlayer.draw(sr);
         }
+
+        // Draw buttons
+        this.stage.addActor(fireButton);
+        this.stage.addActor(muteButton);
+        this.stage.act();
+        this.stage.draw();
 
     }
 
