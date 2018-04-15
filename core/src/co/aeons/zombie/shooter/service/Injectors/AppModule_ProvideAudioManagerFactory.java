@@ -1,9 +1,10 @@
-package no.ntnu.tdt4240.asteroids.service;
+package co.aeons.zombie.shooter.service.Injectors;
+
+import javax.annotation.Generated;
+import javax.inject.Provider;
 
 import dagger.internal.Factory;
 import dagger.internal.Preconditions;
-import javax.annotation.Generated;
-import javax.inject.Provider;
 import no.ntnu.tdt4240.asteroids.service.audio.AudioService;
 
 @Generated(

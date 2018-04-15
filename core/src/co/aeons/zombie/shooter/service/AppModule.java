@@ -1,12 +1,12 @@
-package no.ntnu.tdt4240.asteroids.service;
+package co.aeons.zombie.shooter.service;
 
 import javax.inject.Singleton;
 
+import co.aeons.zombie.shooter.service.network.INetworkService;
 import dagger.Module;
 import dagger.Provides;
 import no.ntnu.tdt4240.asteroids.game.AnimationFactory;
 import no.ntnu.tdt4240.asteroids.service.audio.AudioService;
-import no.ntnu.tdt4240.asteroids.service.network.INetworkService;
 
 @Module
 public class AppModule {

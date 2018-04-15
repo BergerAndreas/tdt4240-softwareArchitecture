@@ -1,9 +1,11 @@
-package no.ntnu.tdt4240.asteroids.service;
+package co.aeons.zombie.shooter.service.Injectors;
 
-import dagger.internal.DoubleCheck;
-import dagger.internal.Preconditions;
 import javax.annotation.Generated;
 import javax.inject.Provider;
+
+import co.aeons.zombie.shooter.service.ISettingsService;
+import dagger.internal.DoubleCheck;
+import dagger.internal.Preconditions;
 import no.ntnu.tdt4240.asteroids.game.AnimationFactory;
 import no.ntnu.tdt4240.asteroids.service.audio.AudioService;
 import no.ntnu.tdt4240.asteroids.service.network.INetworkService;

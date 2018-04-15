@@ -1,8 +1,9 @@
-package no.ntnu.tdt4240.asteroids.service;
+package co.aeons.zombie.shooter.service.Injectors;
+
+import javax.annotation.Generated;
 
 import dagger.internal.Factory;
 import dagger.internal.Preconditions;
-import javax.annotation.Generated;
 
 @Generated(
   value = "dagger.internal.codegen.ComponentProcessor",

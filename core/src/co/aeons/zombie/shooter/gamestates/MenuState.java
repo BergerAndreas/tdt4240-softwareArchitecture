@@ -106,7 +106,14 @@ public class MenuState extends GameState {
 				gsm.setState(GameStateManager.PLAY);
 			}
 		});
-		//TODO: Add multiplayer listener
+		multiplayerButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				//TODO: Add multiplayer listener
+
+
+			}
+		});
 		exitButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

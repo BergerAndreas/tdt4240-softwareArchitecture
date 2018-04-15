@@ -29,8 +29,8 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	private static final String TAG = ZombieShooter.class.getSimpleName();
 
 	//Google play services stuff
-	private INetworkService networkService;
-	private ISettingsService settingsService;
+	public INetworkService networkService;
+	public ISettingsService settingsService;
 
 	//FIXME: Uncomment this to unfuck android
 	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
@@ -67,6 +67,9 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		Jukebox.load("sounds/shoot.ogg", "shoot");
 		Jukebox.load("sounds/smallsaucer.ogg", "smallsaucer");
 		Jukebox.load("sounds/thruster.ogg", "thruster");
+
+		//Initialize network and settings service
+
 
 		gsm = new GameStateManager();
 
