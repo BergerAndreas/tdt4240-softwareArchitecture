@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
@@ -47,7 +47,6 @@ public class GameOverState extends GameState {
 		layout = new GlyphLayout();
 		stage = new Stage(gamePort);
 		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
-		System.out.println("GAMEOVER");
 
 		// Control inputs
 		Gdx.input.setInputProcessor(this.stage);
@@ -83,7 +82,6 @@ public class GameOverState extends GameState {
 	public void handleInput() {
 		
 		if(GameKeys.isPressed(GameKeys.ENTER)) {
-
 			gsm.setState(GameStateManager.MENU);
 		}
 		
@@ -144,8 +142,10 @@ public class GameOverState extends GameState {
 		restartButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-//                TODO change state to whatever the state was prior to "restart press"
 //				gsm.resetPlayScreen();
+//				Stop gameover music, and start ingame music
+				Jukebox.getGameoverMusic().stop();
+				Jukebox.playIngameMusic();
 				gsm.setState(GameStateManager.PLAY);
 			}
 		});
@@ -154,7 +154,6 @@ public class GameOverState extends GameState {
 		highscoreButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-//                TODO change state to whatever the state was prior to "restart press"
 //				gsm.resetPlayScreen();
 				gsm.setState(GameStateManager.HIGHSCORE);
 			}
@@ -165,6 +164,9 @@ public class GameOverState extends GameState {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 //				gsm.resetPlayScreen();
+//				Stop gameover music, and start ingame music
+				Jukebox.getGameoverMusic().stop();
+				Jukebox.playIngameMusic();
 				gsm.setState(GameStateManager.MENU);
 			}
 		});

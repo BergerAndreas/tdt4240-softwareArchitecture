@@ -87,11 +87,12 @@ public class HighscoreState extends GameState{
 
 //        Draw highscores on screen
         font.draw(sb, s, (cam.viewportWidth - width)/2, cam.viewportHeight - 25);
+        font.getData().setScale(1, 1);
         for(int i=0; i<highscores.length; i++){
             s = String.format("%2d. %7s %s", i+1, highscores[i], names[i]);
             layout.setText(font, s);
             float w = layout.width;
-            font.draw(sb, s, (cam.viewportWidth- w)/2, 400 - 30*i);
+            font.draw(sb, s, (cam.viewportWidth- w)/2, cam.viewportHeight - 75 - 20*i);
         }
         sb.end();
         stage.act();
