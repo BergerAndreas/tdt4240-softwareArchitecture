@@ -3,12 +3,12 @@ package co.aeons.zombie.shooter.service.Injectors;
 import javax.annotation.Generated;
 import javax.inject.Provider;
 
+import co.aeons.zombie.shooter.service.AppComponent;
+import co.aeons.zombie.shooter.service.AppModule;
 import co.aeons.zombie.shooter.service.ISettingsService;
+import co.aeons.zombie.shooter.service.network.INetworkService;
 import dagger.internal.DoubleCheck;
 import dagger.internal.Preconditions;
-import no.ntnu.tdt4240.asteroids.game.AnimationFactory;
-import no.ntnu.tdt4240.asteroids.service.audio.AudioService;
-import no.ntnu.tdt4240.asteroids.service.network.INetworkService;
 
 @Generated(
   value = "dagger.internal.codegen.ComponentProcessor",
@@ -17,13 +17,8 @@ import no.ntnu.tdt4240.asteroids.service.network.INetworkService;
 public final class DaggerAppComponent implements AppComponent {
   private Provider<INetworkService> networkServiceProvider;
 
-  private Provider<AssetService> provideAssetServiceProvider;
-
   private Provider<ISettingsService> provideSettingsServiceProvider;
 
-  private Provider<AudioService> provideAudioManagerProvider;
-
-  private Provider<AnimationFactory> provideAnimationFactoryProvider;
 
   private DaggerAppComponent(Builder builder) {
     assert builder != null;
@@ -40,21 +35,9 @@ public final class DaggerAppComponent implements AppComponent {
     this.networkServiceProvider =
         DoubleCheck.provider(AppModule_NetworkServiceFactory.create(builder.appModule));
 
-    this.provideAssetServiceProvider =
-        DoubleCheck.provider(AppModule_ProvideAssetServiceFactory.create(builder.appModule));
-
     this.provideSettingsServiceProvider =
         DoubleCheck.provider(AppModule_ProvideSettingsServiceFactory.create(builder.appModule));
 
-    this.provideAudioManagerProvider =
-        DoubleCheck.provider(
-            AppModule_ProvideAudioManagerFactory.create(
-                builder.appModule, provideAssetServiceProvider, provideSettingsServiceProvider));
-
-    this.provideAnimationFactoryProvider =
-        DoubleCheck.provider(
-            AppModule_ProvideAnimationFactoryFactory.create(
-                builder.appModule, provideAssetServiceProvider));
   }
 
   @Override
@@ -63,23 +46,8 @@ public final class DaggerAppComponent implements AppComponent {
   }
 
   @Override
-  public AudioService getAudioService() {
-    return provideAudioManagerProvider.get();
-  }
-
-  @Override
   public ISettingsService getSettingsService() {
     return provideSettingsServiceProvider.get();
-  }
-
-  @Override
-  public AssetService getAssetService() {
-    return provideAssetServiceProvider.get();
-  }
-
-  @Override
-  public AnimationFactory getAnimationFactory() {
-    return provideAnimationFactoryProvider.get();
   }
 
   public static final class Builder {

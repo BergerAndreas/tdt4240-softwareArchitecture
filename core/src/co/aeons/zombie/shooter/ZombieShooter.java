@@ -15,6 +15,7 @@ import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.service.ISettingsService;
+import co.aeons.zombie.shooter.service.ServiceLocator;
 import co.aeons.zombie.shooter.service.network.INetworkService;
 
 public class ZombieShooter extends Game implements INetworkService.IGameListener {
@@ -69,7 +70,8 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		Jukebox.load("sounds/thruster.ogg", "thruster");
 
 		//Initialize network and settings service
-
+		ServiceLocator.initializeAppComponent(networkService, settingsService);
+		ServiceLocator.getAppComponent().getNetworkService().setGameListener(this);
 
 		gsm = new GameStateManager();
 

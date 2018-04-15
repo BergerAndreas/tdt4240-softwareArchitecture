@@ -2,6 +2,8 @@ package co.aeons.zombie.shooter.service.Injectors;
 
 import javax.annotation.Generated;
 
+import co.aeons.zombie.shooter.service.AppModule;
+import co.aeons.zombie.shooter.service.ISettingsService;
 import dagger.internal.Factory;
 import dagger.internal.Preconditions;
 
