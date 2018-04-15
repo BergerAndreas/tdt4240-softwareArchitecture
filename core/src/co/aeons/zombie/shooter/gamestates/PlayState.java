@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -67,6 +68,13 @@ public class PlayState extends GameState {
     private float bgTimer;
     private boolean musicStarted;
 
+    //Spawndelay for powerups
+    private int spawnDelay;
+    private float timer;
+
+    //Flag to check if powerup is used
+    private boolean isClicked;
+
     //Camera
     // Cameras and viewport
     private OrthographicCamera gameCam;
@@ -112,6 +120,10 @@ public class PlayState extends GameState {
         fsTime = 15;
         enemyBullets = new ArrayList<Bullet>();
 
+        //Set up variables for powerups
+        spawnDelay = randInt(0,1);
+        isClicked = false;
+
 
         //Button initialization
         //Create bounds for buttons
@@ -124,6 +136,8 @@ public class PlayState extends GameState {
         //Create buttons with above bounds
         fireButton = new FireButton(fireBounds, new GameFireButtonListener());
         muteButton = new MuteButton(muteBounds, new GameMuteButtonListener());
+        //Create empty button
+        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
 
         // set up bg music
         maxDelay = 1;
@@ -149,6 +163,12 @@ public class PlayState extends GameState {
                 if (muteButton.getBounds().contains(x, y)) {
                     stage.touchDown(x, y, pointer, button);
                 }
+
+                //Instakill button
+                if (instakillButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    stage.touchDown(x, y, pointer, button);
+                }
+
                 return true;
             }
 
@@ -308,6 +328,26 @@ public class PlayState extends GameState {
             }
         }
 
+        // update spawn powerup button timer
+        if (!isClicked) {
+            this.timer += dt;
+            System.out.println(timer);
+        }
+
+        // update instakill
+        if (timer > spawnDelay && !isClicked) {
+            instakillBounds = new Rectangle(randInt(100,(int) this.gameCam.viewportWidth - 100), randInt(100, (int) this.gameCam.viewportHeight - 100),
+                    this.gameCam.viewportWidth / 8, this.gameCam.viewportHeight / 6);
+            //Creates a new instakill button with above bounds
+            instakillButton = new InstaKill(instakillBounds, new GameInstaKillListener());
+            //Adds instakill button to stage
+            this.stage.addActor(instakillButton);
+
+            //Reset variables for next spawning
+            isClicked = true;
+            spawnDelay = randInt(0,1);
+            timer = 0;
+            }
 
         // check collision
         checkCollisions();
@@ -474,6 +514,7 @@ public class PlayState extends GameState {
         sb.begin();
         fireButton.draw(sb,1);
         muteButton.draw(sb,1);
+        instakillButton.draw(sb,1);
         sb.end();
 
         // draw lives
@@ -502,6 +543,13 @@ public class PlayState extends GameState {
         sb.dispose();
         sr.dispose();
         font.dispose();
+    }
+
+    //Helper function to generate random integer
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
     }
 
     // Button listeners
@@ -554,7 +602,7 @@ public class PlayState extends GameState {
         //TODO: Fix button
         System.out.println("Instakill activated");
         instakillButton.remove();
-        //isClicked = true;
+        isClicked = true;
     }
 
 
