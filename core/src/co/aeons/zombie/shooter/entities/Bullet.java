@@ -20,16 +20,14 @@ public class Bullet extends SpaceObject {
 		
 		this.x = x;
 		this.y = y;
-		this.radians = radians;
-		
+
 		float speed = 350;
-		dx = MathUtils.cos(radians) * speed;
-		dy = MathUtils.sin(radians) * speed;
-		
+		dx = speed;
+
 		width = height = 2;
 		
 		lifeTimer = 0;
-		lifeTime = 1;
+		lifeTime = 2;
 		bullet = new Sprite(new Texture("pistol1.png"));
 		
 	}
@@ -39,7 +37,6 @@ public class Bullet extends SpaceObject {
 	public void update(float dt) {
 		
 		x += dx * dt;
-		y += dy * dt;
 		
 		wrap();
 		
