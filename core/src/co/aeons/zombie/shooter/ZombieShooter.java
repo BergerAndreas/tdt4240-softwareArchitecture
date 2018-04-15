@@ -34,9 +34,9 @@ public class ZombieShooter extends ApplicationAdapter {
 		cam.update();
 
 		// Initializes a new viewport
-		this.gamePort = new FitViewport(
-				ZombieShooter.WIDTH,
-				ZombieShooter.HEIGHT,
+		gamePort = new FitViewport(
+				WIDTH,
+				HEIGHT,
 				cam
 		);
 		gamePort.apply();
