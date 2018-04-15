@@ -48,7 +48,7 @@ public class MenuState extends GameState {
 		sb = new SpriteBatch();
 		sr = new ShapeRenderer();
 
-		stage = new Stage(gamePort, sb)x;
+		stage = new Stage(gamePort, sb);
 
 		titleFont = new BitmapFont();
 		titleFont.setColor(Color.WHITE);
