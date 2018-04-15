@@ -39,11 +39,6 @@ public class SplashState extends GameState {
         tweenManager = new TweenManager();
         splashTexture = new Texture("logo.png");
 
-    }
-
-    @Override
-    public void update(float dt) {
-        tweenManager.update(dt);
         //        Tween does not know there is a successor, thus we need to register it
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
@@ -61,6 +56,12 @@ public class SplashState extends GameState {
                 gsm.setState(GameStateManager.MENU);
             }
         }).start(tweenManager);
+
+    }
+
+    @Override
+    public void update(float dt) {
+        tweenManager.update(dt);
     }
 
     @Override
