@@ -61,7 +61,7 @@ public class Player extends SpaceObject {
 		hitTime = 2;
 		
 		score = 0;
-		extraLives = 3;
+		extraLives = 1;
 		requiredScore = 10000;
 		
 	}
