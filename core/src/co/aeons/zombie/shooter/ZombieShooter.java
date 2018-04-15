@@ -57,6 +57,9 @@ public class ZombieShooter extends ApplicationAdapter {
 		Jukebox.load("sounds/smallsaucer.ogg", "smallsaucer");
 		Jukebox.load("sounds/thruster.ogg", "thruster");
 
+		//		Initialize background music
+		Jukebox.playMusic();
+
 		gsm = new GameStateManager();
 
 	}

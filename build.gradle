@@ -83,6 +83,7 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
+
         compile fileTree(dir: '../libs', include: '*.jar')
 
     }
@@ -96,8 +97,10 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.kotcrab.vis:vis-ui:$visuiVersion"
+        compile "org.mini2Dx:universal-tween-engine:6.3.3"
+
         compile fileTree(dir: '../libs', include: '*.jar')
-        
+
     }
 }
 
