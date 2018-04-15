@@ -18,12 +18,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
-import co.aeons.zombie.shooter.entities.FlyingSaucer;
 import co.aeons.zombie.shooter.entities.Player;
 import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
-import co.aeons.zombie.shooter.managers.GameInputProcessor;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
@@ -41,7 +39,6 @@ public class PlayState extends GameState {
     private ArrayList<Zombie> zombies;
     private ArrayList<Bullet> enemyBullets;
 
-    private FlyingSaucer flyingSaucer;
     private float fsTimer;
     private float fsTime;
 
@@ -248,9 +245,6 @@ public class PlayState extends GameState {
             }
             player.reset();
             player.loseLife();
-            flyingSaucer = null;
-            Jukebox.stop("smallsaucer");
-            Jukebox.stop("largesaucer");
             return;
         }
 
@@ -263,32 +257,7 @@ public class PlayState extends GameState {
             }
         }
 
-        // update flying saucer
-        if (flyingSaucer == null) {
-            fsTimer += dt;
-            if (fsTimer >= fsTime) {
-                fsTimer = 0;
-                int type = MathUtils.random() < 0.5 ?
-                        FlyingSaucer.SMALL : FlyingSaucer.LARGE;
-                int direction = MathUtils.random() < 0.5 ?
-                        FlyingSaucer.RIGHT : FlyingSaucer.LEFT;
-                flyingSaucer = new FlyingSaucer(
-                        type,
-                        direction,
-                        player,
-                        enemyBullets
-                );
-            }
-        }
-        // if there is a flying saucer already
-        else {
-            flyingSaucer.update(dt);
-            if (flyingSaucer.shouldRemove()) {
-                flyingSaucer = null;
-                Jukebox.stop("smallsaucer");
-                Jukebox.stop("largesaucer");
-            }
-        }
+
 
         // update fs bullets
         for (int i = 0; i < enemyBullets.size(); i++) {
@@ -360,34 +329,8 @@ public class PlayState extends GameState {
             }
         }
 
-        // player-flying saucer collision
-        if (flyingSaucer != null) {
-            if (player.intersects(flyingSaucer)) {
-                player.hit();
-                flyingSaucer = null;
-                Jukebox.stop("smallsaucer");
-                Jukebox.stop("largesaucer");
-                Jukebox.play("explode");
-            }
-        }
 
-        // bullet-flying saucer collision
-        if (flyingSaucer != null) {
-            for (int i = 0; i < bullets.size(); i++) {
-                Bullet b = bullets.get(i);
-                if (flyingSaucer.contains(b.getx(), b.gety())) {
-                    bullets.remove(i);
-                    i--;
 
-                    player.incrementScore(flyingSaucer.getScore());
-                    flyingSaucer = null;
-                    Jukebox.stop("smallsaucer");
-                    Jukebox.stop("largesaucer");
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
 
         // player-enemy bullets collision
         if (!player.isHit()) {
@@ -403,22 +346,6 @@ public class PlayState extends GameState {
             }
         }
 
-        // flying saucer-asteroid collision
-        if (flyingSaucer != null) {
-            for (int i = 0; i < zombies.size(); i++) {
-                Zombie a = zombies.get(i);
-                if (a.intersects(flyingSaucer)) {
-                    zombies.remove(i);
-                    i--;
-                    splitAsteroids(a);
-                    flyingSaucer = null;
-                    Jukebox.stop("smallsaucer");
-                    Jukebox.stop("largesaucer");
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
 
         // asteroid-enemy bullet collision
         for (int i = 0; i < enemyBullets.size(); i++) {
@@ -453,10 +380,6 @@ public class PlayState extends GameState {
             bullets.get(i).draw(sb);
         }
 
-        // draw flying saucer
-        if (flyingSaucer != null) {
-            flyingSaucer.draw(sr);
-        }
 
         // draw fs bullets
         // for (int i = 0; i < enemyBullets.size(); i++) {
@@ -488,9 +411,6 @@ public class PlayState extends GameState {
 
         //Handle input logic
         if (!player.isHit()) {
-            player.setLeft(GameKeys.isDown(GameKeys.LEFT));
-            player.setRight(GameKeys.isDown(GameKeys.RIGHT));
-            player.setUp(GameKeys.isDown(GameKeys.UP));
             if (GameKeys.isPressed(GameKeys.SPACE)) {
                 player.shoot();
             }

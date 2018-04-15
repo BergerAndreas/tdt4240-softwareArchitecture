@@ -16,16 +16,8 @@ public class Player extends SpaceObject {
 	
 	private final int MAX_BULLETS = 4;
 	private ArrayList<Bullet> bullets;
-	
 
-	private boolean left;
-	private boolean right;
 	private boolean up;
-	
-	private float maxSpeed;
-	private float acceleration;
-	private float deceleration;
-	private float acceleratingTimer;
 	
 	private boolean hit;
 	private boolean dead;
@@ -46,15 +38,10 @@ public class Player extends SpaceObject {
 		x = 50;
 		y = ZombieShooter.HEIGHT / 2;
 		
-		maxSpeed = 300;
-		acceleration = 200;
-		deceleration = 10;
-		
 		shapex = new float[4];
 		shapey = new float[4];
 
 		radians = 0;
-		rotationSpeed = 3;
 		
 		hit = false;
 		hitTimer = 0;
@@ -80,18 +67,6 @@ public class Player extends SpaceObject {
 		shapey[3] = y + MathUtils.sin(radians + 4 * 3.1415f / 5) * 8;
 	}
 
-	public void setLeft(boolean b) { left = b; }
-	public void setRight(boolean b) { right = b; }
-	public void setUp(boolean b) {
-		if(b && !up && !hit) {
-			Jukebox.loop("thruster");
-		}
-		else if(!b) {
-			Jukebox.stop("thruster");
-		}
-		up = b;
-	}
-	
 	public void setPosition(float x, float y) {
 		super.setPosition(this.x, y);
 		setShape();
@@ -123,8 +98,6 @@ public class Player extends SpaceObject {
 		if(hit) return;
 		
 		hit = true;
-		dx = dy = 0;
-		left = right = up = false;
 		Jukebox.stop("thruster");
 		
 		hitLines = new Line2D.Float[4];
@@ -182,42 +155,7 @@ public class Player extends SpaceObject {
 			requiredScore += 10000;
 			Jukebox.play("extralife");
 		}
-		
-		// turning
-		if(left) {
-			radians += rotationSpeed * dt;
-		}
-		else if(right) {
-			radians -= rotationSpeed * dt;
-		}
-		
-		// accelerating
-		if(up) {
-			dx += MathUtils.cos(radians) * acceleration * dt;
-			dy += MathUtils.sin(radians) * acceleration * dt;
-			acceleratingTimer += dt;
-			if(acceleratingTimer > 0.1f) {
-				acceleratingTimer = 0;
-			}
-		}
-		else {
-			acceleratingTimer = 0;
-		}
-		
-		// deceleration
-		float vec = (float) Math.sqrt(dx * dx + dy * dy);
-		if(vec > 0) {
-			dx -= (dx / vec) * deceleration * dt;
-			dy -= (dy / vec) * deceleration * dt;
-		}
-		if(vec > maxSpeed) {
-			dx = (dx / vec) * maxSpeed;
-			dy = (dy / vec) * maxSpeed;
-		}
-		
-		// set position
-		x += dx * dt;
-		y += dy * dt;
+
 		
 		// set shape
 		setShape();
