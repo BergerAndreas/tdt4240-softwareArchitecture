@@ -110,7 +110,6 @@ public class Zombie extends SpaceObject {
 		stateTime += Gdx.graphics.getDeltaTime();
 
 		setShape();
-		wrap();
 	}
 	
 	public void draw(SpriteBatch batch) {

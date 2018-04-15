@@ -38,8 +38,6 @@ public class Bullet extends SpaceObject {
 		
 		x += dx * dt;
 		
-		wrap();
-		
 		lifeTimer += dt;
 		if(lifeTimer > lifeTime) {
 			remove = true;
