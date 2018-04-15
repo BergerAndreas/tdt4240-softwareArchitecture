@@ -247,15 +247,6 @@ public class PlayState extends GameState {
         }
 
 
-        // update fs bullets
-        for (int i = 0; i < enemyBullets.size(); i++) {
-            enemyBullets.get(i).update(dt);
-            if (enemyBullets.get(i).shouldRemove()) {
-                enemyBullets.remove(i);
-                i--;
-            }
-        }
-
         // update zombies
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).update(dt);
@@ -307,18 +298,11 @@ public class PlayState extends GameState {
 
         // draw player
         player.draw(sr);
-
-
+        
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(sb);
         }
-
-
-        // draw fs bullets
-        // for (int i = 0; i < enemyBullets.size(); i++) {
-        //   enemyBullets.get(i).draw(sr);
-        //}
 
         // draw zombies
         for (int i = 0; i < zombies.size(); i++) {
