@@ -16,7 +16,7 @@ public class Bullet extends SpaceObject {
 
 	private Sprite bullet;
 	
-	public Bullet(float x, float y, float radians) {
+	public Bullet(float x, float y) {
 		
 		this.x = x;
 		this.y = y;

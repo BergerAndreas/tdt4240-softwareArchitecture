@@ -140,7 +140,7 @@ public class FlyingSaucer extends SpaceObject {
 							player.getx() - x
 							);
 				}
-				bullets.add(new Bullet(x, y, radians));
+				bullets.add(new Bullet(x, y));
 				Jukebox.play("saucershoot");
 			}
 		}

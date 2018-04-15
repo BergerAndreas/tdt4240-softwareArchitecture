@@ -114,7 +114,7 @@ public class Player extends SpaceObject {
 	
 	public void shoot() {
 		if(bullets.size() == MAX_BULLETS) return;
-		bullets.add(new Bullet(x, y, radians));
+		bullets.add(new Bullet(x, y));
 		Jukebox.play("shoot");
 	}
 	
