@@ -56,7 +56,6 @@ public class PlayState extends GameState {
 
     private int level;
     private int totalZombies;
-    private int numAsteroidsLeft;
 
     private float maxDelay;
     private float minDelay;
@@ -131,6 +130,7 @@ public class PlayState extends GameState {
         currentDelay = maxDelay;
         bgTimer = maxDelay;
         musicStarted = false;
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int x, int y, int pointer, int button) {
@@ -181,31 +181,11 @@ public class PlayState extends GameState {
     }
 
 
-    private void splitAsteroids(Zombie a) {
-        numAsteroidsLeft--;
-        currentDelay = ((maxDelay - minDelay) *
-                numAsteroidsLeft / totalZombies)
-                + minDelay;
-        if (a.getType() == Zombie.LARGE) {
-            zombies.add(
-                    new Zombie(a.getx(), a.gety(), Zombie.MEDIUM));
-            zombies.add(
-                    new Zombie(a.getx(), a.gety(), Zombie.MEDIUM));
-        }
-        if (a.getType() == Zombie.MEDIUM) {
-            zombies.add(
-                    new Zombie(a.getx(), a.gety(), Zombie.SMALL));
-            zombies.add(
-                    new Zombie(a.getx(), a.gety(), Zombie.SMALL));
-        }
-    }
 
     private void spawnZombies() {
 
         int numToSpawn = 4 + level - 1;
-        totalZombies = numToSpawn * 7;
-        numAsteroidsLeft = totalZombies;
-        currentDelay = maxDelay;
+        totalZombies = numToSpawn;
 
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
@@ -222,19 +202,16 @@ public class PlayState extends GameState {
         handleInput();
 
         // next level
-
         spawnTimer += dt;
         if (Math.floor(spawnTimer) != spawnCooldown) {
             if (Math.floor(spawnTimer) % 9 == 0) {
                 spawnZombies();
             }
             spawnCooldown += 1.0f;
-
             if (spawnCooldown % 17 == 0) {
                 System.out.println("Difficulty increased");
                 level += 2;
             }
-
         }
 
         // update player
@@ -309,8 +286,6 @@ public class PlayState extends GameState {
             Zombie zombie = zombies.get(i);
             if (wall.intersects(zombie)) {
                 zombie.setStopped(true);
-
-                //FIXME: The way attacks currently work
                 wall.takeDamage(zombie.attack());
             }
 
@@ -322,11 +297,13 @@ public class PlayState extends GameState {
             for (int j = 0; j < zombies.size(); j++) {
                 Zombie a = zombies.get(j);
                 if (a.contains(b.getx(), b.gety())) {
+
                     bullets.remove(i);
                     i--;
+
                     zombies.remove(j);
                     j--;
-                    splitAsteroids(a);
+
                     player.incrementScore(a.getScore());
                     Jukebox.play("zombieHit");
                     break;
@@ -353,7 +330,7 @@ public class PlayState extends GameState {
             zombies.get(i).draw(sb);
         }
 
-        //Draw wall
+        // draw wall
         wall.draw(sb);
 
         // draw buttons
@@ -370,7 +347,7 @@ public class PlayState extends GameState {
             hudPlayer.draw(sr);
         }
 
-        // Draw buttons
+        // draw buttons
         this.stage.addActor(fireButton);
         this.stage.addActor(muteButton);
         this.stage.act();
@@ -380,7 +357,7 @@ public class PlayState extends GameState {
 
     public void handleInput() {
 
-        //Handle input logic
+        // handle input logic
         if (!player.isHit()) {
             if (GameKeys.isPressed(GameKeys.SPACE)) {
                 player.shoot();
@@ -394,7 +371,7 @@ public class PlayState extends GameState {
         sr.dispose();
     }
 
-    //Helper function to generate random integer
+    // helper function to generate random integer
     public static int randInt(int min, int max) {
         Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
@@ -402,8 +379,7 @@ public class PlayState extends GameState {
     }
 
     // Button listeners
-
-    //Firebutton listener class
+    // Firebutton listener class
     private class GameFireButtonListener implements FireButton.FireButtonListener {
 
         // Adds observer

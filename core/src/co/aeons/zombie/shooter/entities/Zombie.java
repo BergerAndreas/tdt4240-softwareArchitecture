@@ -31,7 +31,11 @@ public class Zombie extends SpaceObject {
 
     private int score;
 
+    private float attackTimer;
+    private float attackCooldown;
+
     private boolean remove;
+    int attackCounter = 0;
 
     public Zombie(float x, float y, int type) {
 
@@ -75,6 +79,8 @@ public class Zombie extends SpaceObject {
         createRunningAnimation();
         createAttackAnimation();
 
+        attackTimer = 1.0f;
+        attackCooldown = 2.0f;
 
     }
 
@@ -102,7 +108,6 @@ public class Zombie extends SpaceObject {
         stateTimeAttacking = 0f;
 
     }
-
 
     private void setShape() {
         float angle = 0;
@@ -137,6 +142,8 @@ public class Zombie extends SpaceObject {
         stateTimeRunning += dt;
         stateTimeAttacking += dt;
 
+        attackTimer += dt;
+
         setShape();
     }
 
@@ -158,28 +165,21 @@ public class Zombie extends SpaceObject {
     }
 
     public int attack() {
-        if (Math.floor(stateTimeAttacking) % 2 == 0) {
-            return 1;
+        if (Math.floor(attackTimer) != attackCooldown) {
+            attackCooldown += 1.0f;
+            if (Math.floor(attackTimer % 2) == 0) {
+
+                if (attackCounter == 0) {
+                    // Extra counter needed for weired timer behvior
+                    attackCounter++;
+                    System.out.println("Zombie Attack!");
+                    return 10;
+                } else return 0;
+
+            } else {
+                attackCounter = 0;
+                return 0;
+            }
         } else return 0;
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
