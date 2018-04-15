@@ -137,11 +137,9 @@ public class Zombie extends SpaceObject {
 	public void draw(SpriteBatch batch) {
 		batch.begin();
 		if(!isStopped){
-			System.out.println("Walk");
             TextureRegion currentRunningFrame = runningAnimation.getKeyFrame(stateTimeRunning, true);
             batch.draw(currentRunningFrame, x, y, width, height);
         }else {
-			System.out.println("Attack");
             TextureRegion currentAttackFrame = attackAnimation.getKeyFrame(stateTimeAttacking, true);
 		    batch.draw(currentAttackFrame, x, y, width, height);
         }
@@ -155,7 +153,6 @@ public class Zombie extends SpaceObject {
 
 	public int attack(){
 		if(Math.floor(stateTimeAttacking) % 2 == 0){
-			System.out.println("Zombie attack");
 			return 1;
 		}
 		else return 0;

@@ -58,7 +58,7 @@ public class HighscoreState extends GameState{
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.MENU);
+                gsm.setState(GameStateManager.GAMEOVER);
             }
         });
 
