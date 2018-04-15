@@ -56,13 +56,6 @@ public class SpaceObject {
 		}
 		return b;
 	}
-
-	protected void wrap() {
-		if(x < 0) x = ZombieShooter.WIDTH;
-		if(x > ZombieShooter.WIDTH) x = 0;
-		if(y < 0) y = ZombieShooter.HEIGHT;
-		if(y > ZombieShooter.HEIGHT) y = 0;
-	}
 	
 }
 

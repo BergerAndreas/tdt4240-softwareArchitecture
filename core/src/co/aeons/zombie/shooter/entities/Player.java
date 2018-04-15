@@ -159,11 +159,6 @@ public class Player extends SpaceObject {
 		
 		// set shape
 		setShape();
-
-		
-		// screen wrap
-		wrap();
-		
 	}
 	
 	public void draw(ShapeRenderer sr) {
