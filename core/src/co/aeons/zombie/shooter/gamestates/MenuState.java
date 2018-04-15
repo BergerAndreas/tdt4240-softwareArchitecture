@@ -21,11 +21,11 @@ import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.ZombieShooter;
 
+import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
+
 public class MenuState extends GameState {
 
 	// Cameras and viewport
-	private OrthographicCamera gameCam;
-	private Viewport gamePort;
 	private Stage stage;
 
 	private SpriteBatch sb;
@@ -44,25 +44,11 @@ public class MenuState extends GameState {
 	}
 	
 	public void init() {
-
-		this.gameCam = new OrthographicCamera();
-
-		// Initializes a new viewport
-		this.gamePort = new FitViewport(
-				ZombieShooter.WIDTH,
-				ZombieShooter.HEIGHT,
-				gameCam
-		);
-		gamePort.apply();
-
-		//sets up camera
-		gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
-		gameCam.update();
 		
 		sb = new SpriteBatch();
 		sr = new ShapeRenderer();
 
-		stage = new Stage(gamePort, sb);
+		stage = new Stage(gamePort, sb)x;
 
 		titleFont = new BitmapFont();
 		titleFont.setColor(Color.WHITE);

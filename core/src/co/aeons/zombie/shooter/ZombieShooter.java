@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.managers.GameInputProcessor;
 import co.aeons.zombie.shooter.managers.GameKeys;
@@ -18,6 +20,7 @@ public class ZombieShooter extends ApplicationAdapter {
 	public static int HEIGHT;
 
 	public static OrthographicCamera cam;
+	public static Viewport gamePort;
 
 	private GameStateManager gsm;
 
@@ -29,6 +32,14 @@ public class ZombieShooter extends ApplicationAdapter {
 		cam = new OrthographicCamera(WIDTH, HEIGHT);
 		cam.translate(WIDTH / 2, HEIGHT / 2);
 		cam.update();
+
+		// Initializes a new viewport
+		this.gamePort = new FitViewport(
+				ZombieShooter.WIDTH,
+				ZombieShooter.HEIGHT,
+				cam
+		);
+		gamePort.apply();
 
 		Gdx.input.setInputProcessor(
 				new GameInputProcessor()
@@ -60,7 +71,12 @@ public class ZombieShooter extends ApplicationAdapter {
 
 	}
 
-	public void resize(int width, int height) {}
+	public void resize(int width, int height) {
+		// Ensures resizing works properly
+		gamePort.update(width, height);
+		cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
+		cam.update();
+	}
 	public void pause() {}
 	public void resume() {}
 	public void dispose() {}
