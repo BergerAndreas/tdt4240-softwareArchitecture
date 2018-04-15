@@ -295,7 +295,11 @@ public class PlayState extends GameState {
             isClicked = false;
             spawnDelay = randInt(0,10);
             timer = 0;
-            }
+        }
+
+        if(wall.getHealth() <= 0){
+            gsm.setState(GameStateManager.GAMEOVER);
+        }
 
         // check collision
         checkCollisions();
@@ -303,7 +307,6 @@ public class PlayState extends GameState {
         // play bg music
         bgTimer += dt;
         if (!player.isHit() && bgTimer >= currentDelay) {
-//            Jukebox.playMusic();
             bgTimer = 0;
         }
     }
@@ -450,6 +453,7 @@ public class PlayState extends GameState {
         @Override
         public void instaKillActivate() {
             InstakillPressed();
+            Jukebox.play("powerup");
         }
     }
 

@@ -50,4 +50,7 @@ public class Wall extends SpaceObject{
         System.out.println(this.health);
     }
 
+    public int getHealth() {
+        return health;
+    }
 }
