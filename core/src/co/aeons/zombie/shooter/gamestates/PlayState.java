@@ -118,8 +118,8 @@ public class PlayState extends GameState {
                 cam.viewportWidth / 8, cam.viewportHeight / 6);
         muteBounds = new Rectangle(cam.viewportWidth - 100, cam.viewportHeight - 75,
                 cam.viewportWidth / 16, cam.viewportHeight / 16);
-        playerLane = new Rectangle(0, 0, ZombieShooter.WIDTH/3,
-                ZombieShooter.HEIGHT);
+        playerLane = new Rectangle(0, 0, cam.viewportWidth/3,
+                cam.viewportHeight);
         //Create buttons with above bounds
         fireButton = new FireButton(fireBounds, new GameFireButtonListener());
         muteButton = new MuteButton(muteBounds, new GameMuteButtonListener());
@@ -169,13 +169,12 @@ public class PlayState extends GameState {
             @Override
             public boolean touchDragged(int x, int y, int pointer) {
                 Vector2 tmpVec2 = new Vector2();
-                //translateScreenToWorldCoordinates(x, y);
-                //stage.getViewport().unproject(tmpVec2.set(x, y));
+                stage.getViewport().unproject(tmpVec2.set(x, y));
 
-                if (playerLane.contains(x, y)) {
+                if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
                 //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
 
-                player.setPosition(player.getx(), ZombieShooter.HEIGHT-y);
+                player.setPosition(player.getx(), tmpVec2.y);
                 }
                 return true;
             }
