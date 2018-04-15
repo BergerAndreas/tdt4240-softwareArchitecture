@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.Player;
@@ -38,6 +39,7 @@ public class PlayState extends GameState {
     private ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
     private ArrayList<Bullet> enemyBullets;
+    private Wall wall;
 
     private float fsTimer;
     private float fsTime;
@@ -98,6 +100,10 @@ public class PlayState extends GameState {
         player = new Player(bullets);
 
         zombies = new ArrayList<Zombie>();
+
+        wall = new Wall();
+
+
 
 
         level = 1;
@@ -257,8 +263,6 @@ public class PlayState extends GameState {
             }
         }
 
-
-
         // update fs bullets
         for (int i = 0; i < enemyBullets.size(); i++) {
             enemyBullets.get(i).update(dt);
@@ -296,21 +300,6 @@ public class PlayState extends GameState {
 
     private void checkCollisions() {
 
-        // player-asteroid collision
-        if (!player.isHit()) {
-            for (int i = 0; i < zombies.size(); i++) {
-                Zombie a = zombies.get(i);
-                if (a.intersects(player)) {
-                    player.hit();
-                    zombies.remove(i);
-                    i--;
-                    splitAsteroids(a);
-                    Jukebox.play("explode");
-                    break;
-                }
-            }
-        }
-
         // bullet-asteroid collision
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
@@ -329,8 +318,17 @@ public class PlayState extends GameState {
             }
         }
 
+        //zombie-wall collision
+        for (int i = 0; i < zombies.size(); i++) {
+            Zombie zombie = zombies.get(i);
+            if(wall.intersects(zombie)){
+                zombie.setStopped(true);
 
+                //FIXME: The way attacks currently work
+                wall.takeDamage(zombie.attack());
+            }
 
+        }
 
         // player-enemy bullets collision
         if (!player.isHit()) {
@@ -391,6 +389,8 @@ public class PlayState extends GameState {
             zombies.get(i).draw(sb);
         }
 
+        //Draw wall
+        wall.draw(sb);
 
         // draw buttons
         sb.setColor(0, 1, 1, 1);
