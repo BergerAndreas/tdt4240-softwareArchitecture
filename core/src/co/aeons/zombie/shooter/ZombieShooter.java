@@ -37,8 +37,7 @@ public class ZombieShooter extends ApplicationAdapter {
 		Jukebox.load("sounds/explode.ogg", "explode");
 		Jukebox.load("sounds/extralife.ogg", "extralife");
 		Jukebox.load("sounds/largesaucer.ogg", "largesaucer");
-		Jukebox.load("sounds/pulsehigh.ogg", "pulsehigh");
-		Jukebox.load("sounds/pulselow.ogg", "pulselow");
+		Jukebox.load("sounds/music.mp3", "despacito");
 		Jukebox.load("sounds/saucershoot.ogg", "saucershoot");
 		Jukebox.load("sounds/shoot.ogg", "shoot");
 		Jukebox.load("sounds/smallsaucer.ogg", "smallsaucer");

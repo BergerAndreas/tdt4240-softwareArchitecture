@@ -65,7 +65,7 @@ public class PlayState extends GameState {
     private float minDelay;
     private float currentDelay;
     private float bgTimer;
-    private boolean playLowPulse;
+    private boolean musicStarted;
 
     //Camera
     // Cameras and viewport
@@ -130,20 +130,22 @@ public class PlayState extends GameState {
         minDelay = 0.25f;
         currentDelay = maxDelay;
         bgTimer = maxDelay;
-        playLowPulse = true;
+        musicStarted = false;
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDown(int x, int y, int pointer, int button) {
-                // Passes touch control to button observer thingy ¯\_(ツ)_/¯
+
+                //Need to have this or buttons won't work
                 Vector2 tmpVec2 = new Vector2();
                 stage.getViewport().unproject(tmpVec2.set(x, y));
 
+
+                //Fire button
                 if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)){
                     player.shoot();
                 }
-                //if (fireButton.getBounds().contains(x, y) || instakillButton.getBounds().contains(x, y)) {
-                 //   stage.touchDown(x, y, pointer, button);
-                //}
+
+                //Mute button
                 if (muteButton.getBounds().contains(x, y)) {
                     stage.touchDown(x, y, pointer, button);
                 }
@@ -313,12 +315,11 @@ public class PlayState extends GameState {
         // play bg music
         bgTimer += dt;
         if (!player.isHit() && bgTimer >= currentDelay) {
-            if (playLowPulse) {
-                Jukebox.play("pulselow");
-            } else {
-                Jukebox.play("pulsehigh");
+            if (!musicStarted) {
+                Jukebox.play("despacito");
+                musicStarted = true;
             }
-            playLowPulse = !playLowPulse;
+
             bgTimer = 0;
         }
 
@@ -468,7 +469,7 @@ public class PlayState extends GameState {
         }
 
 
-        // draw score
+        // draw buttons
         sb.setColor(0, 1, 1, 1);
         sb.begin();
         fireButton.draw(sb,1);
@@ -530,6 +531,7 @@ public class PlayState extends GameState {
         public void onMute() {
             //Calls this method when button is pressed
             onMuteButtonPressed();
+            System.out.println("tt");
         }
     }
 
