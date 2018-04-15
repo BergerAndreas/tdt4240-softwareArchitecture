@@ -14,9 +14,11 @@ public class Zombie extends SpaceObject {
 	public static final int SMALL = 0;
 	public static final int MEDIUM = 1;
 	public static final int LARGE = 2;
+	private boolean isStopped = false;
 
 	private Animation<TextureRegion> runningAnimation;
 	TextureAtlas atlas;
+	private Texture stopTexture;
 	// A variable for tracking elapsed time for the animation
 	float stateTime;
 
@@ -69,7 +71,7 @@ public class Zombie extends SpaceObject {
 		
 		setShape();
 		createIdleAnimation();
-		
+		stopTexture = new Texture("spoder2.png");
 	}
 
 	private void createIdleAnimation() {
@@ -98,24 +100,46 @@ public class Zombie extends SpaceObject {
 	
 	public void update(float dt) {
 		
-		x += dx * dt;
+		if(!isStopped){
+			x += dx * dt;
+		}
+
 		y += dy * dt;
-		
+
 		radians += rotationSpeed * dt;
+		stateTime += Gdx.graphics.getDeltaTime();
+
 		setShape();
-		
 		wrap();
-		
 	}
 	
 	public void draw(SpriteBatch batch) {
 		batch.begin();
-		stateTime += Gdx.graphics.getDeltaTime();
-		TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
-		batch.draw(currentFrame, x, y, width, height);
+		if(!isStopped){
+            TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
+            batch.draw(currentFrame, x, y, width, height);
+        }else {
+
+			//TODO: Replace with attack animation
+		    batch.draw(stopTexture, x, y, width, height);
+        }
+
 		batch.end();
 	}
-	
+
+	public void setStopped(boolean stopped){
+		isStopped = stopped;
+	}
+
+	public int attack(){
+		if(Math.floor(stateTime) % 2 == 0){
+			System.out.println("Zombie attack");
+			return 1;
+		}
+		else return 0;
+	}
+
+
 }
 
 

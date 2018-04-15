@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.Player;
@@ -39,6 +40,7 @@ public class PlayState extends GameState {
     private ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
     private ArrayList<Bullet> enemyBullets;
+    private Wall wall;
 
     private float fsTimer;
     private float fsTime;
@@ -48,7 +50,6 @@ public class PlayState extends GameState {
     private Rectangle fireBounds;
     private Rectangle instakillBounds;
     private Rectangle muteBounds;
-
 
     //buttons
     private FireButton fireButton;
@@ -87,6 +88,7 @@ public class PlayState extends GameState {
 
         zombies = new ArrayList<Zombie>();
 
+        wall = new Wall();
 
         level = 1;
         spawnAsteroids();
@@ -158,7 +160,6 @@ public class PlayState extends GameState {
                 return true;
             }
         });
-
     }
 
 
@@ -246,7 +247,6 @@ public class PlayState extends GameState {
             }
         }
 
-
         // update zombies
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).update(dt);
@@ -271,6 +271,7 @@ public class PlayState extends GameState {
     }
 
     private void checkCollisions() {
+
 
         // bullet-zombie collision
         for (int i = 0; i < bullets.size(); i++) {
@@ -308,6 +309,16 @@ public class PlayState extends GameState {
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).draw(sb);
         }
+
+        //Draw wall
+        wall.draw(sb);
+
+        // draw buttons
+        sb.setColor(0, 1, 1, 1);
+        sb.begin();
+        fireButton.draw(sb,1);
+        muteButton.draw(sb,1);
+        sb.end();
 
         // draw lives
         for (int i = 0; i < player.getLives(); i++) {
@@ -391,8 +402,6 @@ public class PlayState extends GameState {
         instakillButton.remove();
         //isClicked = true;
     }
-
-
 }
 
 
