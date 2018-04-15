@@ -306,7 +306,7 @@ public class PlayState extends GameState {
         // play bg music
         bgTimer += dt;
         if (!player.isHit() && bgTimer >= currentDelay) {
-            Jukebox.playMusic();
+//            Jukebox.playMusic();
             bgTimer = 0;
         }
     }

@@ -5,6 +5,7 @@ import co.aeons.zombie.shooter.gamestates.GameState;
 import co.aeons.zombie.shooter.gamestates.HighscoreState;
 import co.aeons.zombie.shooter.gamestates.MenuState;
 import co.aeons.zombie.shooter.gamestates.PlayState;
+import co.aeons.zombie.shooter.gamestates.SplashState;
 
 public class GameStateManager {
 	
@@ -15,13 +16,17 @@ public class GameStateManager {
 	public static final int PLAY = 893746;
 	public static final int HIGHSCORE = 3847;
 	public static final int GAMEOVER = 928478;
-	
+	public static final int SPLASH = 3465283;
+
 	public GameStateManager() {
-		setState(MENU);
+		setState(GAMEOVER);
 	}
 	
 	public void setState(int state) {
 		if(gameState != null) gameState.dispose();
+		if(state == SPLASH){
+			gameState = new SplashState(this);
+		}
 		if(state == MENU) {
 			gameState = new MenuState(this);
 		}
