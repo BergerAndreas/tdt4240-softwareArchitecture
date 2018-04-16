@@ -2,6 +2,7 @@ package co.aeons.zombie.shooter.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 
@@ -23,6 +24,8 @@ public class Wall extends SpaceObject{
         shapex = new float[4];
         shapey = new float[4];
         setShape();
+
+        this.bounds = new Rectangle(x,y,width,height);
     }
 
     private void setShape(){

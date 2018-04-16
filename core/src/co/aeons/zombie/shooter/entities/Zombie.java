@@ -18,7 +18,6 @@ public class Zombie extends SpaceObject {
 	public static final int MEDIUM = 1;
 	public static final int LARGE = 2;
 	private boolean isStopped = false;
-	private Rectangle zombieBounds;
 
 	private Animation<TextureRegion> runningAnimation;
 	TextureAtlas atlas;
@@ -58,28 +57,28 @@ public class Zombie extends SpaceObject {
 			score = 20;
 		}
 
-		zombieBounds = new Rectangle(0, 0, 40, 50);
+		bounds = new Rectangle(0, 0, 40, 50);
 
-		/*
 		rotationSpeed = MathUtils.random(-1, 1);
-		
+
 		radians = MathUtils.random(2 * 3.1415f);
 		dx = -50;
 		dy = 0;
-		
+		/*
 		shapex = new float[numPoints];
 		shapey = new float[numPoints];
 		dists = new float[numPoints];
-		
+
 		int radius = width / 2;
 		for(int i = 0; i < numPoints; i++) {
 			dists[i] = MathUtils.random(radius / 2, radius);
 		}
-		
+
 		setShape();
+		*/
 		createIdleAnimation();
 		stopTexture = new Texture("spoder2.png");
-		*/
+
 	}
 
 	private void createIdleAnimation() {
@@ -117,21 +116,17 @@ public class Zombie extends SpaceObject {
 		radians += rotationSpeed * dt;
 		stateTime += Gdx.graphics.getDeltaTime();
 
-		zombieBounds.setPosition(x, y);
-		//setShape();
+		bounds.setPosition(x, y);
 	}
-	
+
 	public void draw(SpriteBatch batch) {
 		batch.begin();
-		if(!isStopped){
-            TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
-            batch.draw(currentFrame, x, y, 40, 50);
-        }else {
-
-			//TODO: Replace with attack animation
-		    batch.draw(stopTexture, x, y, 40, 50);
-        }
-
+		if (!isStopped) {
+			TextureRegion currentRunningFrame = runningAnimation.getKeyFrame(stateTime, true);
+			batch.draw(currentRunningFrame, x, y, width, height);
+		} else {
+			batch.draw(stopTexture, x, y, 40, 50);
+		}
 		batch.end();
 	}
 
@@ -145,14 +140,6 @@ public class Zombie extends SpaceObject {
 			return 1;
 		}
 		else return 0;
-	}
-
-	public Rectangle GetRectangle() {
-		return zombieBounds;
-	}
-
-	public boolean collide(Bullet bullet) {
-		return this.zombieBounds.overlaps(bullet.getRectangle());
 	}
 }
 

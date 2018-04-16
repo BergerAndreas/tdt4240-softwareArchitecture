@@ -312,11 +312,10 @@ public class PlayState extends GameState {
     }
 
     private void checkCollisions() {
-        /*
         //zombie-wall collision
         for (int i = 0; i < zombies.size(); i++) {
             Zombie zombie = zombies.get(i);
-            if(wall.intersects(zombie)){
+            if(zombie.collide(wall)){
                 zombie.setStopped(true);
 
                 //FIXME: The way attacks currently work
@@ -324,7 +323,6 @@ public class PlayState extends GameState {
             }
 
         }
-        */
 
         // bullet-zombie collision
         for (int i = 0; i < bullets.size(); i++) {
@@ -336,7 +334,7 @@ public class PlayState extends GameState {
                     i--;
                     zombies.remove(j);
                     j--;
-                    splitAsteroids(a);
+
                     player.incrementScore(a.getScore());
                     Jukebox.play("zombieHit");
                     break;

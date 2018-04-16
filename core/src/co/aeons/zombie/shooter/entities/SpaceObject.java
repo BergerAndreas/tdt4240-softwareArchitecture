@@ -1,8 +1,6 @@
 package co.aeons.zombie.shooter.entities;
 
-import java.awt.Rectangle;
-
-import co.aeons.zombie.shooter.ZombieShooter;
+import com.badlogic.gdx.math.Rectangle;
 
 public class SpaceObject {
 
@@ -15,6 +13,8 @@ public class SpaceObject {
 	protected float radians;
 	protected float speed;
 	protected float rotationSpeed;
+
+	protected Rectangle bounds;
 
 	protected int width;
 	protected int height;
@@ -59,6 +59,14 @@ public class SpaceObject {
 			}
 		}
 		return b;
+	}
+
+	public Rectangle getRectangle() {
+		return bounds;
+	}
+
+	public boolean collide(SpaceObject other) {
+		return this.bounds.overlaps(other.getRectangle());
 	}
 }
 
