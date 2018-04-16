@@ -49,7 +49,11 @@ public class HighscoreState extends GameState {
         layout = new GlyphLayout();
         System.out.println("HIGHSCORES");
 
-        Save.load();
+        if (Save.saveFileExists()) {
+            Save.load();
+        } else {
+            Save.init();
+        }
         highscores = Save.gd.getHighScores();
         names = Save.gd.getNames();
 
