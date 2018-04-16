@@ -220,6 +220,8 @@ public class PlayState extends GameState {
 
         // get user input
         handleInput();
+        // check collision
+        checkCollisions();
 
         // next level
 
@@ -289,17 +291,10 @@ public class PlayState extends GameState {
             timer = 0;
         }
 
-        if(wall.getHealth() <= 0){
+        if (wall.getHealth() <= 0) {
             Jukebox.getIngameMusic().stop();
             Jukebox.playGameoverMusic();
-
-        // check collision
-        checkCollisions();
-
-        // play bg music
-        bgTimer += dt;
-        if (!player.isHit() && bgTimer >= currentDelay) {
-            bgTimer = 0;
+            gsm.setState(GameStateManager.GAMEOVER);
         }
     }
 
