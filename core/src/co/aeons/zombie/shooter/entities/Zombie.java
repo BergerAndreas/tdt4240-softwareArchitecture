@@ -38,44 +38,16 @@ public class Zombie extends SpaceObject {
 		this.y = y;
 		this.type = type;
 		
-		if(type == SMALL) {
-			numPoints = 8;
-			width = height = 12;
-			speed = MathUtils.random(70, 100);
-			score = 100;
-		}
-		else if(type == MEDIUM) {
-			numPoints = 10;
-			width = height = 20;
-			speed = MathUtils.random(50, 60);
-			score = 50;
-		}
-		else if(type == LARGE) {
-			numPoints = 12;
-			width = height = 40;
-			speed = MathUtils.random(20, 30);
-			score = 20;
-		}
+
+		width = height = 40;
+		speed = MathUtils.random(20, 30);
+		score = 20;
+
 
 		bounds = new Rectangle(0, 0, 40, 50);
 
-		rotationSpeed = MathUtils.random(-1, 1);
-
-		radians = MathUtils.random(2 * 3.1415f);
 		dx = -50;
 		dy = 0;
-		/*
-		shapex = new float[numPoints];
-		shapey = new float[numPoints];
-		dists = new float[numPoints];
-
-		int radius = width / 2;
-		for(int i = 0; i < numPoints; i++) {
-			dists[i] = MathUtils.random(radius / 2, radius);
-		}
-
-		setShape();
-		*/
 		createIdleAnimation();
 		stopTexture = new Texture("spoder2.png");
 
@@ -90,16 +62,6 @@ public class Zombie extends SpaceObject {
 		//Initializes statetime for this animation
 		stateTime = 0f;
 	}
-
-	/*
-	private void setShape() {
-		float angle = 0;
-		for(int i = 0; i < numPoints; i++) {
-			shapex[i] = x + MathUtils.cos(angle + radians) * dists[i];
-			shapey[i] = y + MathUtils.sin(angle + radians) * dists[i];
-			angle += 2 * 3.1415f / numPoints;
-		}
-	}*/
 	
 	public int getType() { return type; }
 	public boolean shouldRemove() { return remove; }
@@ -125,7 +87,7 @@ public class Zombie extends SpaceObject {
 			TextureRegion currentRunningFrame = runningAnimation.getKeyFrame(stateTime, true);
 			batch.draw(currentRunningFrame, x, y, width, height);
 		} else {
-			batch.draw(stopTexture, x, y, 40, 50);
+			batch.draw(stopTexture, x, y, width, height);
 		}
 		batch.end();
 	}

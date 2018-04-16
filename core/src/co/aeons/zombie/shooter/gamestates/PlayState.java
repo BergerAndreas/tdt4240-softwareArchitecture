@@ -349,7 +349,7 @@ public class PlayState extends GameState {
         sr.setProjectionMatrix(cam.combined);
 
         // draw player
-        player.draw(sr);
+        player.draw(sb);
         
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
@@ -375,7 +375,7 @@ public class PlayState extends GameState {
         // draw lives
         for (int i = 0; i < player.getLives(); i++) {
             hudPlayer.setPosition(40 + i * 10, 360);
-            hudPlayer.draw(sr);
+            hudPlayer.draw(sb);
         }
 
         // Draw buttons

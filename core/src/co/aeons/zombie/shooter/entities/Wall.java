@@ -18,27 +18,11 @@ public class Wall extends SpaceObject{
         this.y = 0;
         this.width = 50;
         this.height = ZombieShooter.HEIGHT;
-        this.wallTexture = new Texture("logo.png");
-        this.health = 500;
-
-        shapex = new float[4];
-        shapey = new float[4];
-        setShape();
 
         this.bounds = new Rectangle(x,y,width,height);
-    }
 
-    private void setShape(){
-
-        shapex[0] = this.x;
-        shapex[1] = this.x + this.width;
-        shapex[2] = this.x + this.width;
-        shapex[3] = this.x;
-
-        shapey[0] = this.y;
-        shapey[1] = this.y;
-        shapey[2] = this.y + this.height;
-        shapey[3] = this.y + this.height;
+        this.wallTexture = new Texture("logo.png");
+        this.health = 500;
     }
 
     public void draw(SpriteBatch batch) {
@@ -47,10 +31,26 @@ public class Wall extends SpaceObject{
         batch.end();
     }
 
-
     public void takeDamage(int damage){
         this.health -= damage;
         System.out.println(this.health);
     }
 
 }
+
+
+//spar blekk. ikke bruk mange new lines pless!
+
+
+
+
+
+
+
+
+
+
+//bli pult torstain
+
+
+
