@@ -33,13 +33,20 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	public INetworkService networkService;
 	public ISettingsService settingsService;
 
-	//FIXME: Uncomment this to unfuck android
 	/*
+	Fully featured constructor
+	 */
 	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
 		this.networkService = networkService;
 		this.settingsService = settingsService;
+		ServiceLocator.initializeAppComponent(networkService, settingsService);
 	}
-	*/
+
+	/*
+	Constructor without networking service. Used for Desktop launcher
+	 */
+	public ZombieShooter() { super(); }
+
 
 	public void create() {
 
