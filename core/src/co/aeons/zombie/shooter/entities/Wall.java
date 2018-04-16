@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 
-public class Wall extends SpaceObject {
+public class Wall extends SuperObject {
 
     private Texture wallTexture;
     private int health;

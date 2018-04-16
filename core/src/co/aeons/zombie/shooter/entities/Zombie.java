@@ -1,7 +1,6 @@
 package co.aeons.zombie.shooter.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -9,9 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import org.w3c.dom.css.Rect;
-
-public class Zombie extends SpaceObject {
+public class Zombie extends SuperObject {
 	
 	private int type;
 	public static final int SMALL = 0;

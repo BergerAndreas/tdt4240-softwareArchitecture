@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.Jukebox;
 
-public class Player extends SpaceObject {
+public class Player extends SuperObject {
 	
 	private final int MAX_BULLETS = 4;
 	private ArrayList<Bullet> bullets;
