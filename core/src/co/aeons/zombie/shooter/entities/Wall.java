@@ -6,12 +6,12 @@ import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 
-public class Wall extends SpaceObject{
+public class Wall extends SpaceObject {
 
     private Texture wallTexture;
     private int health;
 
-    public Wall(){
+    public Wall() {
 
         //TODO: MOVE TO GAME CONSTANTS
         this.x = 75;
@@ -36,6 +36,9 @@ public class Wall extends SpaceObject{
         System.out.println(this.health);
     }
 
+    public int getHealth() {
+        return health;
+    }
 }
 
 
@@ -50,7 +53,7 @@ public class Wall extends SpaceObject{
 
 
 
-//bli pult torstain
+// Bli pult torstain
 
 
 

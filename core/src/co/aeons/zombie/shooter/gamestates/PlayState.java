@@ -5,15 +5,12 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Wall;
@@ -58,7 +55,7 @@ public class PlayState extends GameState {
     private MuteButton muteButton;
 
     private int level;
-    private int totalAsteroids;
+    private int totalZombies;
     private int numAsteroidsLeft;
 
     private float maxDelay;
@@ -70,12 +67,11 @@ public class PlayState extends GameState {
     //Spawndelay for powerups
     private int spawnDelay;
     private float timer;
+    private float spawnCooldown;
+    private float spawnTimer;
 
     //Flag to check if powerup is used
     private boolean isClicked;
-
-    //Camera
-    // Cameras and viewport
 
     private Stage stage;
 
@@ -94,15 +90,15 @@ public class PlayState extends GameState {
         stage = new Stage(gamePort, sb);
 
         bullets = new ArrayList<Bullet>();
-
         player = new Player(bullets);
-
         zombies = new ArrayList<Zombie>();
-
         wall = new Wall();
 
         level = 1;
-        spawnAsteroids();
+        spawnTimer = 1.0f;
+        spawnCooldown = 1.0f;
+
+        spawnZombies();
 
         hudPlayer = new Player(null);
 
@@ -111,7 +107,7 @@ public class PlayState extends GameState {
         enemyBullets = new ArrayList<Bullet>();
 
         //Set up variables for powerups
-        spawnDelay = randInt(0,10);
+        spawnDelay = randInt(0, 10);
         isClicked = true;
 
 
@@ -121,8 +117,8 @@ public class PlayState extends GameState {
                 cam.viewportWidth / 8, cam.viewportHeight / 6);
         muteBounds = new Rectangle(cam.viewportWidth - 100, cam.viewportHeight - 75,
                 cam.viewportWidth / 16, cam.viewportHeight / 16);
-        playerLane = new Rectangle(0, 0, ZombieShooter.WIDTH/3,
-                ZombieShooter.HEIGHT);
+        playerLane = new Rectangle(0, 0, cam.viewportWidth / 3,
+                cam.viewportHeight);
         //Create buttons with above bounds
         fireButton = new FireButton(fireBounds, new GameFireButtonListener());
         muteButton = new MuteButton(muteBounds, new GameMuteButtonListener());
@@ -145,8 +141,8 @@ public class PlayState extends GameState {
 
 
                 //Fire button
-                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)){
-                    stage.touchDown(x,y,pointer,button);
+                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    stage.touchDown(x, y, pointer, button);
                     player.shoot();
                 }
 
@@ -172,13 +168,12 @@ public class PlayState extends GameState {
             @Override
             public boolean touchDragged(int x, int y, int pointer) {
                 Vector2 tmpVec2 = new Vector2();
-                //translateScreenToWorldCoordinates(x, y);
-                //stage.getViewport().unproject(tmpVec2.set(x, y));
+                stage.getViewport().unproject(tmpVec2.set(x, y));
 
-                if (playerLane.contains(x, y)) {
-                //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
+                if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
+                    //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
 
-                player.setPosition(player.getx(), ZombieShooter.HEIGHT-y);
+                    player.setPosition(player.getx(), tmpVec2.y);
                 }
                 return true;
             }
@@ -189,7 +184,7 @@ public class PlayState extends GameState {
     private void splitAsteroids(Zombie a) {
         numAsteroidsLeft--;
         currentDelay = ((maxDelay - minDelay) *
-                numAsteroidsLeft / totalAsteroids)
+                numAsteroidsLeft / totalZombies)
                 + minDelay;
         if (a.getType() == Zombie.LARGE) {
             zombies.add(
@@ -205,32 +200,16 @@ public class PlayState extends GameState {
         }
     }
 
-    private void spawnAsteroids() {
-
-        zombies.clear();
+    private void spawnZombies() {
 
         int numToSpawn = 4 + level - 1;
-        totalAsteroids = numToSpawn * 7;
-        numAsteroidsLeft = totalAsteroids;
+        totalZombies = numToSpawn * 7;
+        numAsteroidsLeft = totalZombies;
         currentDelay = maxDelay;
 
         for (int i = 0; i < numToSpawn; i++) {
-
-            float x = MathUtils.random(ZombieShooter.WIDTH);
-            float y = MathUtils.random(ZombieShooter.HEIGHT);
-
-            float dx = x - player.getx();
-            float dy = y - player.gety();
-            float dist = (float) Math.sqrt(dx * dx + dy * dy);
-
-            while (dist < 100) {
-                x = MathUtils.random(ZombieShooter.WIDTH);
-                y = MathUtils.random(ZombieShooter.HEIGHT);
-                dx = x - player.getx();
-                dy = y - player.gety();
-                dist = (float) Math.sqrt(dx * dx + dy * dy);
-            }
-
+            float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
+            float y = randInt(0, ZombieShooter.HEIGHT - 100);
             zombies.add(new Zombie(x, y, Zombie.LARGE));
 
         }
@@ -241,11 +220,23 @@ public class PlayState extends GameState {
 
         // get user input
         handleInput();
+        // check collision
+        checkCollisions();
 
         // next level
-        if (zombies.size() == 0) {
-            level++;
-            spawnAsteroids();
+
+        spawnTimer += dt;
+        if (Math.floor(spawnTimer) != spawnCooldown) {
+            if (Math.floor(spawnTimer) % 9 == 0) {
+                spawnZombies();
+            }
+            spawnCooldown += 1.0f;
+
+            if (spawnCooldown % 17 == 0) {
+                System.out.println("Difficulty increased");
+                level += 2;
+            }
+
         }
 
         // update player
@@ -286,7 +277,7 @@ public class PlayState extends GameState {
 
         // update instakill
         if (timer > spawnDelay && isClicked) {
-            instakillBounds = new Rectangle(randInt(100,(int) cam.viewportWidth - 100), randInt(100, (int) cam.viewportHeight - 100),
+            instakillBounds = new Rectangle(randInt(100, (int) cam.viewportWidth - 100), randInt(100, (int) cam.viewportHeight - 100),
                     cam.viewportWidth / 8, cam.viewportHeight / 6);
             //Creates a new instakill button with above bounds
             instakillButton = new InstaKill(instakillBounds, new GameInstaKillListener());
@@ -296,18 +287,14 @@ public class PlayState extends GameState {
             //Reset variables for next spawning
             //TODO: Change spawndelay range later
             isClicked = false;
-            spawnDelay = randInt(0,10);
+            spawnDelay = randInt(0, 10);
             timer = 0;
-            }
+        }
 
-        // check collision
-        checkCollisions();
-
-        // play bg music
-        bgTimer += dt;
-        if (!player.isHit() && bgTimer >= currentDelay) {
-            Jukebox.playMusic();
-            bgTimer = 0;
+        if (wall.getHealth() <= 0) {
+            Jukebox.getIngameMusic().stop();
+            Jukebox.playGameoverMusic();
+            gsm.setState(GameStateManager.GAMEOVER);
         }
     }
 
@@ -367,9 +354,9 @@ public class PlayState extends GameState {
         // draw buttons
         sb.setColor(0, 1, 1, 1);
         sb.begin();
-        fireButton.draw(sb,1);
-        muteButton.draw(sb,1);
-        instakillButton.draw(sb,1);
+        fireButton.draw(sb, 1);
+        muteButton.draw(sb, 1);
+        instakillButton.draw(sb, 1);
         sb.end();
 
         // draw lives
@@ -453,6 +440,7 @@ public class PlayState extends GameState {
         @Override
         public void instaKillActivate() {
             InstakillPressed();
+            Jukebox.play("powerup");
         }
     }
 
@@ -464,12 +452,3 @@ public class PlayState extends GameState {
         isClicked = true;
     }
 }
-
-
-
-
-
-
-
-
-

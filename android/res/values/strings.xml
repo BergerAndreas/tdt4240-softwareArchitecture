@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">uglyz</string>
+    <item name="prefkey_volume" type="id">VOLUME</item>
 
 </resources>

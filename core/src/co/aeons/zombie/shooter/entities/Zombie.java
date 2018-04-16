@@ -80,45 +80,26 @@ public class Zombie extends SpaceObject {
 
 		bounds.setPosition(x, y);
 	}
+  
+  public void draw(SpriteBatch batch) {
+        batch.begin();
+        if (!isStopped) {
+            TextureRegion currentRunningFrame = runningAnimation.getKeyFrame(stateTimeRunning, true);
+            batch.draw(currentRunningFrame, x, y, width, height);
+        } else {
+            TextureRegion currentAttackFrame = attackAnimation.getKeyFrame(stateTimeAttacking, true);
+            batch.draw(currentAttackFrame, x, y, width, height);
+        }
 
-	public void draw(SpriteBatch batch) {
-		batch.begin();
-		if (!isStopped) {
-			TextureRegion currentRunningFrame = runningAnimation.getKeyFrame(stateTime, true);
-			batch.draw(currentRunningFrame, x, y, width, height);
-		} else {
-			batch.draw(stopTexture, x, y, width, height);
-		}
-		batch.end();
-	}
+        batch.end();
+    }
+    public void setStopped(boolean stopped) {
+        isStopped = stopped;
+    }
 
-	public void setStopped(boolean stopped){
-		isStopped = stopped;
-	}
-
-	public int attack(){
-		if(Math.floor(stateTime) % 2 == 0){
-			System.out.println("Zombie attack");
-			return 1;
-		}
-		else return 0;
-	}
+    public int attack() {
+        if (Math.floor(stateTimeAttacking) % 2 == 0) {
+            return 1;
+        } else return 0;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

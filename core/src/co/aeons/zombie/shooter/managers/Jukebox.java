@@ -1,17 +1,20 @@
 package co.aeons.zombie.shooter.managers;
 
+
 import java.util.HashMap;
-import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+import java.util.HashMap;
+
 public class Jukebox {
 
 	private static Jukebox ourInstance = new Jukebox();
 	private static HashMap<String, Sound> sounds;
-	private static Music music;
+	private static Music ingameMusic;
+	private static Music gameoverMusic;
 
 	private static boolean isMuted;
 	
@@ -22,8 +25,10 @@ public class Jukebox {
 	public static void load(String path, String name) {
 		Sound sound = Gdx.audio.newSound(Gdx.files.internal(path));
 		sounds.put(name, sound);
-		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
-		music.setLooping(true);
+		ingameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+		ingameMusic.setLooping(true);
+		gameoverMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/gameover.mp3"));
+		gameoverMusic.setLooping(true);
 		isMuted = false;
 	}
 	
@@ -31,10 +36,15 @@ public class Jukebox {
 		sounds.get(name).play();
 	}
 
-	public static void playMusic() {
-		music.play();
-		if (!music.isPlaying()){
-			music.play();
+	public static void playIngameMusic() {
+		if (!ingameMusic.isPlaying()){
+			ingameMusic.play();
+		}
+	}
+
+	public static void playGameoverMusic() {
+		if (!gameoverMusic.isPlaying()){
+			gameoverMusic.play();
 		}
 	}
 
@@ -68,8 +78,12 @@ public class Jukebox {
 		return sounds;
 	}
 
-	public static Music getMusic() {
-		return music;
+	public static Music getIngameMusic() {
+		return ingameMusic;
+	}
+
+	public static Music getGameoverMusic() {
+		return gameoverMusic;
 	}
 
 	public static boolean isMuted() {
@@ -82,16 +96,15 @@ public class Jukebox {
 
 	public static void toggleMuteMusic() {
 		if (!isMuted) {
-			music.setVolume(0);
+//			Mute
+			ingameMusic.setVolume(0);
 			setIsMuted(true);
-			System.out.println("Mute pressed");
 		} else {
-			music.setVolume(100);
+//			Unmute
+			ingameMusic.setVolume(100);
 			setIsMuted(false);
-			System.out.println("Unmute pressed");
 		}
 	}
-
 }
 
 

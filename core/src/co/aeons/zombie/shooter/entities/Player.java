@@ -1,11 +1,11 @@
 package co.aeons.zombie.shooter.entities;
 
 import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.Jukebox;
-
 
 public class Player extends SpaceObject {
 	
@@ -80,21 +80,4 @@ public class Player extends SpaceObject {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
