@@ -302,7 +302,7 @@ public class PlayState extends GameState {
         //zombie-wall collision
         for (int i = 0; i < zombies.size(); i++) {
             Zombie zombie = zombies.get(i);
-            if (wall.intersects(zombie)) {
+            if(zombie.collide(wall)){
                 zombie.setStopped(true);
 
                 //FIXME: The way attacks currently work
@@ -316,12 +316,12 @@ public class PlayState extends GameState {
             Bullet b = bullets.get(i);
             for (int j = 0; j < zombies.size(); j++) {
                 Zombie a = zombies.get(j);
-                if (a.contains(b.getx(), b.gety())) {
+                if (a.collide(b)) {
                     bullets.remove(i);
                     i--;
                     zombies.remove(j);
                     j--;
-                    splitAsteroids(a);
+
                     player.incrementScore(a.getScore());
                     Jukebox.play("zombieHit");
                     break;
@@ -336,8 +336,8 @@ public class PlayState extends GameState {
         sr.setProjectionMatrix(cam.combined);
 
         // draw player
-        player.draw(sr);
-
+        player.draw(sb);
+        
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(sb);
@@ -362,7 +362,7 @@ public class PlayState extends GameState {
         // draw lives
         for (int i = 0; i < player.getLives(); i++) {
             hudPlayer.setPosition(40 + i * 10, 360);
-            hudPlayer.draw(sr);
+            hudPlayer.draw(sb);
         }
 
         // Draw buttons

@@ -6,53 +6,63 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Bullet extends SpaceObject {
+	
+	private float lifeTime;
+	private float lifeTimer;
 
-    private float lifeTime;
-    private float lifeTimer;
+	private boolean remove;
 
-    private boolean remove;
+	private Sprite bullet;
 
-    private Sprite bullet;
+	private Rectangle bulletBounds;
+	
+	public Bullet(float x, float y) {
+		
+		this.x = x;
+		this.y = y;
 
-    public Bullet(float x, float y) {
+		this.height = 10;
+		this.width = 10;
 
-        this.x = x;
-        this.y = y;
+		float speed = 350;
+		dx = speed;
 
-        float speed = 350;
-        dx = speed;
+		width = height = 2;
+		
+		lifeTimer = 0;
+		lifeTime = 2;
+		bullet = new Sprite(new Texture("pistol1.png"));
+		bulletBounds = new Rectangle(this.x, this.y, 10, 10);
 
-        width = height = 2;
+	}
+	
+	public boolean shouldRemove() { return remove; }
+	
+	public void update(float dt) {
+		
+		x += dx * dt;
+		bulletBounds.setPosition(x,y);
+		
+		lifeTimer += dt;
+		if(lifeTimer > lifeTime) {
+			remove = true;
+		}
+		
+	}
+	
+	public void draw(SpriteBatch sb) {
+		sb.begin();
+        //sb.draw(bullet,x-width/2, y-height/2);
+		sb.draw(bullet, this.x, this.y, 10, 10);
+		sb.end();
+	}
 
-        lifeTimer = 0;
-        lifeTime = 2;
-        bullet = new Sprite(new Texture("pistol1.png"));
-
-    }
-
-    public boolean shouldRemove() {
-        return remove;
-    }
-
-    public void update(float dt) {
-
-        x += dx * dt;
-
-        lifeTimer += dt;
-        if (lifeTimer > lifeTime) {
-            remove = true;
-        }
-
-    }
-
-    public void draw(SpriteBatch sb) {
-        sb.begin();
-        sb.draw(bullet, x - width / 2, y - height / 2);
-        sb.end();
-    }
-
+	public Rectangle getRectangle() {
+		return bulletBounds;
+	}
 }
 
 

@@ -1,72 +1,73 @@
 package co.aeons.zombie.shooter.entities;
 
-import co.aeons.zombie.shooter.ZombieShooter;
+import com.badlogic.gdx.math.Rectangle;
 
 public class SpaceObject {
 
-    protected float x;
-    protected float y;
+	protected float x;
+	protected float y;
 
-    protected float dx;
-    protected float dy;
+	protected float dx;
+	protected float dy;
 
-    protected float radians;
-    protected float speed;
-    protected float rotationSpeed;
+	protected float radians;
+	protected float speed;
+	protected float rotationSpeed;
 
-    protected int width;
-    protected int height;
+	protected Rectangle bounds;
 
-    protected float[] shapex;
-    protected float[] shapey;
+	protected int width;
+	protected int height;
 
-    public float getx() {
-        return x;
-    }
+	protected float[] shapex;
+	protected float[] shapey;
 
-    public float gety() {
-        return y;
-    }
+	public float getx() { return x; }
+	public float gety() { return y; }
 
-    public float[] getShapex() {
-        return shapex;
-    }
+	public float[] getShapex() { return shapex; }
+	public float[] getShapey() { return shapey; }
 
-    public float[] getShapey() {
-        return shapey;
-    }
 
-    public void setPosition(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
+	public void setPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
 
-    public boolean intersects(SpaceObject other) {
-        float[] sx = other.getShapex();
-        float[] sy = other.getShapey();
-        for (int i = 0; i < sx.length; i++) {
-            if (contains(sx[i], sy[i])) {
-                return true;
-            }
-        }
-        return false;
-    }
+	/*
+	public boolean intersects(SpaceObject object1, SpaceObject object2) {
+		float[] sx = other.getShapex();
+		float[] sy = other.getShapey();
+		for(int i = 0; i < sx.length; i++) {
+			if(contains(sx[i], sy[i])) {
+				return true;
+			}
+		}
+		return false;
+	}*/
 
-    public boolean contains(float x, float y) {
-        boolean b = false;
-        for (int i = 0, j = shapex.length - 1;
-             i < shapex.length;
-             j = i++) {
-            if ((shapey[i] > y) != (shapey[j] > y) &&
-                    (x < (shapex[j] - shapex[i]) *
-                            (y - shapey[i]) / (shapey[j] - shapey[i])
-                            + shapex[i])) {
-                b = !b;
-            }
-        }
-        return b;
-    }
+	public boolean contains(float x, float y) {
+		boolean b = false;
+		for(int i = 0, j = shapex.length - 1;
+			i < shapex.length;
+			j = i++) {
+			if((shapey[i] > y) != (shapey[j] > y) &&
+				(x < (shapex[j] - shapex[i]) *
+				(y - shapey[i]) / (shapey[j] - shapey[i])
+				+ shapex[i])) {
+				b = !b;
+			}
+		}
+		return b;
+	}
 
+	public Rectangle getRectangle() {
+		return bounds;
+	}
+
+	public boolean collide(SpaceObject other) {
+		return this.bounds.overlaps(other.getRectangle());
+	}
 }
 
 
