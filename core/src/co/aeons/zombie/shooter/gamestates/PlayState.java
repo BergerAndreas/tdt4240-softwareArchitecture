@@ -312,6 +312,7 @@ public class PlayState extends GameState {
     }
 
     private void checkCollisions() {
+        /*
         //zombie-wall collision
         for (int i = 0; i < zombies.size(); i++) {
             Zombie zombie = zombies.get(i);
@@ -323,13 +324,14 @@ public class PlayState extends GameState {
             }
 
         }
+        */
 
         // bullet-zombie collision
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
             for (int j = 0; j < zombies.size(); j++) {
                 Zombie a = zombies.get(j);
-                if (a.contains(b.getx(), b.gety())) {
+                if (a.collide(b)) {
                     bullets.remove(i);
                     i--;
                     zombies.remove(j);

@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+
+import org.w3c.dom.css.Rect;
 
 public class Zombie extends SpaceObject {
 	
@@ -15,6 +18,7 @@ public class Zombie extends SpaceObject {
 	public static final int MEDIUM = 1;
 	public static final int LARGE = 2;
 	private boolean isStopped = false;
+	private Rectangle zombieBounds;
 
 	private Animation<TextureRegion> runningAnimation;
 	TextureAtlas atlas;
@@ -53,7 +57,10 @@ public class Zombie extends SpaceObject {
 			speed = MathUtils.random(20, 30);
 			score = 20;
 		}
-		
+
+		zombieBounds = new Rectangle(0, 0, 40, 50);
+
+		/*
 		rotationSpeed = MathUtils.random(-1, 1);
 		
 		radians = MathUtils.random(2 * 3.1415f);
@@ -72,6 +79,7 @@ public class Zombie extends SpaceObject {
 		setShape();
 		createIdleAnimation();
 		stopTexture = new Texture("spoder2.png");
+		*/
 	}
 
 	private void createIdleAnimation() {
@@ -84,7 +92,7 @@ public class Zombie extends SpaceObject {
 		stateTime = 0f;
 	}
 
-	
+	/*
 	private void setShape() {
 		float angle = 0;
 		for(int i = 0; i < numPoints; i++) {
@@ -92,7 +100,7 @@ public class Zombie extends SpaceObject {
 			shapey[i] = y + MathUtils.sin(angle + radians) * dists[i];
 			angle += 2 * 3.1415f / numPoints;
 		}
-	}
+	}*/
 	
 	public int getType() { return type; }
 	public boolean shouldRemove() { return remove; }
@@ -109,18 +117,19 @@ public class Zombie extends SpaceObject {
 		radians += rotationSpeed * dt;
 		stateTime += Gdx.graphics.getDeltaTime();
 
-		setShape();
+		zombieBounds.setPosition(x, y);
+		//setShape();
 	}
 	
 	public void draw(SpriteBatch batch) {
 		batch.begin();
 		if(!isStopped){
             TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
-            batch.draw(currentFrame, x, y, width, height);
+            batch.draw(currentFrame, x, y, 40, 50);
         }else {
 
 			//TODO: Replace with attack animation
-		    batch.draw(stopTexture, x, y, width, height);
+		    batch.draw(stopTexture, x, y, 40, 50);
         }
 
 		batch.end();
@@ -138,7 +147,13 @@ public class Zombie extends SpaceObject {
 		else return 0;
 	}
 
+	public Rectangle GetRectangle() {
+		return zombieBounds;
+	}
 
+	public boolean collide(Bullet bullet) {
+		return this.zombieBounds.overlaps(bullet.getRectangle());
+	}
 }
 
 

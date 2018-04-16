@@ -1,5 +1,7 @@
 package co.aeons.zombie.shooter.entities;
 
+import java.awt.Rectangle;
+
 import co.aeons.zombie.shooter.ZombieShooter;
 
 public class SpaceObject {
@@ -26,12 +28,14 @@ public class SpaceObject {
 	public float[] getShapex() { return shapex; }
 	public float[] getShapey() { return shapey; }
 
+
 	public void setPosition(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public boolean intersects(SpaceObject other) {
+	/*
+	public boolean intersects(SpaceObject object1, SpaceObject object2) {
 		float[] sx = other.getShapex();
 		float[] sy = other.getShapey();
 		for(int i = 0; i < sx.length; i++) {
@@ -40,7 +44,7 @@ public class SpaceObject {
 			}
 		}
 		return false;
-	}
+	}*/
 
 	public boolean contains(float x, float y) {
 		boolean b = false;
@@ -56,7 +60,6 @@ public class SpaceObject {
 		}
 		return b;
 	}
-	
 }
 
 
