@@ -19,14 +19,15 @@ public class Zombie extends SpaceObject {
 	public static final int LARGE = 2;
 	private boolean isStopped = false;
 
+	// Anitmations
 	private Animation<TextureRegion> runningAnimation;
-	TextureAtlas atlas;
-	private Texture stopTexture;
-	// A variable for tracking elapsed time for the animation
-	float stateTime;
+	private Animation<TextureRegion> attackAnimation;
+	private TextureAtlas runningAtlas;
+	private TextureAtlas attackAtlas;
 
-	private int numPoints;
-	private float[] dists;
+	// Tracks elapsed time for animations
+	private float stateTimeRunning;
+	private float stateTimeAttacking;
 	
 	private int score;
 
@@ -49,20 +50,30 @@ public class Zombie extends SpaceObject {
 		dx = -50;
 		dy = 0;
 		createIdleAnimation();
-		stopTexture = new Texture("spoder2.png");
-
+		createAttackAnimation();
 	}
 
 	private void createIdleAnimation() {
 		//Opens textureAtlas containing enemy spritesheet information
-		atlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
+		runningAtlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
 		//Fetches all sprites matchin keyword 'spoder'
 		runningAnimation =
-				new Animation<TextureRegion>(0.1f, atlas.findRegions("spoder"), Animation.PlayMode.LOOP);
+				new Animation<TextureRegion>(0.1f, runningAtlas.findRegions("spoder"), Animation.PlayMode.LOOP);
 		//Initializes statetime for this animation
-		stateTime = 0f;
+		stateTimeRunning = 0f;
 	}
-	
+
+	private void createAttackAnimation() {
+		attackAtlas = new TextureAtlas(Gdx.files.internal("spooder.atlas"));
+		attackAnimation = new Animation<TextureRegion>(
+				0.1f,
+				attackAtlas.findRegions("spooder"),
+				Animation.PlayMode.LOOP
+		);
+		stateTimeAttacking = 0f;
+
+	}
+
 	public int getType() { return type; }
 	public boolean shouldRemove() { return remove; }
 	public int getScore() { return score; }
@@ -75,8 +86,7 @@ public class Zombie extends SpaceObject {
 
 		y += dy * dt;
 
-		radians += rotationSpeed * dt;
-		stateTime += Gdx.graphics.getDeltaTime();
+		stateTimeRunning += dt;
 
 		bounds.setPosition(x, y);
 	}
