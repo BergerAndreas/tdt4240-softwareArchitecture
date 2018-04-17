@@ -50,23 +50,29 @@ public class MultiplayerMenuState extends GameState {
         mainTable.center();
         //Create buttons
 
-        TextButton singleplayerButton = new TextButton("Invite", skin);
-        TextButton multiplayerButton = new TextButton("Quick", skin);
-        TextButton optionsButton = new TextButton("See invitations", skin);
+        TextButton inviteButton = new TextButton("Invite", skin);
+        TextButton quickGameButton = new TextButton("Quick", skin);
+        TextButton seeInvitationsButton = new TextButton("See invitations", skin);
         TextButton backButton = new TextButton("Back", skin);
 
         //Add listeners to buttons
-        singleplayerButton.addListener(new ClickListener() {
+        inviteButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.PLAY);
+                gsm.setState(GameStateManager.MULTIPLAYERINVITE);
             }
         });
-        multiplayerButton.addListener(new ClickListener() {
+        quickGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TODO: Add multiplayer listener
-                gsm.setState(GameStateManager.MULTIPLAYERMENU);
+                gsm.setState(GameStateManager.MULTIPLAYERQUICK);
+            }
+        });
+
+        seeInvitationsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.MULTIPLAYERSEEINVITE);
             }
         });
         backButton.addListener(new ClickListener() {
@@ -78,11 +84,11 @@ public class MultiplayerMenuState extends GameState {
 
 
         //Add buttons to table
-        mainTable.add(singleplayerButton);
+        mainTable.add(inviteButton);
         mainTable.row();
-        mainTable.add(multiplayerButton);
+        mainTable.add(quickGameButton);
         mainTable.row();
-        mainTable.add(optionsButton);
+        mainTable.add(seeInvitationsButton);
         mainTable.row();
         mainTable.add(backButton);
         stage.addActor(mainTable);
