@@ -14,11 +14,8 @@ import co.aeons.zombie.shooter.managers.GameInputProcessor;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
-import co.aeons.zombie.shooter.service.ISettingsService;
-import co.aeons.zombie.shooter.service.ServiceLocator;
-import co.aeons.zombie.shooter.service.network.INetworkService;
 
-public class ZombieShooter extends Game implements INetworkService.IGameListener {
+public class ZombieShooter extends Game {
 
 	public static int WIDTH;
 	public static int HEIGHT;
@@ -27,19 +24,16 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	public static Viewport gamePort;
 
 	private GameStateManager gsm;
-	private static final String TAG = ZombieShooter.class.getSimpleName();
 
-	//Google play services stuff
-	public INetworkService networkService;
-	public ISettingsService settingsService;
+	//Google play
+	public static Platform platform;
+	public static IGoogleServices googleServices;
 
-	//FIXME: Uncomment this to unfuck android
-	/*
-	public ZombieShooter(INetworkService networkService, ISettingsService settingsService) {
-		this.networkService = networkService;
-		this.settingsService = settingsService;
+	public ZombieShooter(Platform platform, IGoogleServices googleServices) {
+		this.platform = platform;
+		ZombieShooter.googleServices = googleServices;
 	}
-	*/
+
 
 	public void create() {
 
@@ -75,12 +69,6 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 		Jukebox.load("sounds/smallsaucer.ogg", "smallsaucer");
 		Jukebox.load("sounds/thruster.ogg", "thruster");
 
-		//Initialize network and settings service
-		//FIXME: To get android working
-		/*
-		ServiceLocator.initializeAppComponent(networkService, settingsService);
-		ServiceLocator.getAppComponent().getNetworkService().setGameListener(this);
-		*/
 		//		Initialize background music
 		Jukebox.playIngameMusic();
 //		Jukebox.playGameoverMusic();
@@ -112,11 +100,5 @@ public class ZombieShooter extends Game implements INetworkService.IGameListener
 	public void resume() {}
 	public void dispose() {}
 
-	@Override
-	public void onMultiplayerGameStarting() {
-		Gdx.app.debug(TAG, "onMultiplayerGameStarting: ");
-		//TODO: Implement multiplayer here
-		//setScreen(new MpGamePresenter(this, new MainMenuPresenter(this)));
-	}
 
 }

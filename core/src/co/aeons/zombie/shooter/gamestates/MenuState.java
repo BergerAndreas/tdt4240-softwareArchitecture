@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
-import co.aeons.zombie.shooter.service.ServiceLocator;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
@@ -71,7 +70,6 @@ public class MenuState extends GameState {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: Add multiplayer listener
-                ServiceLocator.getAppComponent().getNetworkService().startSelectOpponents(true);
 
             }
         });
