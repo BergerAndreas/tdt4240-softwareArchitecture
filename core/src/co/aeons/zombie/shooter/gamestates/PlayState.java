@@ -200,6 +200,8 @@ public class PlayState extends GameState {
 
         // get user input
         handleInput();
+        // check collision
+        checkCollisions();
 
         // next level
         spawnTimer += dt;
@@ -267,16 +269,9 @@ public class PlayState extends GameState {
         }
 
         if (wall.getHealth() <= 0) {
+            Jukebox.getIngameMusic().stop();
+            Jukebox.playGameoverMusic();
             gsm.setState(GameStateManager.GAMEOVER);
-        }
-
-        // check collision
-        checkCollisions();
-
-        // play bg music
-        bgTimer += dt;
-        if (!player.isHit() && bgTimer >= currentDelay) {
-            bgTimer = 0;
         }
     }
 
