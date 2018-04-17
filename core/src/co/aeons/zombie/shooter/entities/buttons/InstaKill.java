@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.entities.buttons;
 
 import com.badlogic.gdx.math.Rectangle;
+import co.aeons.zombie.shooter.gamestates.PlayState;
 
 /**
  * Created by Danny Duy Nguyen on 09.04.2018.
