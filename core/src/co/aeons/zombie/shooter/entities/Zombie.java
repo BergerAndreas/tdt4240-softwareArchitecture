@@ -25,7 +25,6 @@ public class Zombie extends SuperObject {
 	// Tracks elapsed time for animations
 	private float stateTimeRunning;
 	private float stateTimeAttacking;
-
 	private int score;
 
     private float attackTimer;
@@ -59,6 +58,7 @@ public class Zombie extends SuperObject {
         attackCounter = 0;
 
     }
+
 
 	private void createIdleAnimation() {
 		//Opens textureAtlas containing enemy spritesheet information
@@ -103,10 +103,9 @@ public class Zombie extends SuperObject {
 		bounds.setPosition(x, y);
 
         attackTimer += dt;
-
-    }
+	}
   
-    public void draw(SpriteBatch batch) {
+  public void draw(SpriteBatch batch) {
         batch.begin();
         if (!isStopped) {
             TextureRegion currentRunningFrame = runningAnimation.getKeyFrame(stateTimeRunning, true);
@@ -118,7 +117,6 @@ public class Zombie extends SuperObject {
 
         batch.end();
     }
-
     public void setStopped(boolean stopped) {
         isStopped = stopped;
     }
