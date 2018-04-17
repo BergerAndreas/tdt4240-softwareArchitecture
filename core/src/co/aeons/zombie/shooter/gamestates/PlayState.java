@@ -405,8 +405,8 @@ public class PlayState extends GameState {
 
     //Method called when FireButton pressed
     private void onMuteButtonPressed() {
-        //TODO: implement mute button logic
         Jukebox.toggleMuteMusic();
+        muteButton.loadTextureRegion();
     }
 
     //Instakill listener class
