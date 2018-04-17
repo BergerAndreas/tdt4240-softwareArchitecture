@@ -9,11 +9,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Zombie extends SuperObject {
-	
-	private int type;
-	public static final int SMALL = 0;
-	public static final int MEDIUM = 1;
-	public static final int LARGE = 2;
 	private boolean isStopped = false;
 
 	// Anitmations
@@ -33,12 +28,10 @@ public class Zombie extends SuperObject {
 
     private boolean remove;
 
-	public Zombie(float x, float y, int type) {
+	public Zombie(float x, float y) {
 		
 		this.x = x;
 		this.y = y;
-		this.type = type;
-
 
 		width = height = 40;
 		speed = MathUtils.random(20, 30);
@@ -85,7 +78,6 @@ public class Zombie extends SuperObject {
 
 	}
 
-	public int getType() { return type; }
 	public boolean shouldRemove() { return remove; }
 	public int getScore() { return score; }
 	

@@ -196,7 +196,7 @@ public class PlayState extends GameState {
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
-            zombies.add(new Zombie(x, y, Zombie.LARGE));
+            zombies.add(new Zombie(x, y));
 
         }
 
