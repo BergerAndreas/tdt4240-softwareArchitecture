@@ -301,9 +301,9 @@ public class PlayState extends GameState {
                     bullets.remove(i);
                     i--;
 
-                    a.getHurt(10);
+                    a.getHurt(b.getDamage());
 
-                    if (a.getHealt() <= 0){
+                    if (a.getHealth() <= 0){
                         zombies.remove(j);
                         j--;
 
