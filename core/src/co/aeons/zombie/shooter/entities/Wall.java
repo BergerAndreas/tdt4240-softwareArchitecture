@@ -33,7 +33,6 @@ public class Wall extends SuperObject {
 
     public void takeDamage(int damage){
         this.health -= damage;
-        System.out.println(this.health);
     }
 
     public int getHealth() {

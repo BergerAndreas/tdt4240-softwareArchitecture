@@ -25,17 +25,20 @@ public class Zombie extends SuperObject {
 	// Tracks elapsed time for animations
 	private float stateTimeRunning;
 	private float stateTimeAttacking;
-	
 	private int score;
 
-	private boolean remove;
+    private float attackTimer;
+    private float attackCooldown;
+    private int attackCounter;
+
+    private boolean remove;
 
 	public Zombie(float x, float y, int type) {
 		
 		this.x = x;
 		this.y = y;
 		this.type = type;
-		
+
 
 		width = height = 40;
 		speed = MathUtils.random(20, 30);
@@ -46,16 +49,27 @@ public class Zombie extends SuperObject {
 
 		dx = -50;
 		dy = 0;
+
 		createIdleAnimation();
 		createAttackAnimation();
-	}
+
+        attackTimer = 1.0f;
+        attackCooldown = 2.0f;
+        attackCounter = 0;
+
+    }
+
 
 	private void createIdleAnimation() {
 		//Opens textureAtlas containing enemy spritesheet information
 		runningAtlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
 		//Fetches all sprites matchin keyword 'spoder'
 		runningAnimation =
-				new Animation<TextureRegion>(0.1f, runningAtlas.findRegions("spoder"), Animation.PlayMode.LOOP);
+				new Animation<TextureRegion>(
+						0.1f,
+						runningAtlas.findRegions("spoder"),
+						Animation.PlayMode.LOOP
+				);
 		//Initializes statetime for this animation
 		stateTimeRunning = 0f;
 	}
@@ -66,7 +80,7 @@ public class Zombie extends SuperObject {
 				0.1f,
 				attackAtlas.findRegions("spooder"),
 				Animation.PlayMode.LOOP
-		);
+				);
 		stateTimeAttacking = 0f;
 
 	}
@@ -84,8 +98,11 @@ public class Zombie extends SuperObject {
 		y += dy * dt;
 
 		stateTimeRunning += dt;
+		stateTimeAttacking += dt;
 
 		bounds.setPosition(x, y);
+
+        attackTimer += dt;
 	}
   
   public void draw(SpriteBatch batch) {
@@ -105,8 +122,21 @@ public class Zombie extends SuperObject {
     }
 
     public int attack() {
-        if (Math.floor(stateTimeAttacking) % 2 == 0) {
-            return 1;
+        if (Math.floor(attackTimer) != attackCooldown) {
+            attackCooldown += 1.0f;
+            if (Math.floor(attackTimer % 2) == 0) {
+
+                if (attackCounter == 0) {
+                    // Extra counter needed for weired timer behvior
+                    attackCounter++;
+                    System.out.println("Zombie Attack!");
+                    return 10;
+                } else return 0;
+
+            } else {
+                attackCounter = 0;
+                return 0;
+            }
         } else return 0;
     }
 }
