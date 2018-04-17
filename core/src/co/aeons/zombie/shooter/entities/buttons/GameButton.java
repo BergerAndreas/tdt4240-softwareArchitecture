@@ -22,25 +22,16 @@ public abstract class GameButton extends Button {
         setHeight(bounds.height);
         setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
         loadTextureRegion();
-        addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                touched();
-                loadTextureRegion();
-                return true;
-            }
-        });
     }
 
-    protected void loadTextureRegion() {
+    //TODO: Make protected
+    public void loadTextureRegion() {
         ButtonStyle style = new ButtonStyle();
         style.up = new TextureRegionDrawable(new TextureRegion(new Texture(getTexturePath())));
         setStyle(style);
     }
 
     protected abstract String getTexturePath();
-
-    public abstract void touched();
 
     public Rectangle getBounds() {
         return bounds;

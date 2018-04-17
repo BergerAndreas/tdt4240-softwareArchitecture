@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,9 +16,12 @@ import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.Bullet;
 import co.aeons.zombie.shooter.entities.Player;
+import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
+import co.aeons.zombie.shooter.entities.buttons.NukeButton;
+import co.aeons.zombie.shooter.factories.RandomButtonFactory;
 import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
@@ -46,13 +48,15 @@ public class PlayState extends GameState {
     //Boundaries
     private Rectangle playerLane;
     private Rectangle fireBounds;
-    private Rectangle instakillBounds;
+    private Rectangle effectButtonBounds;
     private Rectangle muteBounds;
 
     //buttons
+    private RandomButtonFactory buttonFactory;
     private FireButton fireButton;
-    private InstaKill instakillButton;
+    private EffectButton effectButton;
     private MuteButton muteButton;
+    private NukeButton nukeButton;
 
     private int level;
     private int totalZombies;
@@ -111,6 +115,8 @@ public class PlayState extends GameState {
 
 
         //Button initialization
+        buttonFactory = new RandomButtonFactory(cam);
+
         //Create bounds for buttons
         fireBounds = new Rectangle(cam.viewportWidth - 200, 0,
                 cam.viewportWidth / 8, cam.viewportHeight / 6);
@@ -119,10 +125,10 @@ public class PlayState extends GameState {
         playerLane = new Rectangle(0, 0, cam.viewportWidth / 3,
                 cam.viewportHeight);
         //Create buttons with above bounds
-        fireButton = new FireButton(fireBounds, new GameFireButtonListener());
-        muteButton = new MuteButton(muteBounds, new GameMuteButtonListener());
+        fireButton = new FireButton(fireBounds);
+        muteButton = new MuteButton(muteBounds);
         //Create empty button
-        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
+        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
         // set up bg music
         maxDelay = 1;
@@ -142,18 +148,18 @@ public class PlayState extends GameState {
 
                 //Fire button
                 if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    stage.touchDown(x, y, pointer, button);
-                    player.shoot();
+                    onFireButtonPressed();
                 }
 
                 //Mute button
                 if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    stage.touchDown(x, y, pointer, button);
+                    onMuteButtonPressed();
                 }
 
                 //Instakill button
-                if (instakillButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    stage.touchDown(x, y, pointer, button);
+                if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    //stage.touchDown(x, y, pointer, button);
+                    onEffectButtonPressed();
                 }
 
                 return true;
@@ -252,14 +258,11 @@ public class PlayState extends GameState {
             this.timer += dt;
         }
 
-        // update instakill
+        // update buttons
         if (timer > spawnDelay && isClicked) {
-            instakillBounds = new Rectangle(randInt(100, (int) cam.viewportWidth - 100), randInt(100, (int) cam.viewportHeight - 100),
-                    cam.viewportWidth / 8, cam.viewportHeight / 6);
-            //Creates a new instakill button with above bounds
-            instakillButton = new InstaKill(instakillBounds, new GameInstaKillListener());
-            //Adds instakill button to stage
-            this.stage.addActor(instakillButton);
+
+            effectButton = buttonFactory.produceRandomEffectButton();
+            this.stage.addActor(effectButton);
 
             //Reset variables for next spawning
             //TODO: Change spawndelay range later
@@ -332,7 +335,7 @@ public class PlayState extends GameState {
         sb.begin();
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
-        instakillButton.draw(sb, 1);
+        effectButton.draw(sb, 1);
         sb.end();
 
         // draw lives
@@ -372,58 +375,30 @@ public class PlayState extends GameState {
         return randomNum;
     }
 
-    // Button listeners
-    // Firebutton listener class
-    private class GameFireButtonListener implements FireButton.FireButtonListener {
-
-        // Adds observer
-        @Override
-        public void onFire() {
-            //Calls this method when button is pressed
-            onFireButtonPressed();
-        }
-    }
-
     //Method called when FireButton pressed
     private void onFireButtonPressed() {
-        //TODO: implement fire button logic
+        player.shoot();
         System.out.println("FireButton pressed");
         Jukebox.play("gunshot");
     }
 
-    //Mutebutton listener class
-    private class GameMuteButtonListener implements MuteButton.MuteButtonListener {
-
-        // Adds observer
-        @Override
-        public void onMute() {
-            //Calls this method when button is pressed
-            onMuteButtonPressed();
-            System.out.println("Mute");
-        }
-    }
-
     //Method called when FireButton pressed
     private void onMuteButtonPressed() {
-        //TODO: implement mute button logic
         Jukebox.toggleMuteMusic();
+        muteButton.loadTextureRegion();
     }
 
-    //Instakill listener class
-    private class GameInstaKillListener implements InstaKill.InstakillListener {
 
-        @Override
-        public void instaKillActivate() {
-            InstakillPressed();
-            Jukebox.play("powerup");
-        }
-    }
-
-    private void InstakillPressed() {
-        //TODO: Fix button
+    private void onEffectButtonPressed() {
         System.out.println("Instakill activated");
-        instakillButton.remove();
-        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
+        Jukebox.play("powerup");
+        effectButton.effect(this);
+        effectButton.remove();
+        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
         isClicked = true;
+    }
+
+    public ArrayList<Zombie> getZombies() {
+        return zombies;
     }
 }

@@ -11,17 +11,9 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class MuteButton extends GameButton {
 
-    //Creates the listener interface for this button
-    public interface MuteButtonListener {
-        public void onMute();
-    }
-
-    private MuteButton.MuteButtonListener listener;
-
-    public MuteButton(Rectangle bounds, MuteButton.MuteButtonListener listener) {
+    public MuteButton(Rectangle bounds) {
         super(bounds);
         // Assigns listener to this button
-        this.listener = listener;
     }
 
     //Used to define what sprite to draw
@@ -31,12 +23,6 @@ public class MuteButton extends GameButton {
             return "buttons/muted.png";
         }
         return "buttons/unmuted.png";
-    }
-
-    //Method called on listener when touched
-    @Override
-    public void touched() {
-        listener.onMute();
     }
 
 }
