@@ -142,18 +142,18 @@ public class PlayState extends GameState {
 
                 //Fire button
                 if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    stage.touchDown(x, y, pointer, button);
-                    player.shoot();
+                    onFireButtonPressed();
                 }
 
                 //Mute button
                 if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    stage.touchDown(x, y, pointer, button);
+                    onMuteButtonPressed();
                 }
 
                 //Instakill button
-                if (instakillButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    stage.touchDown(x, y, pointer, button);
+                if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    //stage.touchDown(x, y, pointer, button);
+                    onEffectButtonPressed();
                 }
 
                 return true;

@@ -40,8 +40,6 @@ public abstract class GameButton extends Button {
 
     protected abstract String getTexturePath();
 
-    public abstract void touched();
-
     public Rectangle getBounds() {
         return bounds;
     }

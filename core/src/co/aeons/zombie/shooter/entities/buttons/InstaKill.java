@@ -6,17 +6,14 @@ import com.badlogic.gdx.math.Rectangle;
  * Created by Danny Duy Nguyen on 09.04.2018.
  */
 
-public class InstaKill extends GameButton {
+public class InstaKill extends EffectButton {
 
-    public interface InstakillListener {
-        public void instaKillActivate();
+    public InstaKill(Rectangle bounds) {
+        super(bounds);
     }
 
-    private InstakillListener listener;
-
-    public InstaKill(Rectangle bounds, InstakillListener listener) {
-        super(bounds);
-        this.listener = listener;
+    public void effect(){
+        System.out.println("pew pew");
     }
 
     @Override
@@ -25,7 +22,7 @@ public class InstaKill extends GameButton {
     }
 
     @Override
-    public void touched() {
-        listener.instaKillActivate();
+    public void effect(PlayState playState) {
+        System.out.println("Dåse");
     }
 }

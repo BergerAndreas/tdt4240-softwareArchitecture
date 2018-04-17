@@ -10,28 +10,15 @@ public class FireButton extends GameButton {
 
     //Creates the listener interface fo r this button
 
-    public interface FireButtonListener {
-        public void onFire();
-    }
-
-    private FireButtonListener listener;
-
-    public FireButton(Rectangle bounds, FireButtonListener listener) {
+    public FireButton(Rectangle bounds) {
         super(bounds);
         // Assigns listener to this button
-        this.listener = listener;
     }
 
     //Used to define what sprite to draw
     @Override
     protected String getTexturePath() {
         return "buttons/fireButton.png";
-    }
-
-    //Method called on listener when touched
-    @Override
-    public void touched() {
-        listener.onFire();
     }
 
 }
