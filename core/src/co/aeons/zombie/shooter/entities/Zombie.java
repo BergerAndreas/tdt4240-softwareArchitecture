@@ -9,23 +9,23 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Zombie extends SuperObject {
-	
-	private int type;
-	public static final int SMALL = 0;
-	public static final int MEDIUM = 1;
-	public static final int LARGE = 2;
 	private boolean isStopped = false;
 
 	// Anitmations
-	private Animation<TextureRegion> runningAnimation;
-	private Animation<TextureRegion> attackAnimation;
-	private TextureAtlas runningAtlas;
-	private TextureAtlas attackAtlas;
+	protected Animation<TextureRegion> runningAnimation;
+	protected Animation<TextureRegion> attackAnimation;
+	protected TextureAtlas runningAtlas;
+	protected TextureAtlas attackAtlas;
 
 	// Tracks elapsed time for animations
-	private float stateTimeRunning;
-	private float stateTimeAttacking;
-	private int score;
+	protected float stateTimeRunning;
+	protected float stateTimeAttacking;
+	protected int score;
+
+	protected float speed;
+	protected float dx;
+
+	protected float healt;
 
     private float attackTimer;
     private float attackCooldown;
@@ -33,12 +33,10 @@ public class Zombie extends SuperObject {
 
     private boolean remove;
 
-	public Zombie(float x, float y, int type) {
+	public Zombie(float x, float y) {
 		
 		this.x = x;
 		this.y = y;
-		this.type = type;
-
 
 		width = height = 40;
 		speed = MathUtils.random(20, 30);
@@ -49,6 +47,8 @@ public class Zombie extends SuperObject {
 
 		dx = -50;
 		dy = 0;
+
+		this.healt = 10;
 
 		createIdleAnimation();
 		createAttackAnimation();
@@ -85,7 +85,6 @@ public class Zombie extends SuperObject {
 
 	}
 
-	public int getType() { return type; }
 	public boolean shouldRemove() { return remove; }
 	public int getScore() { return score; }
 	
@@ -139,4 +138,12 @@ public class Zombie extends SuperObject {
             }
         } else return 0;
     }
+
+    public float getHealt(){
+		return this.healt;
+	}
+
+	public void getHurt(float damage){
+		this.healt -= damage;
+	}
 }
