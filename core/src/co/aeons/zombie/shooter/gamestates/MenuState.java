@@ -96,8 +96,6 @@ public class MenuState extends GameState {
 
     public void update(float dt) {
 
-        handleInput();
-
     }
 
 

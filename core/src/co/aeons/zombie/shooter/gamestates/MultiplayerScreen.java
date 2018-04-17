@@ -2,9 +2,8 @@ package co.aeons.zombie.shooter.gamestates;
 
 import co.aeons.zombie.shooter.managers.GameStateManager;
 
-public class MultiplayerGameState extends GameState {
-
-    public MultiplayerGameState(GameStateManager gsm, String option) {
+public class MultiplayerScreen extends GameState {
+    public MultiplayerScreen(GameStateManager gsm) {
         super(gsm);
     }
 
