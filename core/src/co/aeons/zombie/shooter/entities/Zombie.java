@@ -12,15 +12,20 @@ public class Zombie extends SuperObject {
 	private boolean isStopped = false;
 
 	// Anitmations
-	private Animation<TextureRegion> runningAnimation;
-	private Animation<TextureRegion> attackAnimation;
-	private TextureAtlas runningAtlas;
-	private TextureAtlas attackAtlas;
+	protected Animation<TextureRegion> runningAnimation;
+	protected Animation<TextureRegion> attackAnimation;
+	protected TextureAtlas runningAtlas;
+	protected TextureAtlas attackAtlas;
 
 	// Tracks elapsed time for animations
-	private float stateTimeRunning;
-	private float stateTimeAttacking;
-	private int score;
+	protected float stateTimeRunning;
+	protected float stateTimeAttacking;
+	protected int score;
+
+	protected float speed;
+	protected float dx;
+
+	protected float healt;
 
     private float attackTimer;
     private float attackCooldown;
@@ -42,6 +47,8 @@ public class Zombie extends SuperObject {
 
 		dx = -50;
 		dy = 0;
+
+		this.healt = 10;
 
 		createIdleAnimation();
 		createAttackAnimation();
@@ -131,4 +138,12 @@ public class Zombie extends SuperObject {
             }
         } else return 0;
     }
+
+    public float getHealt(){
+		return this.healt;
+	}
+
+	public void getHurt(float damage){
+		this.healt -= damage;
+	}
 }
