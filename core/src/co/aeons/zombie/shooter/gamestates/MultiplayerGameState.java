@@ -1,6 +1,8 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +18,7 @@ import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLAYER;
 
-public class MultiplayerGameState extends GameState {
+public class MultiplayerGameState extends GameState implements InputProcessor {
     private SpriteBatch sb;
     // The first player
     public static FirstPlayer firstPlayer;
@@ -82,7 +84,7 @@ public class MultiplayerGameState extends GameState {
         sb.setProjectionMatrix(cam.combined);
 
 
-        outcomeMessage  = new MultiplayerMessage();
+        outcomeMessage = new MultiplayerMessage();
         incomeMessage = new MultiplayerMessage();
 
         //state = GameState.READY;
@@ -106,13 +108,13 @@ public class MultiplayerGameState extends GameState {
 
         //TODO: Initialize powerups
 
-        //Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
 
 
-        if(option.equals("QUICK"))
+        if (option.equals("QUICK"))
             ZombieShooter.googleServices.startQuickGame();
-        else if(option.equals("INVITE"))
+        else if (option.equals("INVITE"))
             ZombieShooter.googleServices.invitePlayer();
         else
             ZombieShooter.googleServices.seeMyInvitations();
@@ -127,7 +129,7 @@ public class MultiplayerGameState extends GameState {
     @Override
     public void update(float dt) {
         String s = "Connecting to server";
-        if(ZombieShooter.googleServices.getMultiplayerState().equals(STARTMULTIPLAYER)) {
+        if (ZombieShooter.googleServices.getMultiplayerState().equals(STARTMULTIPLAYER)) {
             sb.begin();
             infoMessage.getData().setScale(2, 2);
             layout.setText(infoMessage, s);
@@ -136,14 +138,15 @@ public class MultiplayerGameState extends GameState {
             sb.end();
         }
         updateReady(dt);
-            //FontManager.text.draw(SpaceGame.batch,infoMessage,SpaceGame.width/3,SpaceGame.height/2);
+        //FontManager.text.draw(SpaceGame.batch,infoMessage,SpaceGame.width/3,SpaceGame.height/2);
 
     }
-    public void updateReady(float dt){
-        switch (ZombieShooter.googleServices.getMultiplayerState()){
+
+    public void updateReady(float dt) {
+        switch (ZombieShooter.googleServices.getMultiplayerState()) {
             case STARTMULTIPLAYER:
-                if(timeToStartGame > 0){
-                    String s = "startGame"+(int)timeToStartGame;
+                if (timeToStartGame > 0) {
+                    String s = "startGame" + (int) timeToStartGame;
                     // Informaremos al jugador cuanto tiempo queda para empezar la partida
                     sb.begin();
                     infoMessage.getData().setScale(2, 2);
@@ -151,8 +154,8 @@ public class MultiplayerGameState extends GameState {
                     float width = layout.width;
                     infoMessage.draw(sb, s, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
                     sb.end();
-                    timeToStartGame-=dt;
-                }else {
+                    timeToStartGame -= dt;
+                } else {
                     // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
                     timeToStartGame = 0;
                     //state = GameState.START;
@@ -165,13 +168,26 @@ public class MultiplayerGameState extends GameState {
 
         updateStart(dt);
     }
-    public void updateStart(float dt){
+
+    public void updateStart(float dt) {
         updateIncomeMessage(dt);
         updateOutComeMessage(dt);
 
+        if (timeToLeftGame > 0) {
+            timeToLeftGame -= dt;
+        } else {
+            if (Gdx.input.justTouched()) {
+                ZombieShooter.googleServices.leaveRoom();
+                gsm.setState(GameStateManager.MENU);
+            }
+        }
+
+        renderLose(dt);
+
         //Act here
     }
-    public void updateIncomeMessage(float dt){
+
+    public void updateIncomeMessage(float dt) {
         //Fetch the input message
         incomeMessage = ZombieShooter.googleServices.receiveGameMessage();
         //Check if opponent has requested to leave the room
@@ -182,21 +198,21 @@ public class MultiplayerGameState extends GameState {
         // Petición recibida de disparo
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT))
             System.out.println("Shoot");
-            //rivalShip.shoot();
+        //rivalShip.shoot();
         // Petición recibida de powerUp Burst usado
         if (incomeMessage.checkOperation(incomeMessage.MASK_BURST))
             System.out.println("burst");
-            //rivalBurstPowerUp.setTouched();
+        //rivalBurstPowerUp.setTouched();
         // Petición recibida de powerUp Regeneración de Vida usado
         if (incomeMessage.checkOperation(incomeMessage.MASK_REG_LIFE))
             System.out.println("life powerup");
-            //rivalRegLifePowerUp.setTouched();
+        //rivalRegLifePowerUp.setTouched();
         // Petición recibida de powerUp Escudo
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHIELD))
             System.out.println("Shield powerup");
-            //rivalShieldPoweUp.setTouched();
+        //rivalShieldPoweUp.setTouched();
         // Petición recibida de recepción de daño
-        if(incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)){
+        if (incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)) {
             System.out.println("Damage received");
             //rivalShip.receiveDamage();
         }
@@ -208,17 +224,17 @@ public class MultiplayerGameState extends GameState {
         */
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
-        System.out.println("getpositiony: "+incomeMessage.getPositionY());
+        System.out.println("getpositiony: " + incomeMessage.getPositionY());
 
         // Reset for next update
         incomeMessage.resetOperations();
 
 
-
     }
-    public void updateOutComeMessage(float dt){
+
+    public void updateOutComeMessage(float dt) {
         //Update outcome message
-        Vector3 coordinates = new Vector3(Gdx.input.getX(),Gdx.input.getY(), 0);
+        Vector3 coordinates = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         outcomeMessage.setPositionY(Gdx.input.getY());
 
         //Finally we send the message
@@ -230,6 +246,22 @@ public class MultiplayerGameState extends GameState {
 
 
     }
+
+    public void renderLose(float dt) {
+        if (abandonFirstPlayer) {
+
+            System.out.println("multiplayergameabandon");
+        }
+        //FontManager.draw(FontManager.getFromBundle("multiplayerGamePlayerAbandon"), SpaceGame.height / 2 - 50);
+        System.out.println("multiplayergamelose");
+        //FontManager.draw(FontManager.getFromBundle("multiplayerGameLoose"), SpaceGame.height / 2);
+
+        if (timeToLeftGame <= 0) {
+            System.out.println("multiplayergameext");
+            //FontManager.draw(FontManager.getFromBundle("multiplayerGameExit"), SpaceGame.height / 2 + 50);
+        }
+    }
+
     @Override
     public void draw() {
 
@@ -243,5 +275,49 @@ public class MultiplayerGameState extends GameState {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.BACK) {
+            leaveRoom = true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }
