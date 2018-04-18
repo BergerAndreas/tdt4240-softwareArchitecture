@@ -74,9 +74,12 @@ public class Bullet extends SuperObject {
 	    this.y = y;
     }
 
+    public void setX(float x) { this.x = x; }
+
 	public void setDamage(int damage) {
 		this.damage = damage;
 	}
+
 }
 
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.entities.weapons.BattleRifle;
 import co.aeons.zombie.shooter.entities.weapons.Pistol;
 import co.aeons.zombie.shooter.entities.weapons.Shotgun;
 import co.aeons.zombie.shooter.entities.weapons.Weapon;
@@ -31,14 +32,15 @@ public class Player extends SuperObject {
 	private int extraLives;
 	private long requiredScore;
 
-	int testThing = 0;
-	
 	public Player(ArrayList<Bullet> bullets) {
 		
 		this.bullets = bullets;
 		this.weapons = new ArrayList<Weapon>();
-		this.weapons.add(new Pistol(x, y));
-		this.weapons.add(new Shotgun(x, y));
+
+		//Add new weapons here
+		this.weapons.add(new Pistol(x,y));
+		this.weapons.add(new Shotgun(x,y));
+		this.weapons.add(new BattleRifle(x, y));
 
 		this.currentWeaponIndex = 0;
 		this.currentWeapon = weapons.get(currentWeaponIndex);
@@ -93,6 +95,7 @@ public class Player extends SuperObject {
 	public void shoot() {
 		for (Bullet bullet : currentWeapon.shoot()) {
 			bullet.setY(this.y);
+			bullet.setX(this.x);
 			bullets.add(bullet);
 		}
 		Jukebox.play("shoot");
@@ -100,13 +103,6 @@ public class Player extends SuperObject {
 	
 	public void update(float dt) {
 		// check extra lives
-
-		testThing ++;
-
-		if(testThing % 50 == 0) {
-			nextWeapon();
-			System.out.println("New weapon");
-		}
 
 		if(score >= requiredScore) {
 			extraLives++;
