@@ -35,16 +35,11 @@ public class PlayState extends GameState {
     private SpriteBatch sb;
     private ShapeRenderer sr;
 
-    private Player hudPlayer;
 
     private Player player;
     private ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
-    private ArrayList<Bullet> enemyBullets;
     private Wall wall;
-
-    private float fsTimer;
-    private float fsTime;
 
     //Boundaries
     private Rectangle playerLane;
@@ -104,11 +99,6 @@ public class PlayState extends GameState {
 
         spawnZombies();
 
-        hudPlayer = new Player(null);
-
-        fsTimer = 0;
-        fsTime = 15;
-        enemyBullets = new ArrayList<Bullet>();
 
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
@@ -207,8 +197,6 @@ public class PlayState extends GameState {
 
     public void update(float dt) {
 
-        // get user input
-        handleInput();
         // check collision
         checkCollisions();
 
@@ -227,16 +215,6 @@ public class PlayState extends GameState {
 
         // update player
         player.update(dt);
-        if (player.isDead()) {
-            if (player.getLives() == 0) {
-                Jukebox.stopAll();
-                gsm.setState(GameStateManager.GAMEOVER);
-                return;
-            }
-            player.reset();
-            player.loseLife();
-            return;
-        }
 
         // update player bullets
         for (int i = 0; i < bullets.size(); i++) {
@@ -346,28 +324,11 @@ public class PlayState extends GameState {
         effectButton.draw(sb, 1);
         sb.end();
 
-        // draw lives
-        for (int i = 0; i < player.getLives(); i++) {
-            hudPlayer.setPosition(40 + i * 10, 360);
-            hudPlayer.draw(sb);
-        }
-
         // draw buttons
         this.stage.addActor(fireButton);
         this.stage.addActor(muteButton);
         this.stage.act();
         this.stage.draw();
-
-    }
-
-    public void handleInput() {
-
-        // handle input logic
-        if (!player.isHit()) {
-            if (GameKeys.isPressed(GameKeys.SPACE)) {
-                player.shoot();
-            }
-        }
 
     }
 

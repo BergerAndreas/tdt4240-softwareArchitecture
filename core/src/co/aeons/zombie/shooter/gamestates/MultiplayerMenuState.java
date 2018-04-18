@@ -115,10 +115,6 @@ public class MultiplayerMenuState extends GameState {
 
     }
 
-    @Override
-    public void handleInput() {
-
-    }
 
     @Override
     public void dispose() {

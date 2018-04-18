@@ -18,7 +18,7 @@ import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLAYER;
 
-public class MultiplayerGameState extends GameState implements InputProcessor {
+public class MultiplayerGameState extends PlayState implements InputProcessor {
     private SpriteBatch sb;
     // The first player
     public static FirstPlayer firstPlayer;
@@ -122,6 +122,8 @@ public class MultiplayerGameState extends GameState implements InputProcessor {
 
     @Override
     public void init() {
+        super.init();
+
 
 
     }
@@ -267,10 +269,6 @@ public class MultiplayerGameState extends GameState implements InputProcessor {
 
     }
 
-    @Override
-    public void handleInput() {
-
-    }
 
     @Override
     public void dispose() {

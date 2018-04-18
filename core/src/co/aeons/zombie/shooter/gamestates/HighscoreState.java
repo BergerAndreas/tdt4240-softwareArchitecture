@@ -72,7 +72,7 @@ public class HighscoreState extends GameState {
 
     @Override
     public void update(float dt) {
-        handleInput();
+
 
     }
 
@@ -102,12 +102,6 @@ public class HighscoreState extends GameState {
         stage.draw();
     }
 
-    @Override
-    public void handleInput() {
-        if (GameKeys.isPressed(GameKeys.ENTER) || GameKeys.isPressed(GameKeys.ESCAPE)) {
-            gsm.setState(GameStateManager.MENU);
-        }
-    }
 
     @Override
     public void dispose() {

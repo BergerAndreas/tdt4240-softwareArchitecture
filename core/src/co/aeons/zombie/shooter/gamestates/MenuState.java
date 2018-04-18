@@ -110,10 +110,6 @@ public class MenuState extends GameState {
         this.stage.draw();
     }
 
-    @Override
-    public void handleInput() {
-
-    }
 
 
     public void dispose() {
