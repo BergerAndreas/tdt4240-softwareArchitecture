@@ -1,13 +1,11 @@
 package co.aeons.zombie.shooter.entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.entities.weapons.BattleRifle;
 import co.aeons.zombie.shooter.entities.weapons.Pistol;
 import co.aeons.zombie.shooter.entities.weapons.Shotgun;

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import co.aeons.zombie.shooter.entities.Bullet;
+import co.aeons.zombie.shooter.entities.bullets.Bullet;
 
 public class Pistol extends Weapon {
 

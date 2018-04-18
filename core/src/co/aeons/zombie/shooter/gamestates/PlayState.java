@@ -14,9 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
-import co.aeons.zombie.shooter.entities.Bullet;
+import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.entities.Player;
 import co.aeons.zombie.shooter.entities.Trump;
+import co.aeons.zombie.shooter.entities.buttons.CycleDownButton;
+import co.aeons.zombie.shooter.entities.buttons.CycleUpButton;
 import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
@@ -50,14 +52,17 @@ public class PlayState extends GameState {
     private Rectangle playerLane;
     private Rectangle fireBounds;
     private Rectangle effectButtonBounds;
+    private Rectangle cUpBounds;
+    private Rectangle cDownBounds;
     private Rectangle muteBounds;
 
     //buttons
     private RandomButtonFactory buttonFactory;
     private FireButton fireButton;
-    private EffectButton effectButton;
     private MuteButton muteButton;
-    private NukeButton nukeButton;
+    private CycleUpButton cycleUpButton;
+    private CycleDownButton cycleDownButton;
+    private EffectButton effectButton;
 
     private int level;
     private int totalZombies;
@@ -119,15 +124,43 @@ public class PlayState extends GameState {
         buttonFactory = new RandomButtonFactory(cam);
 
         //Create bounds for buttons
-        fireBounds = new Rectangle(cam.viewportWidth - 200, 0,
-                cam.viewportWidth / 8, cam.viewportHeight / 6);
-        muteBounds = new Rectangle(cam.viewportWidth - 100, cam.viewportHeight - 75,
-                cam.viewportWidth / 16, cam.viewportHeight / 16);
-        playerLane = new Rectangle(0, 0, cam.viewportWidth / 3,
-                cam.viewportHeight);
+        fireBounds = new Rectangle(
+                cam.viewportWidth - 200,
+                0,
+                cam.viewportWidth / 8,
+                cam.viewportHeight / 6
+        );
+        muteBounds = new Rectangle(
+                cam.viewportWidth - 100,
+                cam.viewportHeight - 75,
+                cam.viewportWidth / 16,
+                cam.viewportHeight / 16
+        );
+        playerLane = new Rectangle(
+                0,
+                0,
+                cam.viewportWidth / 3,
+                cam.viewportHeight
+        );
+        cUpBounds = new Rectangle(
+                cam.viewportWidth - 300,
+                0,
+                cam.viewportWidth / 16,
+                cam.viewportHeight / 12
+        );
+        cDownBounds = new Rectangle(
+                cam.viewportWidth - 350,
+                0,
+                cam.viewportWidth / 16,
+                cam.viewportHeight / 12
+        );
+
         //Create buttons with above bounds
         fireButton = new FireButton(fireBounds);
         muteButton = new MuteButton(muteBounds);
+        cycleUpButton = new CycleUpButton(cUpBounds);
+        cycleDownButton = new CycleDownButton(cDownBounds);
+
         //Create empty button
         effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
@@ -161,6 +194,14 @@ public class PlayState extends GameState {
                 if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
                     //stage.touchDown(x, y, pointer, button);
                     onEffectButtonPressed();
+                }
+
+                if (cycleUpButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    onCycleUpPressed();
+                }
+
+                if (cycleDownButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    onCycleDownPressed();
                 }
 
                 return true;
@@ -344,6 +385,8 @@ public class PlayState extends GameState {
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
         effectButton.draw(sb, 1);
+        cycleUpButton.draw(sb, 1);
+        cycleDownButton.draw(sb, 1);
         sb.end();
 
         // draw lives
@@ -404,6 +447,16 @@ public class PlayState extends GameState {
         effectButton.remove();
         effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
         isClicked = true;
+    }
+
+    private void onCycleUpPressed() {
+        System.out.println("Next Weapon");
+        player.nextWeapon();
+    }
+
+    private void onCycleDownPressed(){
+        System.out.println("Previous Weapon");
+        player.prevWeapon();
     }
 
     public ArrayList<Zombie> getZombies() {

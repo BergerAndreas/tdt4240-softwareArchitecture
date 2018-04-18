@@ -3,8 +3,8 @@ package co.aeons.zombie.shooter.entities.weapons;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import co.aeons.zombie.shooter.entities.Bullet;
-import co.aeons.zombie.shooter.entities.ShotgunBullet;
+import co.aeons.zombie.shooter.entities.bullets.Bullet;
+import co.aeons.zombie.shooter.entities.bullets.ShotgunBullet;
 
 public class Shotgun extends Weapon{
 

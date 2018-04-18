@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.Queue;
 
-import co.aeons.zombie.shooter.entities.Bullet;
+import co.aeons.zombie.shooter.entities.bullets.Bullet;
 
 public abstract class Weapon {
 
