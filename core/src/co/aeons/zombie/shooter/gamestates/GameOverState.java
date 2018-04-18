@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import co.aeons.zombie.shooter.ZombieShooter;
-import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 
@@ -53,53 +52,10 @@ public class GameOverState extends GameState {
 		InitMenu();
 		
 	}
-	
-	public void handleInput() {
-		
-		if(GameKeys.isPressed(GameKeys.ENTER)) {
-			gsm.setState(GameStateManager.MENU);
-		}
-		
-		if(GameKeys.isPressed(GameKeys.UP)) {
-			if(newName[currentChar] == ' ') {
-				newName[currentChar] = 'Z';
-			}
-			else {
-				newName[currentChar]--;
-				if(newName[currentChar] < 'A') {
-					newName[currentChar] = ' ';
-				}
-			}
-		}
-		
-		if(GameKeys.isPressed(GameKeys.DOWN)) {
-			if(newName[currentChar] == ' ') {
-				newName[currentChar] = 'A';
-			}
-			else {
-				newName[currentChar]++;
-				if(newName[currentChar] > 'Z') {
-					newName[currentChar] = ' ';
-				}
-			}
-		}
-		
-		if(GameKeys.isPressed(GameKeys.RIGHT)) {
-			if(currentChar < newName.length - 1) {
-				currentChar++;
-			}
-		}
-		
-		if(GameKeys.isPressed(GameKeys.LEFT)) {
-			if(currentChar > 0) {
-				currentChar--;
-			}
-		}
-		
-	}
+
 
     public void update(float dt) {
-        handleInput();
+
     }
 
     public void draw() {
