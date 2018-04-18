@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -29,7 +30,7 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 
-public class PlayState extends GameState {
+public class PlayState extends GameState implements InputProcessor {
 
     protected SpriteBatch sb;
     protected ShapeRenderer sr;
@@ -127,53 +128,7 @@ public class PlayState extends GameState {
         bgTimer = maxDelay;
         musicStarted = false;
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchDown(int x, int y, int pointer, int button) {
-
-                //Need to have this or buttons won't work
-                Vector2 tmpVec2 = new Vector2();
-                stage.getViewport().unproject(tmpVec2.set(x, y));
-
-
-                //Fire button
-                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    onFireButtonPressed();
-                }
-
-                //Mute button
-                if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    onMuteButtonPressed();
-                }
-
-                //Instakill button
-                if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    //stage.touchDown(x, y, pointer, button);
-                    onEffectButtonPressed();
-                }
-
-                return true;
-            }
-
-            @Override
-            public boolean touchUp(int x, int y, int pointer, int button) {
-                // your touch up code here
-                return true; // return true to indicate the event was handled
-            }
-
-            @Override
-            public boolean touchDragged(int x, int y, int pointer) {
-                Vector2 tmpVec2 = new Vector2();
-                stage.getViewport().unproject(tmpVec2.set(x, y));
-
-                if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
-                    //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
-
-                    player.setPosition(player.getx(), tmpVec2.y);
-                }
-                return true;
-            }
-        });
+        Gdx.input.setInputProcessor(this);
     }
 
 
@@ -367,5 +322,75 @@ public class PlayState extends GameState {
 
     public ArrayList<Zombie> getZombies() {
         return zombies;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        //Need to have this or buttons won't work
+        Vector2 tmpVec2 = new Vector2();
+        stage.getViewport().unproject(tmpVec2.set(x, y));
+
+
+        //Fire button
+        if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onFireButtonPressed();
+        }
+
+        //Mute button
+        if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onMuteButtonPressed();
+        }
+
+        //Instakill button
+        if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            //stage.touchDown(x, y, pointer, button);
+            onEffectButtonPressed();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int x, int y, int pointer) {
+        Vector2 tmpVec2 = new Vector2();
+        stage.getViewport().unproject(tmpVec2.set(x, y));
+
+        if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
+            //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
+
+            player.setPosition(player.getx(), tmpVec2.y);
+        }
+        return true;
+
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

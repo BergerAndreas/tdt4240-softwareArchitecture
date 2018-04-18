@@ -17,7 +17,7 @@ import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLAYER;
 
-public class MultiplayerGameState extends PlayState implements InputProcessor {
+public class MultiplayerGameState extends PlayState {
 
     // The second (online) player
     public static SecondPlayer secondPlayer;
@@ -114,7 +114,6 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
 
         // Create second player
         secondPlayer = new SecondPlayer(super.bullets);
-
 
 
     }
@@ -276,39 +275,4 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
         return false;
     }
 
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 }
