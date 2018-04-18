@@ -1,11 +1,9 @@
 package co.aeons.zombie.shooter.gamestates;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,13 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import co.aeons.zombie.shooter.ZombieShooter;
-import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Save;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
-import static com.badlogic.gdx.Gdx.app;
 
 /**
  * Created by Erikkvo on 15-Apr-18.
@@ -72,7 +68,7 @@ public class HighscoreState extends GameState {
 
     @Override
     public void update(float dt) {
-        handleInput();
+
 
     }
 
@@ -102,12 +98,6 @@ public class HighscoreState extends GameState {
         stage.draw();
     }
 
-    @Override
-    public void handleInput() {
-        if (GameKeys.isPressed(GameKeys.ENTER) || GameKeys.isPressed(GameKeys.ESCAPE)) {
-            gsm.setState(GameStateManager.MENU);
-        }
-    }
 
     @Override
     public void dispose() {

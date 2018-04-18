@@ -7,6 +7,6 @@ import co.aeons.zombie.shooter.ZombieShooter;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new ZombieShooter(), config);
+		new LwjglApplication(new ZombieShooter(null, new DesktopGoogleServices()), config);
 	}
 }

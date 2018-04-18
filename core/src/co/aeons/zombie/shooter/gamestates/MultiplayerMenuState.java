@@ -16,7 +16,7 @@ import co.aeons.zombie.shooter.managers.GameStateManager;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
-public class MenuState extends GameState {
+public class MultiplayerMenuState extends GameState {
 
     // Cameras and viewport
     private Stage stage;
@@ -27,11 +27,11 @@ public class MenuState extends GameState {
     private Skin skin;
     private TextureAtlas atlas;
 
-
-    public MenuState(GameStateManager gsm) {
+    public MultiplayerMenuState(GameStateManager gsm) {
         super(gsm);
     }
 
+    @Override
     public void init() {
 
         sb = new SpriteBatch();
@@ -43,7 +43,6 @@ public class MenuState extends GameState {
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
         Gdx.input.setInputProcessor(this.stage);
 
-
         Table mainTable = new Table();
         //Set table to fill stage
         mainTable.setFillParent(true);
@@ -51,51 +50,58 @@ public class MenuState extends GameState {
         mainTable.center();
         //Create buttons
 
-        TextButton singleplayerButton = new TextButton("Singleplayer", skin);
-        TextButton multiplayerButton = new TextButton("Multiplayer", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        TextButton inviteButton = new TextButton("Invite", skin);
+        TextButton quickGameButton = new TextButton("Quick", skin);
+        TextButton seeInvitationsButton = new TextButton("See invitations", skin);
+        TextButton backButton = new TextButton("Back", skin);
 
         //Add listeners to buttons
-        singleplayerButton.addListener(new ClickListener() {
+        inviteButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.PLAY);
+                gsm.setState(GameStateManager.MULTIPLAYERINVITE);
             }
         });
-        multiplayerButton.addListener(new ClickListener() {
+        quickGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TODO: Add multiplayer listener
-                gsm.setState(GameStateManager.MULTIPLAYERMENU);
+                gsm.setState(GameStateManager.MULTIPLAYERQUICK);
             }
         });
-        exitButton.addListener(new ClickListener() {
+
+        seeInvitationsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                gsm.setState(GameStateManager.MULTIPLAYERSEEINVITE);
+            }
+        });
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.MENU);
             }
         });
 
 
         //Add buttons to table
-        mainTable.add(singleplayerButton);
+        mainTable.add(inviteButton);
         mainTable.row();
-        mainTable.add(multiplayerButton);
+        mainTable.add(quickGameButton);
         mainTable.row();
-        mainTable.add(optionsButton);
+        mainTable.add(seeInvitationsButton);
         mainTable.row();
-        mainTable.add(exitButton);
+        mainTable.add(backButton);
         stage.addActor(mainTable);
 
 
     }
 
+    @Override
     public void update(float dt) {
 
     }
 
-
+    @Override
     public void draw() {
 
         sb.setProjectionMatrix(ZombieShooter.cam.combined);
@@ -105,24 +111,15 @@ public class MenuState extends GameState {
         //Make stage show stuff
         this.stage.act();
         this.stage.draw();
+
+
     }
 
 
-
+    @Override
     public void dispose() {
         sb.dispose();
         sr.dispose();
         stage.dispose();
     }
-
 }
-
-
-
-
-
-
-
-
-
-

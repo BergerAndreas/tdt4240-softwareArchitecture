@@ -77,11 +77,6 @@ public class SplashState extends GameState {
     }
 
     @Override
-    public void handleInput() {
-
-    }
-
-    @Override
     public void dispose() {
         sb.dispose();
         splash.getTexture().dispose();
