@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">uglyz</string>
-    <item name="prefkey_volume" type="id">VOLUME</item>
+    <string name="app_name">spacegame</string>
 
 </resources>

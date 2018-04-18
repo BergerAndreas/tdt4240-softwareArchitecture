@@ -2,9 +2,7 @@ package co.aeons.zombie.shooter;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
-
 import co.aeons.zombie.shooter.Platform;
 
 public class PlatformAndroid extends AndroidApplication implements Platform {

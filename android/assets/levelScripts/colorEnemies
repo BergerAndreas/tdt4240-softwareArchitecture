@@ -1,0 +1,9 @@
+{
+  "enemiesToGenerate":[
+    {"type":"BLUE", "x":700, "y":-100, "timeToSpawn":0.0}
+    {"type":"RED", "x":900, "y":240, "timeToSpawn":1.0}
+    {"type":"YELLOW", "x":900, "y":400, "timeToSpawn":2.0}
+    {"type":"YELLOW", "x":900, "y":250, "timeToSpawn":3.0}
+    {"type":"YELLOW", "x":900, "y":100, "timeToSpawn":4.0}
+  ]
+}

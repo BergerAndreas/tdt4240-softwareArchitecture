@@ -19,7 +19,7 @@ import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.example.games.basegameutils.GameHelper;
 import co.aeons.zombie.shooter.IGoogleServices;
 import co.aeons.zombie.shooter.PlatformAndroid;
-import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.SpaceGame;
 import co.aeons.zombie.shooter.R;
 import co.aeons.zombie.shooter.multiplayerListeners.MessageReceived;
 import co.aeons.zombie.shooter.multiplayerListeners.RoomStatusUpdate;
@@ -88,7 +88,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		initialize(new ZombieShooter(platform, this), config);
+		initialize(new SpaceGame(platform, this), config);
 	}
 
 	@Override

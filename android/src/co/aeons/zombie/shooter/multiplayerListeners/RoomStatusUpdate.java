@@ -3,13 +3,12 @@ package co.aeons.zombie.shooter.multiplayerListeners;
 import com.badlogic.gdx.Gdx;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
+import co.aeons.zombie.shooter.AndroidLauncher;
 
 import java.util.List;
 
-import co.aeons.zombie.shooter.AndroidLauncher;
 
-
-public class RoomStatusUpdate implements RoomStatusUpdateListener {
+public class RoomStatusUpdate implements RoomStatusUpdateListener{
 
     private AndroidLauncher callback;
 

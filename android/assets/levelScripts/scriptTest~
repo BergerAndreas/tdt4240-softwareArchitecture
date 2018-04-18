@@ -1,0 +1,5 @@
+{
+  "enemiesToGenerate":[
+   {"type":"TYPE5", "x":850, "y":250, "timeToSpawn":2.0}
+  ]
+}

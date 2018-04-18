@@ -1,0 +1,202 @@
+{
+  "shapeEntities":[
+    {
+      "entity":"ship",
+      "vertices":   [ 323,60 ,  250,16 , 87,0 , 0,22 , 5,96 , 140,112 , 280,81 ],
+      "desiredSize":   [ 100,33 ]
+    },
+    {
+      "entity":"playerShip",
+      "vertices":   [ 0,0 ,  229,18 , 402,32 , 412,79 , 379,107 , 318,125 , 129,137 , 47,95 , 14,69 ],
+      "desiredSize":   [ 100,33 ]
+    },
+    {
+      "entity":"rivalShip",
+      "vertices":   [ 412,0 ,  183,18 , 10,32 , 0,79 , 33,107 , 94,125 , 283,137 , 365,95 , 398,69 ],
+      "desiredSize":   [ 100,33 ]
+    },
+    {
+      "entity":"type1",
+      "vertices":   [ 0,50 ,  86,101 , 110,88 , 110,12 , 86,0 ],
+      "desiredSize":   [ 40,40 ]
+    },
+    {
+      "entity":"type2",
+      "vertices":   [  0,131 ,  104,207 , 250,131 , 250,81 , 104,2, 0,81],
+      "desiredSize":   [ 40,40 ]
+    },
+    {
+      "entity":"type3",
+      "vertices":   [ 1,252 ,  98,484 , 255,521 , 414,484 , 506,280, 450,110, 255,5, 80,88],
+      "desiredSize":   [ 90,90 ]
+    },
+    {
+      "entity":"type4_body",
+      "vertices":   [ 0,106 ,  40,130 , 94,130 , 134,117, 134,15, 94,2, 40,2, 0,26 ],
+      "desiredSize":   [ 90,90 ]
+    },
+    {
+      "entity":"type4_shield",
+      "vertices": [  0,84 ,  19,169 , 21,124 , 21,45, 19,1 ],
+      "desiredSize":   [ 20,90 ]
+    },
+    {
+      "entity":"type4",
+      "vertices": [ 3,25 ,  29,25 , 29,2 , 3,2 ],
+      "desiredSize":   [ 35,17 ]
+    },
+    {
+      "entity":"type5",
+      "vertices": [ 1,116 ,  49,139 , 80,130 , 120,130, 154,139 , 218,158 , 300,155, 300,5, 218,2, 154,21, 120,31, 80,31, 49,21, 1,45 ],
+      "desiredSize":   [ 319,200 ]
+    },
+    {
+      "entity":"yellow_enemy",
+      "vertices": [ 78,430 ,  550,834 , 843,430 , 550,29],
+      "desiredSize":   [ 40,40 ]
+    },
+    {
+      "entity":"red_enemy", "vertices": [ 2,121 ,  98,175 , 166,160 , 166,17, 98,1, 2,57, 29,78, 29,100],
+      "desiredSize":   [ 90,90 ]
+    },
+    {
+      "entity":"blue_enemy",
+      "vertices": [7,213 ,  36,280 , 0,296 , 45,425, 118,213, 45,0, 0,130, 36,147 ],
+      "desiredSize":   [ 60,140 ]
+    },
+    {
+      "entity":"green_body",
+      "vertices": [ 0,127 ,  66,239 , 184,239 , 250,127 , 184,14 , 66,14],
+      "desiredSize":   [ 143,132 ]
+    },
+    {
+      "entity":"green_shield",
+      "vertices": [ 0,169 ,  149,312 , 175,288 , 94,158, 175,28, 149,0, 0,147],
+      "desiredSize":   [ 67,199 ]
+    },
+    {
+      "entity":"orange_enemy_body",
+      "vertices": [ 0,195 ,  184,330 , 184,530 , 0,660, 184,820, 355,850, 537,808, 677,700, 775,475, 716,205, 517,39, 355,0 , 184,40],
+      "desiredSize":   [ 256, 256 ]
+    },
+    {
+      "entity":"orange_enemy_shield",
+      "vertices": [4,231 ,  27,350 , 70,463 , 253,333, 253,127, 70,0, 27,93],
+      "desiredSize":   [ 81, 140 ]
+    },
+    {
+      "entity":"orange_enemy_cannon",
+      "vertices": [0,40 ,  65,68 , 65,1 , 0,28],
+      "desiredSize":   [ 40, 40 ]
+    },
+    {
+      "entity":"orange_enemy_main_cannon",
+      "vertices": [0,40 ,  65,68 , 65,1 , 0,28],
+      "desiredSize":   [ 50, 50 ]
+    },
+    {
+      "entity":"basic_shoot", "vertices": [ 0,0 , 0,20 , 40,20 , 40,0]
+    },
+    {
+      "entity":"bigshoot_shoot", "vertices": [ 0,0 , 0,40 , 155,40 , 155,0]
+    },
+    {
+      "entity":"blue_shoot",
+      "vertices": [  13,2 ,  13,192 , 40,148 , 120,145, 180,95, 120,50, 40,47 ],
+       "desiredSize":   [ 30, 25 ]
+    },
+      {
+      "entity":"green_shoot",
+      "vertices": [ 13,2 ,  13,192 , 40,148 , 120,145, 180,95, 120,50, 40,47 ],
+       "desiredSize":   [ 30, 25 ]
+    },
+    {
+      "entity":"yellow_shoot", "vertices": [ 0,0 , 0,13 , 100,13 , 100,0 ]
+    },
+    {
+      "entity":"orange_shoot", "vertices": [ 0,0 , 0,15 , 15,15 , 15,0 ]
+    },
+    {
+      "entity":"purple_body",
+      "vertices": [  0,430 ,  128,728 , 425,854 , 723,728, 846,430, 723,130, 425,3, 128,130 ],
+      "desiredSize":   [ 512,512 ]
+    },
+    {
+      "entity":"purple_shoot",
+      "vertices": [ 0,0 , 0,20 , 160,20 , 160,0 ]
+    },
+    {
+      "entity":"purple_eye_opened",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 64,64 ]
+    },
+    {
+      "entity":"purple_eye_closed",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 64,64 ]
+    },
+    {
+      "entity":"purple_eye_center_opened",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 128,128 ]
+    },
+    {
+      "entity":"purple_eye_center_closed",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 128,128 ]
+    },
+    {
+      "entity":"small_obstacle",
+      "vertices": [ 0,48 ,  4,175 , 21,210 , 130,295, 175,300, 220,296, 350,250, 370,180, 370,140, 285,40, 230,21, 125,18, 80,0 ],
+      "desiredSize":   [ 50,50 ]
+    },
+    {
+      "entity":"medium_obstacle",
+      "vertices": [  3,103 ,  5,266 , 96,343 , 140,350, 200,335, 285,300, 320,260, 350,100, 250,10, 175,1,  18,78 ],
+      "desiredSize":   [ 86,89 ]
+    },
+    {
+      "entity":"big_obstacle",
+      "vertices": [  0,150 ,  18,250 , 40,290 , 205,355, 223,355, 280,315, 320,145, 220,15, 160,1, 95,23],
+      "desiredSize":   [ 160,160 ]
+    },
+    {
+      "entity":"arcadeShip",
+      "vertices": [  250,872 ,  117,327 , 35,327 , 0,222, 0,139, 53,7, 508,7, 560,139, 560,222, 520,327, 445,327, 308,872 ],
+      "desiredSize":   [ 48,80 ]
+    },
+    {
+      "entity":"shieldProtection", "vertices": [ 0,25, 55,0, 110,25, 55,50 ]
+    },
+    {
+      "entity":"shieldEnemy",
+      "vertices": [ 0,0, 82,0, 82,81, 0,81 ],
+      "desiredSize":   [ 50,50 ]
+    },
+    {
+      "entity":"shieldPlayer",
+      "vertices": [ 0,0, 82,0, 82,81, 0,81 ],
+      "desiredSize":   [ 50,50 ]
+    },
+    {
+      "entity":"regLifeEnemy",
+      "vertices": [ 0,0, 82,0, 82,81, 0,81 ],
+      "desiredSize":   [ 50,50 ]
+    },
+    {
+      "entity":"regLifePlayer",
+      "vertices": [ 0,0, 82,0, 82,81, 0,81 ],
+      "desiredSize":   [ 50,50 ]
+    },
+    {
+      "entity":"burstEnemy",
+      "vertices": [ 0,0, 82,0, 82,81, 0,81 ],
+      "desiredSize":   [ 50,50 ]
+    },
+    {
+      "entity":"burstPlayer",
+      "vertices": [ 0,0, 82,0, 82,81, 0,81 ],
+      "desiredSize":   [ 50,50 ]
+    }
+  ]
+}
