@@ -7,8 +7,8 @@ android {
             storePassword 'android'
         }
     }
-    buildToolsVersion build_tools_version
-    compileSdkVersion android_compile_version
+    buildToolsVersion "27.0.3"
+    compileSdkVersion 20
 
     sourceSets {
         main {
@@ -28,8 +28,8 @@ android {
     }
     defaultConfig {
         applicationId "co.aeons.zombie.shooter"
-        minSdkVersion android_min_version
-        targetSdkVersion android_compile_version
+        minSdkVersion 14
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
     }
@@ -149,15 +149,4 @@ idea {
             }
         }
     }
-}
-
-dependencies {
-    compile "com.android.support:appcompat-v7:${appcompat_library_version}"
-    compile "com.android.support:support-v4:${support_library_version}"
-    compile "com.google.android.gms:play-services-games:${gms_library_version}"
-    compile "com.google.android.gms:play-services-plus:${gms_library_version}"
-    //debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    //testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    compile project(path: ':BaseGameUtils')
 }
