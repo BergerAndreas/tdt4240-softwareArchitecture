@@ -23,7 +23,6 @@ import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
 import co.aeons.zombie.shooter.entities.buttons.NukeButton;
 import co.aeons.zombie.shooter.factories.RandomButtonFactory;
-import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 
@@ -285,7 +284,6 @@ public class PlayState extends GameState {
                         zombies.remove(j);
                         j--;
 
-                        player.incrementScore(a.getScore());
                     }
 
                     Jukebox.play("zombieHit");

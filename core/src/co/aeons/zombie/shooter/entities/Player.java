@@ -15,8 +15,6 @@ public class Player extends SuperObject {
 	private Texture playerTexture;
 
 
-	private long score;
-
 	public Player(ArrayList<Bullet> bullets) {
 		
 		this.bullets = bullets;
@@ -26,7 +24,6 @@ public class Player extends SuperObject {
 
 		this.playerTexture = new Texture("nukjøyrarme.png");
 		
-		score = 0;
 
 	}
 
@@ -34,10 +31,6 @@ public class Player extends SuperObject {
 		super.setPosition(this.x, y);
 	}
 
-	
-	public long getScore() { return score; }
-
-	public void incrementScore(long l) { score += l; }
 	
 	public void shoot() {
 		if(bullets.size() == MAX_BULLETS) return;
@@ -47,12 +40,6 @@ public class Player extends SuperObject {
 	
 	public void update(float dt) {
 
-		// check extra lives
-		if(score >= requiredScore) {
-			extraLives++;
-			requiredScore += 10000;
-			Jukebox.play("extralife");
-		}
 	}
 
 	public void draw(SpriteBatch batch) {

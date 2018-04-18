@@ -1,17 +1,12 @@
 package co.aeons.zombie.shooter;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import co.aeons.zombie.shooter.managers.GameInputProcessor;
-import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 
@@ -52,9 +47,6 @@ public class ZombieShooter extends Game {
 		);
 		gamePort.apply();
 
-		Gdx.input.setInputProcessor(
-				new GameInputProcessor()
-		);
 
 		Jukebox.load("sounds/explode.ogg", "explode");
 		Jukebox.load("sounds/extralife.ogg", "extralife");
@@ -85,9 +77,6 @@ public class ZombieShooter extends Game {
 
 		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.draw();
-
-		GameKeys.update();
-
 	}
 
 	public void resize(int width, int height) {
