@@ -15,7 +15,9 @@ public class Bullet extends SuperObject {
 	private Sprite bullet;
 
 	private Rectangle bulletBounds;
-	
+
+	private int damage;
+
 	public Bullet(float x, float y) {
 		
 		this.x = x;
@@ -28,7 +30,9 @@ public class Bullet extends SuperObject {
 		dx = speed;
 
 		width = height = 2;
-		
+
+		this.damage = 5;
+
 		lifeTimer = 0;
 		lifeTime = 2;
 		bullet = new Sprite(new Texture("pistol1.png"));
@@ -59,6 +63,10 @@ public class Bullet extends SuperObject {
 
 	public Rectangle getRectangle() {
 		return bulletBounds;
+	}
+
+	public int getDamage() {
+		return damage;
 	}
 }
 
