@@ -31,8 +31,8 @@ import static co.aeons.zombie.shooter.ZombieShooter.cam;
 
 public class PlayState extends GameState {
 
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
+    protected SpriteBatch sb;
+    protected ShapeRenderer sr;
 
 
     private Player player;

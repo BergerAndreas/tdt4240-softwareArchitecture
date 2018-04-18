@@ -18,7 +18,7 @@ import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLAYER;
 
 public class MultiplayerGameState extends PlayState implements InputProcessor {
-    private SpriteBatch sb;
+
     // The second (online) player
     public static SecondPlayer secondPlayer;
 
@@ -112,22 +112,24 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
     public void init() {
         super.init();
 
+        // Create second player
         secondPlayer = new SecondPlayer(super.bullets);
-        
+
 
 
     }
 
     @Override
     public void update(float dt) {
+
         String s = "Connecting to server";
         if (ZombieShooter.googleServices.getMultiplayerState().equals(STARTMULTIPLAYER)) {
-            sb.begin();
+            super.sb.begin();
             infoMessage.getData().setScale(2, 2);
             layout.setText(infoMessage, s);
             float width = layout.width;
-            infoMessage.draw(sb, s, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
-            sb.end();
+            infoMessage.draw(super.sb, s, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
+            super.sb.end();
         }
         updateReady(dt);
         //FontManager.text.draw(SpaceGame.batch,infoMessage,SpaceGame.width/3,SpaceGame.height/2);
@@ -140,12 +142,12 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
                 if (timeToStartGame > 0) {
                     String s = "startGame" + (int) timeToStartGame;
                     // Informaremos al jugador cuanto tiempo queda para empezar la partida
-                    sb.begin();
+                    super.sb.begin();
                     infoMessage.getData().setScale(2, 2);
                     layout.setText(infoMessage, s);
                     float width = layout.width;
-                    infoMessage.draw(sb, s, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
-                    sb.end();
+                    infoMessage.draw(super.sb, s, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
+                    super.sb.end();
                     timeToStartGame -= dt;
                 } else {
                     // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
@@ -164,6 +166,7 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
     public void updateStart(float dt) {
         updateIncomeMessage(dt);
         updateOutComeMessage(dt);
+        super.update(dt);
 
         if (timeToLeftGame > 0) {
             timeToLeftGame -= dt;
@@ -174,7 +177,7 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
             }
         }
 
-        renderLose(dt);
+        //renderLose(dt);
 
         //Act here
     }
@@ -256,13 +259,13 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
 
     @Override
     public void draw() {
-
+        super.draw();
     }
 
 
     @Override
     public void dispose() {
-
+        super.dispose();
     }
 
     @Override
