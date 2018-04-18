@@ -9,8 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
 import co.aeons.zombie.shooter.ZombieShooter;
-import co.aeons.zombie.shooter.entities.multiplayerMode.FirstPlayer;
-import co.aeons.zombie.shooter.entities.multiplayerMode.SecondPlayer;
+import co.aeons.zombie.shooter.entities.SecondPlayer;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
@@ -20,8 +19,6 @@ import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLA
 
 public class MultiplayerGameState extends PlayState implements InputProcessor {
     private SpriteBatch sb;
-    // The first player
-    public static FirstPlayer firstPlayer;
     // The second (online) player
     public static SecondPlayer secondPlayer;
 
@@ -78,12 +75,6 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
     public MultiplayerGameState(GameStateManager gsm, String option) {
         super(gsm);
 
-        //TODO: Initialize background here
-
-        sb = new SpriteBatch();
-        sb.setProjectionMatrix(cam.combined);
-
-
         outcomeMessage = new MultiplayerMessage();
         incomeMessage = new MultiplayerMessage();
 
@@ -99,9 +90,6 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
 
         timeToStartGame = MAX_TIME_TO_START_GAME;
         timeToLeftGame = MAX_TIME_TO_LEFT_GAME;
-
-        firstPlayer = new FirstPlayer();
-        secondPlayer = new SecondPlayer();
 
         abandonFirstPlayer = false;
         abandonSecondPlayer = false;
@@ -124,6 +112,8 @@ public class MultiplayerGameState extends PlayState implements InputProcessor {
     public void init() {
         super.init();
 
+        secondPlayer = new SecondPlayer(super.bullets);
+        
 
 
     }
