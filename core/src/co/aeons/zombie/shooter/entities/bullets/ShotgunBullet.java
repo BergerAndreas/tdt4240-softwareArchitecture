@@ -1,4 +1,4 @@
-package co.aeons.zombie.shooter.entities;
+package co.aeons.zombie.shooter.entities.bullets;
 
 
 import com.badlogic.gdx.graphics.Texture;
