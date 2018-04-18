@@ -16,8 +16,9 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 public class Player extends SuperObject {
 	
 	private ArrayList<Bullet> bullets;
-	private HashMap<String, Weapon> weapons;
+	private ArrayList<Weapon> weapons;
 	private Weapon currentWeapon;
+	private int currentWeaponIndex;
 
 	private Texture playerTexture;
 
@@ -30,17 +31,22 @@ public class Player extends SuperObject {
 	private int extraLives;
 	private long requiredScore;
 
+	int testThing = 0;
 	
 	public Player(ArrayList<Bullet> bullets) {
 		
 		this.bullets = bullets;
-		this.weapons = new HashMap<String, Weapon>();
+		this.weapons = new ArrayList<Weapon>();
+		this.weapons.add(new Pistol(x, y));
+		this.weapons.add(new Shotgun(x, y));
+
+		this.currentWeaponIndex = 0;
+		this.currentWeapon = weapons.get(currentWeaponIndex);
 
 		x = 50;
 		y = ZombieShooter.HEIGHT / 2;
 
-		weapons.put("Pistol", new Pistol(getx(), gety()));
-		weapons.put("Shotgun", new Shotgun(getx(), gety()));
+
 		this.playerTexture = new Texture("nukjøyrarme.png");
 		
 		score = 0;
@@ -67,8 +73,17 @@ public class Player extends SuperObject {
 	public void loseLife() { extraLives--; }
 	public void incrementScore(long l) { score += l; }
 
-	public void setCurrentWeapon(String key){
-		this.currentWeapon = weapons.get(key);
+	public void nextWeapon() {
+		currentWeaponIndex ++;
+		this.currentWeapon = weapons.get(currentWeaponIndex % weapons.size());
+	}
+
+	public void prevWeapon() {
+		currentWeaponIndex --;
+		if(currentWeaponIndex < 0) {
+			currentWeaponIndex = weapons.size() - 1;
+		}
+		this.currentWeapon = weapons.get(currentWeaponIndex);
 	}
 
 	public Weapon getCurrentWeapon() {
@@ -76,7 +91,7 @@ public class Player extends SuperObject {
 	}
 
 	public void shoot() {
-		for (Bullet bullet : weapons.get("Shotgun").shoot()) {
+		for (Bullet bullet : currentWeapon.shoot()) {
 			bullet.setY(this.y);
 			bullets.add(bullet);
 		}
@@ -85,12 +100,20 @@ public class Player extends SuperObject {
 	
 	public void update(float dt) {
 		// check extra lives
+
+		testThing ++;
+
+		if(testThing % 50 == 0) {
+			nextWeapon();
+			System.out.println("New weapon");
+		}
+
 		if(score >= requiredScore) {
 			extraLives++;
 			requiredScore += 10000;
 			Jukebox.play("extralife");
 		}
-		for(Weapon weapon : weapons.values()) {
+		for(Weapon weapon : weapons) {
 			weapon.update(dt);
 		}
 	}
