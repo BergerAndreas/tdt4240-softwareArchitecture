@@ -39,7 +39,7 @@ public class MultiplayerMessage {
 
         // Al principio la posición inicial es la mitad de la altura
         // TODO Esto deben de recogerlo de cada clase, no puesto aqui
-        positionY = ZombieShooter.cam.viewportHeight/2;
+        positionY = 130;//TODO: FIx ZombieShooter.cam.viewportHeight/2;
     }
 
     public void resetOperations(){
