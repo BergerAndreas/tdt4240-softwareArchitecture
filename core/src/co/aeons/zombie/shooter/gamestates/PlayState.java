@@ -161,6 +161,8 @@ public class PlayState extends GameState implements InputProcessor {
         bgTimer = maxDelay;
         musicStarted = false;
 
+        Gdx.input.setInputProcessor(this);
+
     }
 
 
@@ -404,6 +406,14 @@ public class PlayState extends GameState implements InputProcessor {
         if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
             //stage.touchDown(x, y, pointer, button);
             onEffectButtonPressed();
+        }
+
+        if (cycleUpButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onCycleUpPressed();
+        }
+
+        if (cycleDownButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onCycleDownPressed();
         }
 
         return true;
