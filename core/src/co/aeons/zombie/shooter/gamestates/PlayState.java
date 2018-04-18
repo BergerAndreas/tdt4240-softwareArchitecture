@@ -36,7 +36,7 @@ public class PlayState extends GameState implements InputProcessor {
     protected ShapeRenderer sr;
 
 
-    private Player player;
+    protected Player player;
     protected ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
     private Wall wall;
@@ -72,7 +72,7 @@ public class PlayState extends GameState implements InputProcessor {
     //Flag to check if powerup is used
     private boolean isClicked;
 
-    private Stage stage;
+    protected Stage stage;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
