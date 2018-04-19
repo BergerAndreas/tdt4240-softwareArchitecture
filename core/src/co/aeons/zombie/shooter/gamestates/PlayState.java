@@ -74,6 +74,13 @@ public class PlayState extends GameState implements InputProcessor {
     private float spawnCooldown;
     private float spawnTimer;
 
+    //Duration of an effect
+    private int effectTimer;
+
+    //DamageModifier
+    private int damageModifier;
+
+
     //Flag to check if powerup is used
     private boolean isClicked;
 
@@ -108,7 +115,8 @@ public class PlayState extends GameState implements InputProcessor {
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
         isClicked = true;
-
+        damageModifier = 1;
+        effectTimer = 0;
 
         //Button initialization
         buttonFactory = new RandomButtonFactory(cam);
@@ -188,6 +196,13 @@ public class PlayState extends GameState implements InputProcessor {
         // check collision
         checkCollisions();
 
+        // reset modifier
+        effectTimer -= dt;
+        System.out.println(effectTimer);
+        if(effectTimer <= 0) {
+            resetEffects();
+        }
+
         // next level
         spawnTimer += dt;
         if (Math.floor(spawnTimer) != spawnCooldown) {
@@ -247,6 +262,12 @@ public class PlayState extends GameState implements InputProcessor {
         }
     }
 
+    //Insert new modifierresets here
+    private void resetEffects() {
+        this.damageModifier = 1;
+        this.effectTimer = 0;
+    }
+
     private void checkCollisions() {
         //zombie-wall collision
         for (int i = 0; i < zombies.size(); i++) {
@@ -267,7 +288,7 @@ public class PlayState extends GameState implements InputProcessor {
                     bullets.remove(i);
                     i--;
 
-                    a.getHurt(b.getDamage());
+                    a.getHurt(b.getDamage()*damageModifier);
 
                     if (a.getHealth() <= 0){
                         zombies.remove(j);
@@ -366,10 +387,19 @@ public class PlayState extends GameState implements InputProcessor {
         player.prevWeapon();
     }
 
+    //Getters and setters
     public ArrayList<Zombie> getZombies() {
         return zombies;
     }
 
+
+    public void setDamageModifier(int damageModifier) {
+        this.damageModifier = damageModifier;
+    }
+
+    public void setEffectTimer(int effectTimer) {
+        this.effectTimer = effectTimer;
+    }
     @Override
     public boolean keyDown(int keycode) {
         return false;

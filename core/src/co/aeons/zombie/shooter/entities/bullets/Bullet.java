@@ -34,7 +34,7 @@ public class Bullet extends SuperObject {
 
 		width = height = 2;
 
-		this.damage = 10;
+		this.damage = 5;
 
 		lifeTimer = 0;
 		lifeTime = 2;
