@@ -14,7 +14,8 @@ public class Shotgun extends Weapon{
     public Shotgun(float x, float y) {
         super(x, y);
         clipSize = 4;
-        reloadTime = 3;
+        reloadTime = 1.5f;
+        fireRate = 0.7f;
         bullets = new LinkedList<Bullet>();
         pelletCount = 24;
         reload();
@@ -25,12 +26,14 @@ public class Shotgun extends Weapon{
     @Override
     public ArrayList<Bullet> shoot() {
         ArrayList<Bullet> output = new ArrayList<Bullet>();
-        if(!isReloading) {
+        if(!isReloading && !isFired) {
             if(!bullets.isEmpty()){
                 for (int i = 0; i < pelletCount; i++) {
                     output.add(getNewBullet());
                 }
                 bullets.poll();
+                isFired = true;
+                fireRate = 0.7f;
             }else reload();
         }else System.out.println("Reloading!");
         return output;
