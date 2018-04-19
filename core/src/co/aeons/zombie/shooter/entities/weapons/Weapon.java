@@ -12,12 +12,14 @@ public abstract class Weapon {
 
     protected Texture weaponTexture;
     protected String texturePath;
-    protected int fireRate;
+    protected float fireRate;
+
     protected int clipSize;
     protected Queue<Bullet> bullets;
 
     protected boolean isReloading;
     protected float reloadTime;
+    protected boolean isFired;
 
     protected float x;
     protected float y;
@@ -28,6 +30,7 @@ public abstract class Weapon {
         this.x = x;
         this.y = y;
         isReloading = false;
+        isFired = false;
     }
 
     public abstract ArrayList<Bullet> shoot();
@@ -38,9 +41,14 @@ public abstract class Weapon {
 
     public void update(float dt) {
         reloadTime -= dt;
+        fireRate -= dt;
         if(reloadTime <= 0) {
             isReloading = false;
         }
+        if(fireRate <= 0) {
+            isFired = false;
+        }
+
     }
 
     public void draw(SpriteBatch sb){
