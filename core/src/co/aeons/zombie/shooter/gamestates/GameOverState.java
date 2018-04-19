@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,13 +11,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import java.util.Scanner;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.Save;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
+import static java.awt.Event.ENTER;
 
 
 public class GameOverState extends GameState {
@@ -26,8 +32,7 @@ public class GameOverState extends GameState {
 	private Skin skin;
 	
 	private boolean newHighScore;
-	private char[] newName;
-	private int currentChar;
+	private TextField usernameTextField;
 
 	private BitmapFont font;
 	private GlyphLayout layout;
@@ -47,6 +52,15 @@ public class GameOverState extends GameState {
 		stage = new Stage(gamePort);
 		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
 
+		newHighScore = Save.gd.isHighScore(Save.gd.getTentativeScore());
+		if(newHighScore){
+			usernameTextField = new TextField("", skin);
+			usernameTextField.setSize(100, 15);
+			usernameTextField.setPosition((ZombieShooter.WIDTH - usernameTextField.getWidth())/2,(ZombieShooter.HEIGHT - usernameTextField.getHeight())/2);
+		}
+
+
+
 		// Control inputs
 		Gdx.input.setInputProcessor(this.stage);
 		InitMenu();
@@ -55,7 +69,9 @@ public class GameOverState extends GameState {
 
 
     public void update(float dt) {
-
+		if(!newHighScore){
+			return;
+		}
     }
 
     public void draw() {
@@ -70,7 +86,27 @@ public class GameOverState extends GameState {
         float width = layout.width;
 
 //        Draw on screen
-        font.draw(sb, s, (ZombieShooter.WIDTH - width) / 2, ZombieShooter.HEIGHT - 25);
+        font.draw(sb, layout, (ZombieShooter.WIDTH - width) / 2, ZombieShooter.HEIGHT - 25);
+
+//        If a new highscore is not achieved, DO NOT display the below
+		if(newHighScore){
+			layout.setText(font, "New Highscore: " + Save.gd.getTentativeScore());
+			font.draw(sb, layout, (ZombieShooter.WIDTH)/2, 180);
+			stage.act();
+			stage.addActor(usernameTextField);
+			Gdx.input.setInputProcessor(stage);
+			stage.draw();
+
+//			TODO: if user entered name, do this
+			if(true){
+				Save.gd.addHighScore(Save.gd.getTentativeScore(), usernameTextField.getText());
+				Save.save();
+//				gsm.setState(GameStateManager.HIGHSCORE);
+			}
+
+			sb.end();
+			return;
+		}
 
         sb.end();
 

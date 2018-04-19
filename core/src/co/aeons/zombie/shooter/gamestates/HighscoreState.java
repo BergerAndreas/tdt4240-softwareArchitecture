@@ -43,8 +43,8 @@ public class HighscoreState extends GameState {
         font = new BitmapFont();
         stage = new Stage(gamePort);
         layout = new GlyphLayout();
-        System.out.println("HIGHSCORES");
 
+//        Load save file to screen
         Save.load();
         highscores = Save.gd.getHighScores();
         names = Save.gd.getNames();
