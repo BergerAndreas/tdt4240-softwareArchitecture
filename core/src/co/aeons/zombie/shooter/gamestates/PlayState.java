@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
@@ -26,7 +29,6 @@ import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
-import co.aeons.zombie.shooter.entities.buttons.NukeButton;
 import co.aeons.zombie.shooter.factories.RandomButtonFactory;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
@@ -38,12 +40,14 @@ public class PlayState extends GameState {
 
     protected SpriteBatch sb;
     protected ShapeRenderer sr;
-
+    private BitmapFont scoreFont, magazineFont, wallHealthFont;
+    private GlyphLayout layout;
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
     private Wall wall;
+    private long score;
 
     //Boundaries
     private Rectangle playerLane;
@@ -96,6 +100,10 @@ public class PlayState extends GameState {
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
+        scoreFont = new BitmapFont();
+        wallHealthFont = new BitmapFont();
+        magazineFont = new BitmapFont();
+        layout = new GlyphLayout();
 
         //sets up camera
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
@@ -131,8 +139,8 @@ public class PlayState extends GameState {
                 cam.viewportHeight / 6
         );
         muteBounds = new Rectangle(
-                cam.viewportWidth - 100,
-                cam.viewportHeight - 75,
+                cam.viewportWidth - 50,
+                cam.viewportHeight - 50,
                 cam.viewportWidth / 16,
                 cam.viewportHeight / 16
         );
@@ -295,7 +303,7 @@ public class PlayState extends GameState {
                     if (a.getHealth() <= 0){
                         zombies.remove(j);
                         j--;
-
+                        this.incrementScore(a.getScore());
                     }
 
                     Jukebox.play("zombieHit");
@@ -335,6 +343,23 @@ public class PlayState extends GameState {
         // draw buttons
         sb.setColor(0, 1, 1, 1);
         sb.begin();
+
+
+//        Various HUDs
+
+//        Score
+        String scoreOutput = "Score: " + Long.toString(this.getScore());
+        this.layout.setText(scoreFont, scoreOutput);
+        scoreFont.draw(sb, layout, (this.wall.getx() - layout.width)/2, cam.viewportHeight-5);
+//        Magazine-size
+        String magazineOutput = Integer.toString(player.getCurrentWeapon().getRemainingBullets()) + "/" + Integer.toString(player.getCurrentWeapon().getClipSize());
+        this.layout.setText(magazineFont, magazineOutput);
+        scoreFont.draw(sb, layout, cam.viewportWidth - 250, (fireButton.getY() + fireBounds.getHeight())/2);
+//        Wall-health
+        String wallHealthOutput = "❤" + Integer.toString(this.wall.getHealth());
+        this.layout.setText(wallHealthFont, wallHealthOutput);
+        scoreFont.draw(sb, layout, (this.wall.getx()+this.wall.getRectangle().getWidth())/2 + 25, (this.wall.gety()+this.wall.getRectangle().getHeight())/2);
+
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
         effectButton.draw(sb, 1);
@@ -463,4 +488,21 @@ public class PlayState extends GameState {
 
     }
 
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public void incrementScore(long score) {
+        this.score += score;
+    }
 }

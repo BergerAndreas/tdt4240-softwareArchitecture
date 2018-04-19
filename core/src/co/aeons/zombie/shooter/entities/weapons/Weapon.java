@@ -53,6 +53,14 @@ public abstract class Weapon {
         return reloadTime;
     }
 
+    public int getRemainingBullets() {
+        return bullets.size();
+    }
+
+    public int getClipSize() {
+        return clipSize;
+    }
+
     public String getTexturePath() {
         return texturePath;
     }
