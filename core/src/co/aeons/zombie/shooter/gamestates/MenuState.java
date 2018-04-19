@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 
+import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
 public class MenuState extends GameState {
@@ -53,7 +54,7 @@ public class MenuState extends GameState {
 
         TextButton singleplayerButton = new TextButton("Singleplayer", skin);
         TextButton multiplayerButton = new TextButton("Multiplayer", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
+        TextButton difficultyButton = new TextButton("Difficulty", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         //Add listeners to buttons
@@ -70,6 +71,12 @@ public class MenuState extends GameState {
                 gsm.setState(GameStateManager.MULTIPLAYERMENU);
             }
         });
+        difficultyButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.DIFFICULTY);
+            }
+        });
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -79,14 +86,14 @@ public class MenuState extends GameState {
 
 
         //Add buttons to table
-        mainTable.add(singleplayerButton);
+        mainTable.add(singleplayerButton).width(150).pad(5);
         mainTable.row();
-        mainTable.add(multiplayerButton);
+        mainTable.add(multiplayerButton).width(150).pad(5);
         mainTable.row();
-        mainTable.add(optionsButton);
-        mainTable.row();
-        mainTable.add(exitButton);
+        mainTable.add(difficultyButton).width(150).pad(5);
+        exitButton.setPosition((cam.viewportWidth - exitButton.getWidth())/2, 50);
         stage.addActor(mainTable);
+        stage.addActor(exitButton);
 
 
     }
