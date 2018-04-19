@@ -30,6 +30,7 @@ import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
 import co.aeons.zombie.shooter.factories.RandomButtonFactory;
+import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 
@@ -193,8 +194,8 @@ public class PlayState extends GameState {
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
-            zombies.add(new Trump(x, y));
-            zombies.add(new Zombie(x, y));
+            zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
+            zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
@@ -202,7 +203,6 @@ public class PlayState extends GameState {
     }
 
     public void update(float dt) {
-
         // check collision
         checkCollisions();
 
