@@ -24,6 +24,7 @@ public class InstaKill extends EffectButton {
 
     @Override
     public void effect(PlayState playState) {
-        System.out.println("Dåse");
+        playState.setDamageModifier(100000);
+        playState.setEffectTimer(500);
     }
 }

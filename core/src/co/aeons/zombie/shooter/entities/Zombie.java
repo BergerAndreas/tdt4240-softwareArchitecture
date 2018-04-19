@@ -25,7 +25,7 @@ public class Zombie extends SuperObject {
 	protected float speed;
 	protected float dx;
 
-	protected float healt;
+	protected float health;
 
     private float attackTimer;
     private float attackCooldown;
@@ -48,7 +48,7 @@ public class Zombie extends SuperObject {
 		dx = -50;
 		dy = 0;
 
-		this.healt = 10;
+		this.health = 10;
 
 		createIdleAnimation();
 		createAttackAnimation();
@@ -126,7 +126,7 @@ public class Zombie extends SuperObject {
             if (Math.floor(attackTimer % 2) == 0) {
 
                 if (attackCounter == 0) {
-                    // Extra counter needed for weired timer behvior
+                    // Extra counter needed for weired timer behavior
                     attackCounter++;
                     System.out.println("Zombie Attack!");
                     return 10;
@@ -139,11 +139,11 @@ public class Zombie extends SuperObject {
         } else return 0;
     }
 
-    public float getHealt(){
-		return this.healt;
+    public float getHealth(){
+		return this.health;
 	}
 
 	public void getHurt(float damage){
-		this.healt -= damage;
+		this.health -= damage;
 	}
 }

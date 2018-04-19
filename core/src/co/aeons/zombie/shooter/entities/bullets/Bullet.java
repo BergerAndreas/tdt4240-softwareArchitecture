@@ -1,21 +1,26 @@
-package co.aeons.zombie.shooter.entities;
+package co.aeons.zombie.shooter.entities.bullets;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import co.aeons.zombie.shooter.entities.SuperObject;
+
 public class Bullet extends SuperObject {
 	
-	private float lifeTime;
-	private float lifeTimer;
+	protected float lifeTime;
+	protected float lifeTimer;
 
-	private boolean remove;
+	protected boolean remove;
 
-	private Sprite bullet;
+	protected Sprite bullet;
 
-	private Rectangle bulletBounds;
-	
+	protected Rectangle bulletBounds;
+
+	protected int damage;
+	protected float speed;
+
 	public Bullet(float x, float y) {
 		
 		this.x = x;
@@ -24,11 +29,13 @@ public class Bullet extends SuperObject {
 		this.height = 10;
 		this.width = 10;
 
-		float speed = 350;
+		this.speed = 350;
 		dx = speed;
 
 		width = height = 2;
-		
+
+		this.damage = 5;
+
 		lifeTimer = 0;
 		lifeTime = 2;
 		bullet = new Sprite(new Texture("pistol1.png"));
@@ -60,6 +67,21 @@ public class Bullet extends SuperObject {
 	public Rectangle getRectangle() {
 		return bulletBounds;
 	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setY(float y) {
+	    this.y = y;
+    }
+
+    public void setX(float x) { this.x = x; }
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
 }
 
 
