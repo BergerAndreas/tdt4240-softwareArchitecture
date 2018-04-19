@@ -13,6 +13,7 @@ public abstract class Weapon {
     protected Texture weaponTexture;
     protected String texturePath;
     protected float fireRate;
+
     protected int clipSize;
     protected Queue<Bullet> bullets;
 
@@ -58,6 +59,14 @@ public abstract class Weapon {
 
     public float getReloadTime() {
         return reloadTime;
+    }
+
+    public int getRemainingBullets() {
+        return bullets.size();
+    }
+
+    public int getClipSize() {
+        return clipSize;
     }
 
     public String getTexturePath() {

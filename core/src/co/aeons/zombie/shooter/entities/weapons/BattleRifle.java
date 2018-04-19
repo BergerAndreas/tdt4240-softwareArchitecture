@@ -18,6 +18,7 @@ public class BattleRifle extends Weapon {
 
         clipSize = 36;
         fireRate = 0.5f;
+
         texturePath = "weapons/assault1.png";
         weaponTexture = new Texture(texturePath);
         bullets = new LinkedList<Bullet>();

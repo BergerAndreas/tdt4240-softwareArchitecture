@@ -15,6 +15,7 @@ public class Pistol extends Weapon {
         super(x, y);
         clipSize = 12;
         fireRate = 0.3f;
+
         texturePath = "weapons/pistol1.png";
         weaponTexture = new Texture(texturePath);
         bullets = new LinkedList<Bullet>();

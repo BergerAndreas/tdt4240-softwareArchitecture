@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import co.aeons.zombie.shooter.ZombieShooter;
@@ -167,6 +168,8 @@ public class MultiplayerGameState extends PlayState {
         updateOutComeMessage(dt);
         super.update(dt);
 
+
+        /*
         if (timeToLeftGame > 0) {
             timeToLeftGame -= dt;
         } else {
@@ -175,8 +178,8 @@ public class MultiplayerGameState extends PlayState {
                 gsm.setState(GameStateManager.MENU);
             }
         }
+        */
 
-        //renderLose(dt);
 
         //Act here
     }
@@ -218,6 +221,7 @@ public class MultiplayerGameState extends PlayState {
         */
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
+        secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
         System.out.println("getpositiony: " + incomeMessage.getPositionY());
 
         // Reset for next update
@@ -228,8 +232,9 @@ public class MultiplayerGameState extends PlayState {
 
     public void updateOutComeMessage(float dt) {
         //Update outcome message
-        Vector3 coordinates = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        outcomeMessage.setPositionY(Gdx.input.getY());
+        Vector2 tmpVec =  new Vector2();
+        stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(),Gdx.input.getY()));
+        outcomeMessage.setPositionY(tmpVec.y);
 
         //Finally we send the message
 
@@ -241,24 +246,12 @@ public class MultiplayerGameState extends PlayState {
 
     }
 
-    public void renderLose(float dt) {
-        if (abandonFirstPlayer) {
-
-            System.out.println("multiplayergameabandon");
-        }
-        //FontManager.draw(FontManager.getFromBundle("multiplayerGamePlayerAbandon"), SpaceGame.height / 2 - 50);
-        System.out.println("multiplayergamelose");
-        //FontManager.draw(FontManager.getFromBundle("multiplayerGameLoose"), SpaceGame.height / 2);
-
-        if (timeToLeftGame <= 0) {
-            System.out.println("multiplayergameext");
-            //FontManager.draw(FontManager.getFromBundle("multiplayerGameExit"), SpaceGame.height / 2 + 50);
-        }
-    }
 
     @Override
     public void draw() {
         super.draw();
+        //Draw other player
+        secondPlayer.draw(super.sb);
     }
 
 
