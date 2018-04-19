@@ -128,7 +128,8 @@ public class Zombie extends SuperObject {
                 if (attackCounter == 0) {
                     // Extra counter needed for weired timer behavior
                     attackCounter++;
-                    System.out.println("Zombie Attack!");
+                    //TODO: Uncomment me to print zombie attack
+                    //System.out.println("Zombie Attack!");
                     return 10;
                 } else return 0;
 

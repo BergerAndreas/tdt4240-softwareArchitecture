@@ -200,7 +200,8 @@ public class PlayState extends GameState {
 
         // reset modifier
         effectTimer -= dt;
-        System.out.println(effectTimer);
+        //TODO: Unccoment me to print effect timer
+        // System.out.println(effectTimer);
         if(effectTimer <= 0) {
             resetEffects();
         }
@@ -386,14 +387,16 @@ public class PlayState extends GameState {
     }
 
     private void onCycleUpPressed() {
-        System.out.println("Next Weapon");
+        //TODO: Uncomment me to print next weapon
+        //System.out.println("Next Weapon");
         player.nextWeapon();
         reloadFireButtonTexture();
     }
 
     private void onCycleDownPressed(){
         player.prevWeapon();
-        System.out.println("Previous Weapon");
+        //TODO: Uncomment me to print previous weapon
+        //System.out.println("Previous Weapon");
         reloadFireButtonTexture();
     }
 

@@ -311,6 +311,15 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		resetMultiplayerProperties();
 	}
 
+	@Override
+	public ArrayList<String> getPlayerIds(){
+		ArrayList<String> players = new ArrayList<>();
+		for (Participant p: participants){
+			players.add(p.getParticipantId());
+		}
+		return players;
+	}
+
 	// Método privado usado para resetear las propiedades del multijugador
 	private void resetMultiplayerProperties(){
 		multiplayerState		= MultiplayerState.NONE;
