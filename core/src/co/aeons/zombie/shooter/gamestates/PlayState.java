@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -34,6 +35,7 @@ public class PlayState extends GameState {
 
     private SpriteBatch sb;
     private ShapeRenderer sr;
+    private BitmapFont scoreFont, magazineFont, wallHealthFont;
 
     private Player hudPlayer;
 
@@ -87,6 +89,7 @@ public class PlayState extends GameState {
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
+        font = new BitmapFont();
 
         //sets up camera
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
@@ -230,6 +233,14 @@ public class PlayState extends GameState {
         if (player.isDead()) {
             if (player.getLives() == 0) {
                 Jukebox.stopAll();
+//               TODO: Let player write name in "highscores" if he makes the list
+//                if(player.getScore() > SAVEFILE.HIGHSCORE[LAST]){
+//                    gsm.setState(GameStateManager.HIGHSCORE);
+//                }
+//                if(player.getScore() > 100){
+//                    gsm.setState(GameStateManager.NEW_HIGHSCORE);
+//                    return;
+//                }
                 gsm.setState(GameStateManager.GAMEOVER);
                 return;
             }
@@ -306,7 +317,6 @@ public class PlayState extends GameState {
                     if (a.getHealt() <= 0){
                         zombies.remove(j);
                         j--;
-
                         player.incrementScore(a.getScore());
                     }
 
@@ -341,6 +351,15 @@ public class PlayState extends GameState {
         // draw buttons
         sb.setColor(0, 1, 1, 1);
         sb.begin();
+
+//        HUD for score, magazine, and wallhealth
+        String scoreOutput = "Score: " + Long.toString(player.getScore());
+        String magazineOutput = Long.toString(player.getWeapon().bulletCount()) + "/∞";
+        String wallHealthOutput = "Score: " + Long.toString(player.getScore());
+        scoreFont.draw(sb, scoreOutput, 0, cam.viewportHeight);
+        scoreFont.draw(sb, scoreOutput, 0, cam.viewportHeight);
+        scoreFont.draw(sb, scoreOutput, 0, cam.viewportHeight);
+
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
         effectButton.draw(sb, 1);
