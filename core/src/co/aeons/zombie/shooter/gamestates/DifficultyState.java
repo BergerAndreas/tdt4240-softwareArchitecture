@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
@@ -59,30 +60,34 @@ public class DifficultyState extends GameState {
         final TextButton jesusButton = new TextButton("Jesus Take The Wheel", skin);
         TextButton backButton = new TextButton("Back", skin);
 
-        s = ezButton.getText().toString();
+        s = "";
 
         //Add listeners to buttons
         ezButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Difficulty.setDifficulty(1);
                 s = ezButton.getText().toString();
             }
         });
         hotButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Difficulty.setDifficulty(2);
                 s = hotButton.getText().toString();
             }
         });
         spicyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Difficulty.setDifficulty(3);
                 s = spicyButton.getText().toString();
             }
         });
         jesusButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Difficulty.setDifficulty(4);
                 s = jesusButton.getText().toString();
             }
         });

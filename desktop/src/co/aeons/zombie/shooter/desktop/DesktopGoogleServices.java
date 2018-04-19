@@ -66,4 +66,14 @@ public class DesktopGoogleServices implements IGoogleServices
     public MultiplayerMessage receiveGameMessage() {
         return null;
     }
+
+    @Override
+    public String getHostId() {
+        return null;
+    }
+
+    @Override
+    public String getMyId() {
+        return null;
+    }
 }

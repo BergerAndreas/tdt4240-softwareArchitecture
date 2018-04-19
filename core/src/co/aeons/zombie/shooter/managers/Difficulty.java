@@ -4,8 +4,9 @@ public class Difficulty {
     private static Difficulty ourInstance = new Difficulty();
     private static int difficulty = 1;
 
-    public void setDifficulty(int difficulty){
-        difficulty = difficulty;
+    public static void setDifficulty(int d){
+        difficulty = d;
+        System.out.println(getDifficulty());
     }
 
     public static int getDifficulty(){
