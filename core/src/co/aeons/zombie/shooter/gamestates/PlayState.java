@@ -7,6 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -32,14 +36,14 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 
-public class PlayState extends GameState implements InputProcessor {
+public class PlayState extends GameState {
 
     protected SpriteBatch sb;
     protected ShapeRenderer sr;
     private BitmapFont scoreFont, magazineFont, wallHealthFont;
     private GlyphLayout layout;
 
-    private Player player;
+    protected Player player;
     protected ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
     private Wall wall;
@@ -86,7 +90,7 @@ public class PlayState extends GameState implements InputProcessor {
     //Flag to check if powerup is used
     private boolean isClicked;
 
-    private Stage stage;
+    protected Stage stage;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -176,7 +180,7 @@ public class PlayState extends GameState implements InputProcessor {
         musicStarted = false;
 
         Gdx.input.setInputProcessor(this);
-
+        Gdx.input.setCatchBackKey(true);
     }
 
 
@@ -191,7 +195,7 @@ public class PlayState extends GameState implements InputProcessor {
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
             zombies.add(new Trump(x, y));
             zombies.add(new Zombie(x, y));
-            // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi 
+            // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
 
@@ -316,7 +320,7 @@ public class PlayState extends GameState implements InputProcessor {
 
         // draw player
         player.draw(sb);
-        
+
         // draw bullets
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(sb);
@@ -329,6 +333,12 @@ public class PlayState extends GameState implements InputProcessor {
 
         // draw wall
         wall.draw(sb);
+
+        //Draw firebutton background rect
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(Color.DARK_GRAY);
+        sr.rect(fireBounds.x, fireBounds.y, fireBounds.width, fireBounds.height);
+        sr.end();
 
         // draw buttons
         sb.setColor(0, 1, 1, 1);
@@ -403,11 +413,18 @@ public class PlayState extends GameState implements InputProcessor {
     private void onCycleUpPressed() {
         System.out.println("Next Weapon");
         player.nextWeapon();
+        reloadFireButtonTexture();
     }
 
     private void onCycleDownPressed(){
-        System.out.println("Previous Weapon");
         player.prevWeapon();
+        System.out.println("Previous Weapon");
+        reloadFireButtonTexture();
+    }
+
+    private void reloadFireButtonTexture() {
+        fireButton.setTexturePath(player.getCurrentWeapon().getTexturePath());
+        fireButton.loadTextureRegion();
     }
 
     //Getters and setters
@@ -423,21 +440,6 @@ public class PlayState extends GameState implements InputProcessor {
     public void setEffectTimer(int effectTimer) {
         this.effectTimer = effectTimer;
     }
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         //Need to have this or buttons won't work
@@ -470,11 +472,6 @@ public class PlayState extends GameState implements InputProcessor {
         }
 
         return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
     }
 
     @Override
