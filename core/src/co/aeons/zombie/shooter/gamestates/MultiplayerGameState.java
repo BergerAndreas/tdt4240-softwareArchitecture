@@ -27,6 +27,9 @@ public class MultiplayerGameState extends PlayState {
     // The second (online) player
     public static SecondPlayer secondPlayer;
 
+    //Check if we're host
+    boolean isHost;
+
     //Max time before the game will start
     private final float MAX_TIME_TO_START_GAME = 5f;
     // Max time to leave the game before it'll start
@@ -154,13 +157,6 @@ public class MultiplayerGameState extends PlayState {
                     String message = "Game starting in" + (int) timeToStartGame;
                     String host = ZombieShooter.googleServices.getHostId();
                     String myId = ZombieShooter.googleServices.getMyId();
-                    if(host.equals(myId)){
-                        message+="host";
-                    }
-
-                    //Gives us a list of player ids, use one to designate host
-
-
                     //Inform player how much time is left until we can start the game
                     this.sb.begin();
                     infoMessage.getData().setScale(2, 2);
@@ -168,6 +164,13 @@ public class MultiplayerGameState extends PlayState {
                     float width = layout.width;
                     infoMessage.draw(this.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
                     this.sb.end();
+
+                    if(host.equals(myId)){
+                        this.isHost = true;
+                    }
+
+
+
                     timeToStartGame -= dt;
                 } else {
                     // code here to handle game start
