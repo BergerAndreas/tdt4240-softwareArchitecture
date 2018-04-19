@@ -23,7 +23,8 @@ public interface IGoogleServices
     void sendGameMessage(String message);
     MultiplayerMessage receiveGameMessage();
 
-    ArrayList<String> getPlayerIds();
+    String getHostId();
+    String getMyId();
 
 
 

@@ -152,9 +152,14 @@ public class MultiplayerGameState extends PlayState {
 
                 if (timeToStartGame > 0) {
                     String message = "Game starting in" + (int) timeToStartGame;
+                    String host = ZombieShooter.googleServices.getHostId();
+                    String myId = ZombieShooter.googleServices.getMyId();
+                    if(host.equals(myId)){
+                        message+="host";
+                    }
 
                     //Gives us a list of player ids, use one to designate host
-                    ArrayList<String> a = ZombieShooter.googleServices.getPlayerIds();
+
 
                     //Inform player how much time is left until we can start the game
                     this.sb.begin();

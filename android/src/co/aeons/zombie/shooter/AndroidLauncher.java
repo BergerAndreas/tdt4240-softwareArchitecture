@@ -28,6 +28,7 @@ import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class AndroidLauncher extends AndroidApplication implements IGoogleServices {
 
@@ -312,13 +313,20 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
-	public ArrayList<String> getPlayerIds(){
+	public String getHostId(){
 		ArrayList<String> players = new ArrayList<>();
 		for (Participant p: participants){
 			players.add(p.getParticipantId());
 		}
-		return players;
+		//Sort the list to get matching host
+        Collections.sort(players);
+		return players.get(0);
 	}
+
+	@Override
+    public String getMyId(){
+	    return this.myId;
+    }
 
 	// Método privado usado para resetear las propiedades del multijugador
 	private void resetMultiplayerProperties(){
