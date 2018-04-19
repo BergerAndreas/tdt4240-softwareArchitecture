@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
+
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.SecondPlayer;
 import co.aeons.zombie.shooter.managers.GameStateManager;
@@ -20,8 +22,13 @@ import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLA
 
 public class MultiplayerGameState extends PlayState {
 
+    //Initialize SpriteBatch used to display info about multiplayer state
+    private SpriteBatch sb;
     // The second (online) player
     public static SecondPlayer secondPlayer;
+
+    //Check if we're host
+    boolean isHost;
 
     //Max time before the game will start
     private final float MAX_TIME_TO_START_GAME = 5f;
@@ -76,6 +83,8 @@ public class MultiplayerGameState extends PlayState {
     public MultiplayerGameState(GameStateManager gsm, String option) {
         super(gsm);
 
+        sb = new SpriteBatch();
+
         outcomeMessage = new MultiplayerMessage();
         incomeMessage = new MultiplayerMessage();
 
@@ -100,19 +109,24 @@ public class MultiplayerGameState extends PlayState {
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
 
-
-        if (option.equals("QUICK"))
-            ZombieShooter.googleServices.startQuickGame();
-        else if (option.equals("INVITE"))
-            ZombieShooter.googleServices.invitePlayer();
-        else
-            ZombieShooter.googleServices.seeMyInvitations();
+        //Switch statement to choose which mode to display
+        switch (option) {
+            case "QUICK":
+                ZombieShooter.googleServices.startQuickGame();
+                break;
+            case "INVITE":
+                ZombieShooter.googleServices.invitePlayer();
+                break;
+            default:
+                ZombieShooter.googleServices.seeMyInvitations();
+                break;
+        }
     }
 
     @Override
     public void init() {
-        super.init();
-
+        //TODO: Move this to improve multiplayer?
+        //super.init();
         // Create second player
         secondPlayer = new SecondPlayer(super.bullets);
 
@@ -122,36 +136,48 @@ public class MultiplayerGameState extends PlayState {
     @Override
     public void update(float dt) {
 
-        String s = "Connecting to server";
-        if (ZombieShooter.googleServices.getMultiplayerState().equals(STARTMULTIPLAYER)) {
-            super.sb.begin();
+        if (!ZombieShooter.googleServices.getMultiplayerState().equals(STARTMULTIPLAYER)) {
+            String message = "Connecting to server";
+            this.sb.begin();
             infoMessage.getData().setScale(2, 2);
-            layout.setText(infoMessage, s);
+            layout.setText(infoMessage, message);
             float width = layout.width;
-            infoMessage.draw(super.sb, s, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
-            super.sb.end();
+            infoMessage.draw(this.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
+            this.sb.end();
         }
         updateReady(dt);
-        //FontManager.text.draw(SpaceGame.batch,infoMessage,SpaceGame.width/3,SpaceGame.height/2);
 
     }
 
     public void updateReady(float dt) {
         switch (ZombieShooter.googleServices.getMultiplayerState()) {
             case STARTMULTIPLAYER:
+
                 if (timeToStartGame > 0) {
-                    String s = "startGame" + (int) timeToStartGame;
-                    // Informaremos al jugador cuanto tiempo queda para empezar la partida
-                    super.sb.begin();
+                    String message = "Game starting in" + (int) timeToStartGame;
+                    String host = ZombieShooter.googleServices.getHostId();
+                    String myId = ZombieShooter.googleServices.getMyId();
+                    //Inform player how much time is left until we can start the game
+                    this.sb.begin();
                     infoMessage.getData().setScale(2, 2);
-                    layout.setText(infoMessage, s);
+                    layout.setText(infoMessage, message);
                     float width = layout.width;
-                    infoMessage.draw(super.sb, s, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
-                    super.sb.end();
+                    infoMessage.draw(this.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
+                    this.sb.end();
+
+                    if(host.equals(myId)){
+                        this.isHost = true;
+                    }
+
+
+
                     timeToStartGame -= dt;
                 } else {
-                    // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
+                    // code here to handle game start
                     timeToStartGame = 0;
+
+                    //Here we start the game
+                    updateStart(dt);
                     //state = GameState.START;
                 }
                 break;
@@ -160,7 +186,6 @@ public class MultiplayerGameState extends PlayState {
                 break;
         }
 
-        updateStart(dt);
     }
 
     public void updateStart(float dt) {
@@ -222,7 +247,6 @@ public class MultiplayerGameState extends PlayState {
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
-        System.out.println("getpositiony: " + incomeMessage.getPositionY());
 
         // Reset for next update
         incomeMessage.resetOperations();
@@ -249,9 +273,10 @@ public class MultiplayerGameState extends PlayState {
 
     @Override
     public void draw() {
-        super.draw();
+        sb.setProjectionMatrix(cam.combined);
         //Draw other player
-        secondPlayer.draw(super.sb);
+        //TODO: Move second player to super spritebatch?
+        secondPlayer.draw(sb);
     }
 
 

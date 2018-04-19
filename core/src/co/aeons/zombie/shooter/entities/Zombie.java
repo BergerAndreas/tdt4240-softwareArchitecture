@@ -35,7 +35,7 @@ public class Zombie extends SuperObject {
     private boolean remove;
 
 	public Zombie(float x, float y, int difficulty) {
-		
+
 		this.x = x;
 		this.y = y;
 
@@ -88,9 +88,9 @@ public class Zombie extends SuperObject {
 
 	public boolean shouldRemove() { return remove; }
 	public int getScore() { return score; }
-	
+
 	public void update(float dt) {
-		
+
 		if(!isStopped){
 			x += dx * dt;
 		}
@@ -102,7 +102,7 @@ public class Zombie extends SuperObject {
 
         attackTimer += dt;
 	}
-  
+
   public void draw(SpriteBatch batch) {
         batch.begin();
         if (!isStopped) {
@@ -127,7 +127,6 @@ public class Zombie extends SuperObject {
                 if (attackCounter == 0) {
                     // Extra counter needed for weired timer behavior
                     attackCounter++;
-                    System.out.println("Zombie Attack!");
                     return this.damage;
                 } else return 0;
 
