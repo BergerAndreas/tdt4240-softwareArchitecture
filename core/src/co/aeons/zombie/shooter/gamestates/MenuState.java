@@ -1,8 +1,6 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,9 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import co.aeons.zombie.shooter.ZombieShooter;
-import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
-import co.aeons.zombie.shooter.service.ServiceLocator;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
@@ -71,8 +67,7 @@ public class MenuState extends GameState {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: Add multiplayer listener
-                ServiceLocator.getAppComponent().getNetworkService().startSelectOpponents(true);
-
+                gsm.setState(GameStateManager.MULTIPLAYERMENU);
             }
         });
         exitButton.addListener(new ClickListener() {
@@ -98,8 +93,6 @@ public class MenuState extends GameState {
 
     public void update(float dt) {
 
-        handleInput();
-
     }
 
 
@@ -114,10 +107,6 @@ public class MenuState extends GameState {
         this.stage.draw();
     }
 
-    @Override
-    public void handleInput() {
-
-    }
 
 
     public void dispose() {

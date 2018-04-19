@@ -9,7 +9,7 @@ public class Trump extends Zombie {
     public Trump(float x, float y) {
         super(x, y);
         this.dx = -10;
-        this.healt = 50;
+        this.health = 50;
     }
 
     private void createIdleAnimation() {

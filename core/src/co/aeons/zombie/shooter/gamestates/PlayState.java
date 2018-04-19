@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -15,51 +16,50 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
-import co.aeons.zombie.shooter.entities.Bullet;
+import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.entities.Player;
 import co.aeons.zombie.shooter.entities.Trump;
+import co.aeons.zombie.shooter.entities.buttons.CycleDownButton;
+import co.aeons.zombie.shooter.entities.buttons.CycleUpButton;
 import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
-import co.aeons.zombie.shooter.entities.buttons.NukeButton;
 import co.aeons.zombie.shooter.factories.RandomButtonFactory;
-import co.aeons.zombie.shooter.managers.GameKeys;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 
-public class PlayState extends GameState {
+public class PlayState extends GameState implements InputProcessor {
 
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
+    protected SpriteBatch sb;
+    protected ShapeRenderer sr;
     private BitmapFont scoreFont, magazineFont, wallHealthFont;
-
-    private Player hudPlayer;
+    private GlyphLayout layout;
 
     private Player player;
-    private ArrayList<Bullet> bullets;
+    protected ArrayList<Bullet> bullets;
     private ArrayList<Zombie> zombies;
-    private ArrayList<Bullet> enemyBullets;
     private Wall wall;
-
-    private float fsTimer;
-    private float fsTime;
+    private long score;
 
     //Boundaries
     private Rectangle playerLane;
     private Rectangle fireBounds;
     private Rectangle effectButtonBounds;
+    private Rectangle cUpBounds;
+    private Rectangle cDownBounds;
     private Rectangle muteBounds;
 
     //buttons
     private RandomButtonFactory buttonFactory;
     private FireButton fireButton;
-    private EffectButton effectButton;
     private MuteButton muteButton;
-    private NukeButton nukeButton;
+    private CycleUpButton cycleUpButton;
+    private CycleDownButton cycleDownButton;
+    private EffectButton effectButton;
 
     private int level;
     private int totalZombies;
@@ -76,6 +76,13 @@ public class PlayState extends GameState {
     private float spawnCooldown;
     private float spawnTimer;
 
+    //Duration of an effect
+    private int effectTimer;
+
+    //DamageModifier
+    private int damageModifier;
+
+
     //Flag to check if powerup is used
     private boolean isClicked;
 
@@ -89,7 +96,10 @@ public class PlayState extends GameState {
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
-        font = new BitmapFont();
+        scoreFont = new BitmapFont();
+        wallHealthFont = new BitmapFont();
+        magazineFont = new BitmapFont();
+        layout = new GlyphLayout();
 
         //sets up camera
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
@@ -107,30 +117,54 @@ public class PlayState extends GameState {
 
         spawnZombies();
 
-        hudPlayer = new Player(null);
-
-        fsTimer = 0;
-        fsTime = 15;
-        enemyBullets = new ArrayList<Bullet>();
 
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
         isClicked = true;
-
+        damageModifier = 1;
+        effectTimer = 0;
 
         //Button initialization
         buttonFactory = new RandomButtonFactory(cam);
 
         //Create bounds for buttons
-        fireBounds = new Rectangle(cam.viewportWidth - 200, 0,
-                cam.viewportWidth / 8, cam.viewportHeight / 6);
-        muteBounds = new Rectangle(cam.viewportWidth - 100, cam.viewportHeight - 75,
-                cam.viewportWidth / 16, cam.viewportHeight / 16);
-        playerLane = new Rectangle(0, 0, cam.viewportWidth / 3,
-                cam.viewportHeight);
+        fireBounds = new Rectangle(
+                cam.viewportWidth - 200,
+                0,
+                cam.viewportWidth / 8,
+                cam.viewportHeight / 6
+        );
+        muteBounds = new Rectangle(
+                cam.viewportWidth - 50,
+                cam.viewportHeight - 50,
+                cam.viewportWidth / 16,
+                cam.viewportHeight / 16
+        );
+        playerLane = new Rectangle(
+                0,
+                0,
+                cam.viewportWidth / 3,
+                cam.viewportHeight
+        );
+        cUpBounds = new Rectangle(
+                cam.viewportWidth - 300,
+                0,
+                cam.viewportWidth / 16,
+                cam.viewportHeight / 12
+        );
+        cDownBounds = new Rectangle(
+                cam.viewportWidth - 350,
+                0,
+                cam.viewportWidth / 16,
+                cam.viewportHeight / 12
+        );
+
         //Create buttons with above bounds
         fireButton = new FireButton(fireBounds);
         muteButton = new MuteButton(muteBounds);
+        cycleUpButton = new CycleUpButton(cUpBounds);
+        cycleDownButton = new CycleDownButton(cDownBounds);
+
         //Create empty button
         effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
@@ -141,53 +175,8 @@ public class PlayState extends GameState {
         bgTimer = maxDelay;
         musicStarted = false;
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchDown(int x, int y, int pointer, int button) {
+        Gdx.input.setInputProcessor(this);
 
-                //Need to have this or buttons won't work
-                Vector2 tmpVec2 = new Vector2();
-                stage.getViewport().unproject(tmpVec2.set(x, y));
-
-
-                //Fire button
-                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    onFireButtonPressed();
-                }
-
-                //Mute button
-                if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    onMuteButtonPressed();
-                }
-
-                //Instakill button
-                if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
-                    //stage.touchDown(x, y, pointer, button);
-                    onEffectButtonPressed();
-                }
-
-                return true;
-            }
-
-            @Override
-            public boolean touchUp(int x, int y, int pointer, int button) {
-                // your touch up code here
-                return true; // return true to indicate the event was handled
-            }
-
-            @Override
-            public boolean touchDragged(int x, int y, int pointer) {
-                Vector2 tmpVec2 = new Vector2();
-                stage.getViewport().unproject(tmpVec2.set(x, y));
-
-                if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
-                    //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
-
-                    player.setPosition(player.getx(), tmpVec2.y);
-                }
-                return true;
-            }
-        });
     }
 
 
@@ -210,10 +199,15 @@ public class PlayState extends GameState {
 
     public void update(float dt) {
 
-        // get user input
-        handleInput();
         // check collision
         checkCollisions();
+
+        // reset modifier
+        effectTimer -= dt;
+        System.out.println(effectTimer);
+        if(effectTimer <= 0) {
+            resetEffects();
+        }
 
         // next level
         spawnTimer += dt;
@@ -230,24 +224,6 @@ public class PlayState extends GameState {
 
         // update player
         player.update(dt);
-        if (player.isDead()) {
-            if (player.getLives() == 0) {
-                Jukebox.stopAll();
-//               TODO: Let player write name in "highscores" if he makes the list
-//                if(player.getScore() > SAVEFILE.HIGHSCORE[LAST]){
-//                    gsm.setState(GameStateManager.HIGHSCORE);
-//                }
-//                if(player.getScore() > 100){
-//                    gsm.setState(GameStateManager.NEW_HIGHSCORE);
-//                    return;
-//                }
-                gsm.setState(GameStateManager.GAMEOVER);
-                return;
-            }
-            player.reset();
-            player.loseLife();
-            return;
-        }
 
         // update player bullets
         for (int i = 0; i < bullets.size(); i++) {
@@ -292,6 +268,12 @@ public class PlayState extends GameState {
         }
     }
 
+    //Insert new modifierresets here
+    private void resetEffects() {
+        this.damageModifier = 1;
+        this.effectTimer = 0;
+    }
+
     private void checkCollisions() {
         //zombie-wall collision
         for (int i = 0; i < zombies.size(); i++) {
@@ -312,12 +294,12 @@ public class PlayState extends GameState {
                     bullets.remove(i);
                     i--;
 
-                    a.getHurt(10);
+                    a.getHurt(b.getDamage()*damageModifier);
 
-                    if (a.getHealt() <= 0){
+                    if (a.getHealth() <= 0){
                         zombies.remove(j);
                         j--;
-                        player.incrementScore(a.getScore());
+                        this.incrementScore(a.getScore());
                     }
 
                     Jukebox.play("zombieHit");
@@ -352,41 +334,34 @@ public class PlayState extends GameState {
         sb.setColor(0, 1, 1, 1);
         sb.begin();
 
-//        HUD for score, magazine, and wallhealth
-        String scoreOutput = "Score: " + Long.toString(player.getScore());
-        String magazineOutput = Long.toString(player.getWeapon().bulletCount()) + "/∞";
-        String wallHealthOutput = "Score: " + Long.toString(player.getScore());
-        scoreFont.draw(sb, scoreOutput, 0, cam.viewportHeight);
-        scoreFont.draw(sb, scoreOutput, 0, cam.viewportHeight);
-        scoreFont.draw(sb, scoreOutput, 0, cam.viewportHeight);
+
+//        Various HUDs
+
+//        Score
+        String scoreOutput = "Score: " + Long.toString(this.getScore());
+        this.layout.setText(scoreFont, scoreOutput);
+        scoreFont.draw(sb, layout, (this.wall.getx() - layout.width)/2, cam.viewportHeight-5);
+//        Magazine-size
+        String magazineOutput = Integer.toString(player.getCurrentWeapon().getRemainingBullets()) + "/" + Integer.toString(player.getCurrentWeapon().getClipSize());
+        this.layout.setText(magazineFont, magazineOutput);
+        scoreFont.draw(sb, layout, cam.viewportWidth - 250, (fireButton.getY() + fireBounds.getHeight())/2);
+//        Wall-health
+        String wallHealthOutput = "❤" + Integer.toString(this.wall.getHealth());
+        this.layout.setText(wallHealthFont, wallHealthOutput);
+        scoreFont.draw(sb, layout, (this.wall.getx()+this.wall.getRectangle().getWidth())/2 + 25, (this.wall.gety()+this.wall.getRectangle().getHeight())/2);
 
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
         effectButton.draw(sb, 1);
+        cycleUpButton.draw(sb, 1);
+        cycleDownButton.draw(sb, 1);
         sb.end();
-
-        // draw lives
-        for (int i = 0; i < player.getLives(); i++) {
-            hudPlayer.setPosition(40 + i * 10, 360);
-            hudPlayer.draw(sb);
-        }
 
         // draw buttons
         this.stage.addActor(fireButton);
         this.stage.addActor(muteButton);
         this.stage.act();
         this.stage.draw();
-
-    }
-
-    public void handleInput() {
-
-        // handle input logic
-        if (!player.isHit()) {
-            if (GameKeys.isPressed(GameKeys.SPACE)) {
-                player.shoot();
-            }
-        }
 
     }
 
@@ -425,7 +400,112 @@ public class PlayState extends GameState {
         isClicked = true;
     }
 
+    private void onCycleUpPressed() {
+        System.out.println("Next Weapon");
+        player.nextWeapon();
+    }
+
+    private void onCycleDownPressed(){
+        System.out.println("Previous Weapon");
+        player.prevWeapon();
+    }
+
+    //Getters and setters
     public ArrayList<Zombie> getZombies() {
         return zombies;
+    }
+
+
+    public void setDamageModifier(int damageModifier) {
+        this.damageModifier = damageModifier;
+    }
+
+    public void setEffectTimer(int effectTimer) {
+        this.effectTimer = effectTimer;
+    }
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        //Need to have this or buttons won't work
+        Vector2 tmpVec2 = new Vector2();
+        stage.getViewport().unproject(tmpVec2.set(x, y));
+
+
+        //Fire button
+        if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onFireButtonPressed();
+        }
+
+        //Mute button
+        if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onMuteButtonPressed();
+        }
+
+        //Instakill button
+        if (effectButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            //stage.touchDown(x, y, pointer, button);
+            onEffectButtonPressed();
+        }
+
+        if (cycleUpButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onCycleUpPressed();
+        }
+
+        if (cycleDownButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+            onCycleDownPressed();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int x, int y, int pointer) {
+        Vector2 tmpVec2 = new Vector2();
+        stage.getViewport().unproject(tmpVec2.set(x, y));
+
+        if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
+            //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
+
+            player.setPosition(player.getx(), tmpVec2.y);
+        }
+        return true;
+
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public void incrementScore(long score) {
+        this.score += score;
     }
 }
