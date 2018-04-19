@@ -32,6 +32,10 @@ public class Shotgun extends Weapon{
                     output.add(getNewBullet());
                 }
                 bullets.poll();
+                if (bullets.isEmpty()) {
+                    reload();
+                }
+
                 isFired = true;
                 fireRate = 0.7f;
             }else reload();

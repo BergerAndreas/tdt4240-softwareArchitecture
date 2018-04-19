@@ -31,6 +31,11 @@ public class Pistol extends Weapon {
                 output.add(bullets.poll());
                 isFired = true;
                 fireRate = 0.3f;
+
+                if (bullets.isEmpty()) {
+                    reload();
+                }
+
             }else reload();
         }
         return output;

@@ -35,6 +35,11 @@ public class BattleRifle extends Weapon {
                 for (int i = 0; i < 3; i++) {
                     output.add(bullets.poll());
                 }
+
+                if(bullets.isEmpty()) {
+                    reload();
+                }
+
                 isFired = true;
                 fireRate = 0.5f;
             }else reload();
