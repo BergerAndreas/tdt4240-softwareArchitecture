@@ -59,6 +59,7 @@ public abstract class Weapon {
 
     public int getClipSize() {
         return clipSize;
+    }
 
     public String getTexturePath() {
         return texturePath;
