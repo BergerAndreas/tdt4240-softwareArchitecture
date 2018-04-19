@@ -45,6 +45,7 @@ public class HighscoreState extends GameState {
         layout = new GlyphLayout();
         System.out.println("HIGHSCORES");
 
+//        Load save file to highscore list
         Save.load();
         highscores = Save.gd.getHighScores();
         names = Save.gd.getNames();
@@ -68,7 +69,6 @@ public class HighscoreState extends GameState {
 
     @Override
     public void update(float dt) {
-
 
     }
 
