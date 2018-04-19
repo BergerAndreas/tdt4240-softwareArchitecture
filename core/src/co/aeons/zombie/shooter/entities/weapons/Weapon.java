@@ -11,7 +11,7 @@ import co.aeons.zombie.shooter.entities.bullets.Bullet;
 public abstract class Weapon {
 
     protected Texture weaponTexture;
-
+    protected String texturePath;
     protected int fireRate;
     protected int clipSize;
     protected Queue<Bullet> bullets;
@@ -51,5 +51,9 @@ public abstract class Weapon {
 
     public float getReloadTime() {
         return reloadTime;
+    }
+
+    public String getTexturePath() {
+        return texturePath;
     }
 }

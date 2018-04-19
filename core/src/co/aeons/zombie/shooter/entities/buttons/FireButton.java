@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class FireButton extends GameButton {
 
     //Creates the listener interface fo r this button
+    private String texturePath = "weapons/pistol1.png";
 
     public FireButton(Rectangle bounds) {
         super(bounds);
@@ -18,7 +19,11 @@ public class FireButton extends GameButton {
     //Used to define what sprite to draw
     @Override
     protected String getTexturePath() {
-        return "buttons/fireButton.png";
+        System.out.println(texturePath);
+        return texturePath;
     }
 
+    public void setTexturePath(String texturePath) {
+        this.texturePath = texturePath;
+    }
 }

@@ -27,7 +27,11 @@ public abstract class GameButton extends Button {
     //TODO: Make protected
     public void loadTextureRegion() {
         ButtonStyle style = new ButtonStyle();
-        style.up = new TextureRegionDrawable(new TextureRegion(new Texture(getTexturePath())));
+        String texture = getTexturePath();
+        if(getTexturePath() == null){
+            texture = "weapons/pistol1.png";
+        }
+        style.up = new TextureRegionDrawable(new TextureRegion(new Texture(texture)));
         setStyle(style);
     }
 
