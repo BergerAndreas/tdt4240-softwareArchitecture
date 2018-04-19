@@ -22,7 +22,6 @@ public class Zombie extends SuperObject {
 	protected float stateTimeAttacking;
 	protected int score;
 
-	protected float speed;
 	protected float dx;
 
 	protected float health;
@@ -31,24 +30,27 @@ public class Zombie extends SuperObject {
     private float attackCooldown;
     private int attackCounter;
 
+    protected int damage;
+
     private boolean remove;
 
-	public Zombie(float x, float y) {
-		
+	public Zombie(float x, float y, int difficulty) {
+
 		this.x = x;
 		this.y = y;
+
+		this.damage = 10*difficulty;
 
 		width = height = 40;
 		speed = MathUtils.random(20, 30);
 		score = 20;
 
-
 		bounds = new Rectangle(0, 0, 40, 50);
+		dx = -50*(4+difficulty-1)/4;
 
-		dx = -50;
-		dy = 0;
 
-		this.health = 10;
+
+		this.health = 10*difficulty;
 
 		createIdleAnimation();
 		createAttackAnimation();
@@ -56,7 +58,6 @@ public class Zombie extends SuperObject {
         attackTimer = 1.0f;
         attackCooldown = 2.0f;
         attackCounter = 0;
-
     }
 
 
@@ -87,14 +88,12 @@ public class Zombie extends SuperObject {
 
 	public boolean shouldRemove() { return remove; }
 	public int getScore() { return score; }
-	
+
 	public void update(float dt) {
-		
+
 		if(!isStopped){
 			x += dx * dt;
 		}
-
-		y += dy * dt;
 
 		stateTimeRunning += dt;
 		stateTimeAttacking += dt;
@@ -103,7 +102,7 @@ public class Zombie extends SuperObject {
 
         attackTimer += dt;
 	}
-  
+
   public void draw(SpriteBatch batch) {
         batch.begin();
         if (!isStopped) {
@@ -128,9 +127,7 @@ public class Zombie extends SuperObject {
                 if (attackCounter == 0) {
                     // Extra counter needed for weired timer behavior
                     attackCounter++;
-                    //TODO: Uncomment me to print zombie attack
-                    //System.out.println("Zombie Attack!");
-                    return 10;
+                    return this.damage;
                 } else return 0;
 
             } else {

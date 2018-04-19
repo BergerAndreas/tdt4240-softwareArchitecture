@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Trump extends Zombie {
-    public Trump(float x, float y) {
-        super(x, y);
+    public Trump(float x, float y, int difficulty) {
+        super(x, y, difficulty);
         this.dx = -10;
         this.health = 50;
     }
