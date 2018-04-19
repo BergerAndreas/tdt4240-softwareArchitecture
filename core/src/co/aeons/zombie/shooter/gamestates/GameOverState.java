@@ -28,9 +28,8 @@ import static java.awt.Event.ENTER;
 public class GameOverState extends GameState {
 	
 	private SpriteBatch sb;
-	private ShapeRenderer sr;
 	private Skin skin;
-	
+
 	private boolean newHighScore;
 	private TextField usernameTextField;
 
@@ -46,32 +45,20 @@ public class GameOverState extends GameState {
 	public void init() {
 		
 		sb = new SpriteBatch();
-		sr = new ShapeRenderer();
 		font = new BitmapFont();
 		layout = new GlyphLayout();
 		stage = new Stage(gamePort);
 		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
 
 		newHighScore = Save.gd.isHighScore(Save.gd.getTentativeScore());
-		if(newHighScore){
-			usernameTextField = new TextField("", skin);
-			usernameTextField.setSize(100, 15);
-			usernameTextField.setPosition((ZombieShooter.WIDTH - usernameTextField.getWidth())/2,(ZombieShooter.HEIGHT - usernameTextField.getHeight())/2);
-		}
-
-
 
 		// Control inputs
 		Gdx.input.setInputProcessor(this.stage);
-		InitMenu();
-		
 	}
 
 
     public void update(float dt) {
-		if(!newHighScore){
-			return;
-		}
+
     }
 
     public void draw() {
@@ -92,22 +79,14 @@ public class GameOverState extends GameState {
 		if(newHighScore){
 			layout.setText(font, "New Highscore: " + Save.gd.getTentativeScore());
 			font.draw(sb, layout, (ZombieShooter.WIDTH)/2, 180);
+			initHighscore();
+
 			stage.act();
-			stage.addActor(usernameTextField);
-			Gdx.input.setInputProcessor(stage);
 			stage.draw();
-
-//			TODO: if user entered name, do this
-			if(true){
-				Save.gd.addHighScore(Save.gd.getTentativeScore(), usernameTextField.getText());
-				Save.save();
-//				gsm.setState(GameStateManager.HIGHSCORE);
-			}
-
 			sb.end();
 			return;
 		}
-
+		InitMenu();
         sb.end();
 
         stage.act();
@@ -115,7 +94,7 @@ public class GameOverState extends GameState {
 
     }
 
-    private void InitMenu() {
+	private void InitMenu() {
         //Add stuff here
         //Create Table
         Table mainTable = new Table();
@@ -178,9 +157,40 @@ public class GameOverState extends GameState {
         stage.addActor(mainTable);
     }
 
+    private void initHighscore(){
+
+//		Highscore input for player's name
+		usernameTextField = new TextField("", skin);
+		usernameTextField.setSize(100, 15);
+		usernameTextField.setPosition((ZombieShooter.WIDTH - usernameTextField.getWidth())/2,(ZombieShooter.HEIGHT - usernameTextField.getHeight())/2);
+
+//		Button to submit highscore
+		TextButton submitHighscoreButton = new TextButton("Submit", skin);
+		submitHighscoreButton.setPosition((ZombieShooter.WIDTH - submitHighscoreButton.getWidth())/2, usernameTextField.getY()-usernameTextField.getHeight()-25);
+
+		//		submitHighscore takes player to Highscores
+		submitHighscoreButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+//				TODO: Handle input correctly. textfield ain't working as is
+				Save.gd.addHighScore(Save.gd.getTentativeScore(), usernameTextField.getText());
+				Save.save();
+				System.out.println(usernameTextField.getText());
+//				Stop gameover music, and start ingame music
+				Jukebox.getGameoverMusic().stop();
+				Jukebox.playIngameMusic();
+				gsm.setState(GameStateManager.HIGHSCORE);
+			}
+		});
+
+		stage.addActor(usernameTextField);
+		stage.addActor(submitHighscoreButton);
+	}
+
     public void dispose() {
         sb.dispose();
-        sr.dispose();
+        font.dispose();
+        stage.dispose();
     }
 
 }

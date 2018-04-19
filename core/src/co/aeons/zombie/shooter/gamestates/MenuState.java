@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameStateManager;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
@@ -53,6 +54,7 @@ public class MenuState extends GameState {
 
         TextButton singleplayerButton = new TextButton("Singleplayer", skin);
         TextButton multiplayerButton = new TextButton("Multiplayer", skin);
+        TextButton highscoreButton = new TextButton("Highscore", skin);
         TextButton optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
@@ -70,6 +72,12 @@ public class MenuState extends GameState {
                 gsm.setState(GameStateManager.MULTIPLAYERMENU);
             }
         });
+        highscoreButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.HIGHSCORE);
+            }
+        });
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -82,6 +90,8 @@ public class MenuState extends GameState {
         mainTable.add(singleplayerButton);
         mainTable.row();
         mainTable.add(multiplayerButton);
+        mainTable.row();
+        mainTable.add(highscoreButton);
         mainTable.row();
         mainTable.add(optionsButton);
         mainTable.row();

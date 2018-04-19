@@ -33,7 +33,6 @@ public class HighscoreState extends GameState {
     private long[] highscores;
     private String[] names;
 
-
     public HighscoreState(GameStateManager gsm) {
         super(gsm);
     }
@@ -53,10 +52,12 @@ public class HighscoreState extends GameState {
         Gdx.input.setInputProcessor(this.stage);
         TextButton backButton = new TextButton("Back", skin);
 
+//        Back button takes user to Menu screen
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.GAMEOVER);
+
+                gsm.setState(GameStateManager.MENU);
             }
         });
 
