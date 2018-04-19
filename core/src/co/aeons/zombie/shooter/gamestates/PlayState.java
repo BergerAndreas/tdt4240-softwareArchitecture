@@ -6,6 +6,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -324,6 +325,12 @@ public class PlayState extends GameState implements InputProcessor {
         // draw wall
         wall.draw(sb);
 
+        //Draw firebutton background rect
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(Color.DARK_GRAY);
+        sr.rect(fireBounds.x, fireBounds.y, fireBounds.width, fireBounds.height);
+        sr.end();
+
         // draw buttons
         sb.setColor(0, 1, 1, 1);
         sb.begin();
@@ -380,11 +387,18 @@ public class PlayState extends GameState implements InputProcessor {
     private void onCycleUpPressed() {
         System.out.println("Next Weapon");
         player.nextWeapon();
+        reloadFireButtonTexture();
     }
 
     private void onCycleDownPressed(){
-        System.out.println("Previous Weapon");
         player.prevWeapon();
+        System.out.println("Previous Weapon");
+        reloadFireButtonTexture();
+    }
+
+    private void reloadFireButtonTexture() {
+        fireButton.setTexturePath(player.getCurrentWeapon().getTexturePath());
+        fireButton.loadTextureRegion();
     }
 
     //Getters and setters

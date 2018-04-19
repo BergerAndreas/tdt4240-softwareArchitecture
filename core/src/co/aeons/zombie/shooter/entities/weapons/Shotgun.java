@@ -19,6 +19,7 @@ public class Shotgun extends Weapon{
         pelletCount = 24;
         reload();
         isReloading = false;
+        texturePath = "weapons/shotgun1.png";
     }
 
     @Override

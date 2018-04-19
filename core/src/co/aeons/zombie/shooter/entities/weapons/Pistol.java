@@ -16,7 +16,8 @@ public class Pistol extends Weapon {
 
         clipSize = 12;
         fireRate = 1;
-        weaponTexture = new Texture("weapons/pistol1.png");
+        texturePath = "weapons/pistol1.png";
+        weaponTexture = new Texture(texturePath);
         bullets = new LinkedList<Bullet>();
         reloadTime = 2.0f;
         reload();
