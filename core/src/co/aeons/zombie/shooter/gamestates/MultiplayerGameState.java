@@ -191,7 +191,6 @@ public class MultiplayerGameState extends PlayState {
     public void updateStart(float dt) {
         updateIncomeMessage(dt);
         updateOutComeMessage(dt);
-        super.update(dt);
 
 
         /*
@@ -282,15 +281,7 @@ public class MultiplayerGameState extends PlayState {
 
     @Override
     public void dispose() {
-        super.dispose();
-    }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.BACK) {
-            leaveRoom = true;
-        }
-        return false;
     }
 
 }
