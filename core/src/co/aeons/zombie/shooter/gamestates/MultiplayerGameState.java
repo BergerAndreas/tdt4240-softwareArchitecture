@@ -194,6 +194,11 @@ public class MultiplayerGameState extends PlayState {
     public void updateStart(float dt) {
         updateIncomeMessage(dt);
         updateOutComeMessage(dt);
+        if (isHost) {
+            super.update(dt);
+        }else {
+
+        }
 
 
         /*
@@ -276,6 +281,11 @@ public class MultiplayerGameState extends PlayState {
 
     @Override
     public void draw() {
+        if (isHost) {
+            super.draw();
+        }else {
+            super.draw();
+        }
         sb.setProjectionMatrix(cam.combined);
         //Draw other player
         //TODO: Move second player to super spritebatch?
