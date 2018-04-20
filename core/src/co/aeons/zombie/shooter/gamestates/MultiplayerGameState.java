@@ -9,12 +9,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
 
 import co.aeons.zombie.shooter.ZombieShooter;
@@ -261,7 +266,7 @@ public class MultiplayerGameState extends PlayState {
         //rivalShip.update(delta,incomeMessage.getPositionY());
         if(!isHost){
             //TODO: Add to get zombies
-            //System.out.println(incomeMessage.getZombies());
+            clientZombies(incomeMessage.getZombies());
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
@@ -271,13 +276,42 @@ public class MultiplayerGameState extends PlayState {
 
     }
 
+    private void clientZombies(String jsonZombies) {
+
+        /*JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(jsonZombies.toString()).getAsJsonObject();
+        Set<String> keys = jsonObject.keySet();
+        for(String k: keys){
+            try {
+                JSONArray arr = jsonZombies.getJSONArray(k);
+                for(int i = 0; i<arr.length();i++){
+                    String x = arr.getJSONObject(i).getString("x");
+                    String y = arr.getJSONObject(i).getString("y");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        */
+
+    }
+
     public void updateOutComeMessage(float dt) {
         //Update outcome message
         Vector2 tmpVec =  new Vector2();
         stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(),Gdx.input.getY()));
         outcomeMessage.setPositionY(tmpVec.y);
         if (isHost) {
+            String str = "";
+            for(int i=0;i<zombies.size();i++){
+                Zombie z = zombies.get(i);
+                str+=z.getId()+":"+z.getx()+","+z.gety();
+                if (i < zombies.size()-1) {
+                    str+=";";
+                }
+            }
             //outcomeMessage.setZombies(this.getZombies());
+            /*
             JSONObject json = new JSONObject();
             try {
                 for(Zombie z: zombies){
@@ -290,7 +324,8 @@ public class MultiplayerGameState extends PlayState {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            outcomeMessage.setZombies(json);
+            */
+            outcomeMessage.setZombies(str);
         }
 
         //Finally we send the message
