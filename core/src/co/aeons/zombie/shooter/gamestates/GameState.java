@@ -27,6 +27,7 @@ public abstract class GameState implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
             gsm.setState(GameStateManager.MENU);
+            return true;
         }
         return false;
     }
