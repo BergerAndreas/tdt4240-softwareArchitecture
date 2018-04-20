@@ -85,15 +85,15 @@ public class MultiplayerMessage {
 
     public void setPropertiesFromMessage(String s){
         if(!s.isEmpty() || !s.equals("")){
-            System.out.println("Setpropterrskjhfg "+s);
-            String[] result = s.split(":");
+            String[] result = s.split(";;ANTON;;");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
+            System.out.println(result[2]);
         }
     }
 
     public String getForSendMessage(){
-        return positionY +":"+ operations+":"+zombies;
+        return positionY +";;ANTON;;"+ operations+";;ANTON;;"+zombies;
     }
 
 }

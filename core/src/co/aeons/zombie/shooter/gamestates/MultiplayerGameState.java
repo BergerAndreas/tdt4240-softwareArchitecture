@@ -260,7 +260,8 @@ public class MultiplayerGameState extends PlayState {
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
         if(!isHost){
-            System.out.println(incomeMessage.getZombies());
+            //TODO: Add to get zombies
+            //System.out.println(incomeMessage.getZombies());
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
@@ -286,7 +287,6 @@ public class MultiplayerGameState extends PlayState {
                     json.put(z.getId(), json2);
 
                 }
-                System.out.println(json);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
