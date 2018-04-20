@@ -48,7 +48,7 @@ public class PlayState extends GameState {
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
-    private ArrayList<Zombie> zombies;
+    protected ArrayList<Zombie> zombies;
     private Wall wall;
     private long score;
 

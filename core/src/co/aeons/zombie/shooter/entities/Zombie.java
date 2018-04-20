@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public class Zombie extends SuperObject {
 	private boolean isStopped = false;
@@ -35,6 +36,7 @@ public class Zombie extends SuperObject {
     private boolean remove;
 
 	public Zombie(float x, float y, int difficulty) {
+		super();
 
 		this.x = x;
 		this.y = y;

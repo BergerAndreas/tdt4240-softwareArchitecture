@@ -1,7 +1,12 @@
 package co.aeons.zombie.shooter.utils;
 
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.entities.Zombie;
 
 public class MultiplayerMessage {
 
@@ -16,6 +21,8 @@ public class MultiplayerMessage {
 
     private int operations;
     private float positionY;
+
+    private JSONObject zombies;
 
     public MultiplayerMessage(){
         // Códigos que representa en binario :
@@ -68,9 +75,17 @@ public class MultiplayerMessage {
         this.positionY = positionY;
     }
 
+    public void setZombies(JSONObject zombies){
+        this.zombies = zombies;
+    }
+    public JSONObject getZombies(){
+        return this.zombies;
+    }
+
 
     public void setPropertiesFromMessage(String s){
         if(!s.isEmpty() || !s.equals("")){
+            System.out.println("Setpropterrskjhfg "+s);
             String[] result = s.split(":");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
@@ -78,7 +93,7 @@ public class MultiplayerMessage {
     }
 
     public String getForSendMessage(){
-        return positionY +":"+ operations;
+        return positionY +":"+ operations+":"+zombies;
     }
 
 }

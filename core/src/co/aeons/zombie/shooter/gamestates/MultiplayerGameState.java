@@ -10,10 +10,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.SecondPlayer;
+import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
@@ -253,7 +259,9 @@ public class MultiplayerGameState extends PlayState {
         */
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
-        System.out.println(incomeMessage.getPositionY());
+        if(!isHost){
+            System.out.println(incomeMessage.getZombies());
+        }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
         // Reset for next update
@@ -267,6 +275,23 @@ public class MultiplayerGameState extends PlayState {
         Vector2 tmpVec =  new Vector2();
         stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(),Gdx.input.getY()));
         outcomeMessage.setPositionY(tmpVec.y);
+        if (isHost) {
+            //outcomeMessage.setZombies(this.getZombies());
+            JSONObject json = new JSONObject();
+            try {
+                for(Zombie z: zombies){
+                    JSONObject json2 = new JSONObject();
+                    json2.put("x",z.getx());
+                    json2.put("y",z.gety());
+                    json.put(z.getId(), json2);
+
+                }
+                System.out.println(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            outcomeMessage.setZombies(json);
+        }
 
         //Finally we send the message
 
