@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.managers.ResourceManager;
+
 public class Zombie extends SuperObject {
 	private boolean isStopped = false;
 
@@ -62,26 +65,12 @@ public class Zombie extends SuperObject {
 
 
 	private void createIdleAnimation() {
-		//Opens textureAtlas containing enemy spritesheet information
-		runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/pack.atlas"));
-		//Fetches all sprites matchin keyword 'spoder'
-		runningAnimation =
-				new Animation<TextureRegion>(
-						0.1f,
-						runningAtlas.findRegions("enemies/spoder"),
-						Animation.PlayMode.LOOP
-				);
-		//Initializes statetime for this animation
+		this.runningAnimation = ResourceManager.getZombieRunningAnimation();
 		stateTimeRunning = 0f;
 	}
 
 	private void createAttackAnimation() {
-		attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/spooder.atlas"));
-		attackAnimation = new Animation<TextureRegion>(
-				0.1f,
-				attackAtlas.findRegions("enemies/spooder"),
-				Animation.PlayMode.LOOP
-				);
+		this.attackAnimation = ResourceManager.getZombieAttackAnimation();
 		stateTimeAttacking = 0f;
 
 	}
