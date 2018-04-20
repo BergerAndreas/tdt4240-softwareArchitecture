@@ -28,6 +28,7 @@ public class ZombieShooter extends Game {
 
 	public ZombieShooter(Platform platform, IGoogleServices googleServices) {
 		this.platform = platform;
+		ZombieShooter.googleServices = googleServices;
 	}
 
 

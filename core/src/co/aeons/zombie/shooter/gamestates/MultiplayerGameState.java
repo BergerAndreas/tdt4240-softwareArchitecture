@@ -183,7 +183,7 @@ public class MultiplayerGameState extends PlayState {
                     infoMessage.draw(this.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
                     this.sb.end();
 
-                    if(host.equals(myId)){
+                    if (host.equals(myId)) {
                         this.isHost = true;
                     }
 
@@ -209,7 +209,7 @@ public class MultiplayerGameState extends PlayState {
         updateOutComeMessage(dt);
         if (isHost) {
             super.update(dt);
-        }else {
+        } else {
 
         }
 
@@ -266,9 +266,9 @@ public class MultiplayerGameState extends PlayState {
         */
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
-        if(!isHost){
+        if (!isHost) {
             //TODO: Add to get zombies
-                clientZombies(incomeMessage.getZombies());
+            clientZombies(incomeMessage.getZombies());
 
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
@@ -280,24 +280,29 @@ public class MultiplayerGameState extends PlayState {
     }
 
     private void clientZombies(String jsonZombies) {
-        if(jsonZombies == null || jsonZombies.isEmpty() || jsonZombies.equals("null")){
+        System.out.println(jsonZombies);
+        if (jsonZombies == null || jsonZombies.isEmpty() || jsonZombies.equals("null")) {
+            return;
+        }
+        if (jsonZombies.equals("EMPTY")) {
+            zombies.clear();
             return;
         }
         String[] zs = jsonZombies.split(";");
         ArrayList<String> uuids = new ArrayList<>();
-        for(String z: zs){
+        for (String z : zs) {
             uuids.add(z.split(":")[0]);
         }
 
         //Remove dead zombies
-        for(int i = 0;i<zombies.size();i++){
-            if(!uuids.contains(zombies.get(i).getId())){
+        for (int i = 0; i < zombies.size(); i++) {
+            if (!uuids.contains(zombies.get(i).getId())) {
                 zombies.remove(i);
                 i--;
             }
         }
 
-        for(int i =0;i<zs.length;i++){
+        for (int i = 0; i < zs.length; i++) {
             String z = zs[i];
 
             String id = z.split(":")[0];
@@ -306,50 +311,38 @@ public class MultiplayerGameState extends PlayState {
 
             boolean newZombie = true;
 
-            for(int j=0;j<zombies.size();j++){
-                if(id.equals(zombies.get(j).getId())){
+            for (int j = 0; j < zombies.size(); j++) {
+                if (id.equals(zombies.get(j).getId())) {
                     newZombie = false;
-                    zombies.get(j).setPosition(x,y);
+                    zombies.get(j).setPosition(x, y);
 
                 }
             }
-            if(newZombie){
+            if (newZombie) {
                 zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
             }
 
         }
 
-        /*JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(jsonZombies.toString()).getAsJsonObject();
-        Set<String> keys = jsonObject.keySet();
-        for(String k: keys){
-            try {
-                JSONArray arr = jsonZombies.getJSONArray(k);
-                for(int i = 0; i<arr.length();i++){
-                    String x = arr.getJSONObject(i).getString("x");
-                    String y = arr.getJSONObject(i).getString("y");
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        */
 
     }
 
     public void updateOutComeMessage(float dt) {
         //Update outcome message
-        Vector2 tmpVec =  new Vector2();
-        stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(),Gdx.input.getY()));
+        Vector2 tmpVec = new Vector2();
+        stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(), Gdx.input.getY()));
         outcomeMessage.setPositionY(tmpVec.y);
         if (isHost) {
             String str = "";
-            for(int i=0;i<zombies.size();i++){
+            for (int i = 0; i < zombies.size(); i++) {
                 Zombie z = zombies.get(i);
-                str+=z.getId()+":"+z.getx()+","+z.gety();
-                if (i < zombies.size()-1) {
-                    str+=";";
+                str += z.getId() + ":" + z.getx() + "," + z.gety();
+                if (i < zombies.size() - 1) {
+                    str += ";";
                 }
+            }
+            if (str.isEmpty() || str.equals("")) {
+                str += "EMPTY";
             }
             //outcomeMessage.setZombies(this.getZombies());
             /*
@@ -384,7 +377,7 @@ public class MultiplayerGameState extends PlayState {
     public void draw() {
         if (isHost) {
             super.draw();
-        }else {
+        } else {
             super.draw();
         }
         sb.setProjectionMatrix(cam.combined);
