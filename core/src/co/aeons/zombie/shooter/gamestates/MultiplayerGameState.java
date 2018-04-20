@@ -24,7 +24,9 @@ import java.util.UUID;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.SecondPlayer;
+import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Zombie;
+import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
@@ -266,7 +268,8 @@ public class MultiplayerGameState extends PlayState {
         //rivalShip.update(delta,incomeMessage.getPositionY());
         if(!isHost){
             //TODO: Add to get zombies
-            clientZombies(incomeMessage.getZombies());
+                clientZombies(incomeMessage.getZombies());
+
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
@@ -277,6 +280,44 @@ public class MultiplayerGameState extends PlayState {
     }
 
     private void clientZombies(String jsonZombies) {
+        if(jsonZombies == null || jsonZombies.isEmpty() || jsonZombies.equals("null")){
+            return;
+        }
+        String[] zs = jsonZombies.split(";");
+        ArrayList<String> uuids = new ArrayList<>();
+        for(String z: zs){
+            uuids.add(z.split(":")[0]);
+        }
+
+        //Remove dead zombies
+        for(int i = 0;i<zombies.size();i++){
+            if(!uuids.contains(zombies.get(i).getId())){
+                zombies.remove(i);
+                i--;
+            }
+        }
+
+        for(int i =0;i<zs.length;i++){
+            String z = zs[i];
+
+            String id = z.split(":")[0];
+            float x = Float.parseFloat(z.split(":")[1].split(",")[0]);
+            float y = Float.parseFloat(z.split(":")[1].split(",")[1]);
+
+            boolean newZombie = true;
+
+            for(int j=0;j<zombies.size();j++){
+                if(id.equals(zombies.get(j).getId())){
+                    newZombie = false;
+                    zombies.get(j).setPosition(x,y);
+
+                }
+            }
+            if(newZombie){
+                zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
+            }
+
+        }
 
         /*JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(jsonZombies.toString()).getAsJsonObject();
