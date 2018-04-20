@@ -8,16 +8,31 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.SecondPlayer;
+import co.aeons.zombie.shooter.entities.Trump;
+import co.aeons.zombie.shooter.entities.Zombie;
+import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
+import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLAYER;
 
 public class MultiplayerGameState extends PlayState {
@@ -104,6 +119,9 @@ public class MultiplayerGameState extends PlayState {
         abandonFirstPlayer = false;
         abandonSecondPlayer = false;
 
+        //FIXME: Remove
+        this.stage = new Stage(gamePort, sb);
+
         //TODO: Initialize powerups
 
         Gdx.input.setInputProcessor(this);
@@ -126,7 +144,7 @@ public class MultiplayerGameState extends PlayState {
     @Override
     public void init() {
         //TODO: Move this to improve multiplayer?
-        //super.init();
+        super.init();
         // Create second player
         secondPlayer = new SecondPlayer(super.bullets);
 
@@ -169,8 +187,6 @@ public class MultiplayerGameState extends PlayState {
                         this.isHost = true;
                     }
 
-
-
                     timeToStartGame -= dt;
                 } else {
                     // code here to handle game start
@@ -191,7 +207,11 @@ public class MultiplayerGameState extends PlayState {
     public void updateStart(float dt) {
         updateIncomeMessage(dt);
         updateOutComeMessage(dt);
-        super.update(dt);
+        if (isHost) {
+            super.update(dt);
+        }else {
+
+        }
 
 
         /*
@@ -246,6 +266,11 @@ public class MultiplayerGameState extends PlayState {
         */
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
+        if(!isHost){
+            //TODO: Add to get zombies
+                clientZombies(incomeMessage.getZombies());
+
+        }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
         // Reset for next update
@@ -254,11 +279,95 @@ public class MultiplayerGameState extends PlayState {
 
     }
 
+    private void clientZombies(String jsonZombies) {
+        if(jsonZombies == null || jsonZombies.isEmpty() || jsonZombies.equals("null")){
+            return;
+        }
+        String[] zs = jsonZombies.split(";");
+        ArrayList<String> uuids = new ArrayList<>();
+        for(String z: zs){
+            uuids.add(z.split(":")[0]);
+        }
+
+        //Remove dead zombies
+        for(int i = 0;i<zombies.size();i++){
+            if(!uuids.contains(zombies.get(i).getId())){
+                zombies.remove(i);
+                i--;
+            }
+        }
+
+        for(int i =0;i<zs.length;i++){
+            String z = zs[i];
+
+            String id = z.split(":")[0];
+            float x = Float.parseFloat(z.split(":")[1].split(",")[0]);
+            float y = Float.parseFloat(z.split(":")[1].split(",")[1]);
+
+            boolean newZombie = true;
+
+            for(int j=0;j<zombies.size();j++){
+                if(id.equals(zombies.get(j).getId())){
+                    newZombie = false;
+                    zombies.get(j).setPosition(x,y);
+
+                }
+            }
+            if(newZombie){
+                zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
+            }
+
+        }
+
+        /*JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(jsonZombies.toString()).getAsJsonObject();
+        Set<String> keys = jsonObject.keySet();
+        for(String k: keys){
+            try {
+                JSONArray arr = jsonZombies.getJSONArray(k);
+                for(int i = 0; i<arr.length();i++){
+                    String x = arr.getJSONObject(i).getString("x");
+                    String y = arr.getJSONObject(i).getString("y");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        */
+
+    }
+
     public void updateOutComeMessage(float dt) {
         //Update outcome message
         Vector2 tmpVec =  new Vector2();
         stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(),Gdx.input.getY()));
         outcomeMessage.setPositionY(tmpVec.y);
+        if (isHost) {
+            String str = "";
+            for(int i=0;i<zombies.size();i++){
+                Zombie z = zombies.get(i);
+                str+=z.getId()+":"+z.getx()+","+z.gety();
+                if (i < zombies.size()-1) {
+                    str+=";";
+                }
+            }
+            //outcomeMessage.setZombies(this.getZombies());
+            /*
+            JSONObject json = new JSONObject();
+            try {
+                for(Zombie z: zombies){
+                    JSONObject json2 = new JSONObject();
+                    json2.put("x",z.getx());
+                    json2.put("y",z.gety());
+                    json.put(z.getId(), json2);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            */
+            outcomeMessage.setZombies(str);
+        }
 
         //Finally we send the message
 
@@ -273,6 +382,11 @@ public class MultiplayerGameState extends PlayState {
 
     @Override
     public void draw() {
+        if (isHost) {
+            super.draw();
+        }else {
+            super.draw();
+        }
         sb.setProjectionMatrix(cam.combined);
         //Draw other player
         //TODO: Move second player to super spritebatch?
@@ -282,15 +396,7 @@ public class MultiplayerGameState extends PlayState {
 
     @Override
     public void dispose() {
-        super.dispose();
-    }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.BACK) {
-            leaveRoom = true;
-        }
-        return false;
     }
 
 }

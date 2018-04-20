@@ -1,7 +1,9 @@
 package co.aeons.zombie.shooter.utils;
 
 
-import co.aeons.zombie.shooter.ZombieShooter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MultiplayerMessage {
 
@@ -16,6 +18,8 @@ public class MultiplayerMessage {
 
     private int operations;
     private float positionY;
+
+    private String zombies;
 
     public MultiplayerMessage(){
         // Códigos que representa en binario :
@@ -68,17 +72,25 @@ public class MultiplayerMessage {
         this.positionY = positionY;
     }
 
+    public void setZombies(String zombies){
+        this.zombies = zombies;
+    }
+    public String getZombies(){
+        return this.zombies;
+    }
+
 
     public void setPropertiesFromMessage(String s){
         if(!s.isEmpty() || !s.equals("")){
-            String[] result = s.split(":");
+            String[] result = s.split(";;ANTON;;");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
+            zombies = result[2];
         }
     }
 
     public String getForSendMessage(){
-        return positionY +":"+ operations;
+        return positionY +";;ANTON;;"+ operations+";;ANTON;;"+zombies;
     }
 
 }
