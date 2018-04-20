@@ -34,7 +34,6 @@ public class RandomButtonFactory {
         if(type.equals("instakill")) {
             return new InstaKill(bounds);
         }
-        System.out.println("Kukkhue");
         return null;
 
     }

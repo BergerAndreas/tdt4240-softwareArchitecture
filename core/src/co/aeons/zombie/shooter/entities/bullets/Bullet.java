@@ -38,7 +38,7 @@ public class Bullet extends SuperObject {
 
 		lifeTimer = 0;
 		lifeTime = 2;
-		bullet = new Sprite(new Texture("pistol1.png"));
+		bullet = new Sprite(new Texture("weapons/pistol1.png"));
 		bulletBounds = new Rectangle(this.x, this.y, 10, 10);
 
 	}

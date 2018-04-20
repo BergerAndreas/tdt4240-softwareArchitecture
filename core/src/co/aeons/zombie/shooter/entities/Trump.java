@@ -15,12 +15,12 @@ public class Trump extends Zombie {
     private void createIdleAnimation() {
         // TODO: 17/04/2018 Mekk Trump sprite 
         //Opens textureAtlas containing enemy spritesheet information
-        runningAtlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
+        runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/pack.atlas"));
         //Fetches all sprites matchin keyword 'spoder'
         runningAnimation =
                 new Animation<TextureRegion>(
                         0.1f,
-                        runningAtlas.findRegions("spoder"),
+                        runningAtlas.findRegions("enemies/spoder"),
                         Animation.PlayMode.LOOP
                 );
         //Initializes statetime for this animation

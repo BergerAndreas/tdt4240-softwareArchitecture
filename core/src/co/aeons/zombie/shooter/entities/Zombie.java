@@ -63,12 +63,12 @@ public class Zombie extends SuperObject {
 
 	private void createIdleAnimation() {
 		//Opens textureAtlas containing enemy spritesheet information
-		runningAtlas = new TextureAtlas(Gdx.files.internal("pack.atlas"));
+		runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/pack.atlas"));
 		//Fetches all sprites matchin keyword 'spoder'
 		runningAnimation =
 				new Animation<TextureRegion>(
 						0.1f,
-						runningAtlas.findRegions("spoder"),
+						runningAtlas.findRegions("enemies/spoder"),
 						Animation.PlayMode.LOOP
 				);
 		//Initializes statetime for this animation
@@ -76,10 +76,10 @@ public class Zombie extends SuperObject {
 	}
 
 	private void createAttackAnimation() {
-		attackAtlas = new TextureAtlas(Gdx.files.internal("spooder.atlas"));
+		attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/spooder.atlas"));
 		attackAnimation = new Animation<TextureRegion>(
 				0.1f,
-				attackAtlas.findRegions("spooder"),
+				attackAtlas.findRegions("enemies/spooder"),
 				Animation.PlayMode.LOOP
 				);
 		stateTimeAttacking = 0f;
