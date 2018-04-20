@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
+import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static co.aeons.zombie.shooter.utils.enums.MultiplayerState.STARTMULTIPLAYER;
 
 public class MultiplayerGameState extends PlayState {
@@ -104,6 +106,9 @@ public class MultiplayerGameState extends PlayState {
         abandonFirstPlayer = false;
         abandonSecondPlayer = false;
 
+        //FIXME: Remove
+        this.stage = new Stage(gamePort, sb);
+
         //TODO: Initialize powerups
 
         Gdx.input.setInputProcessor(this);
@@ -126,7 +131,7 @@ public class MultiplayerGameState extends PlayState {
     @Override
     public void init() {
         //TODO: Move this to improve multiplayer?
-        //super.init();
+        super.init();
         // Create second player
         secondPlayer = new SecondPlayer(super.bullets);
 
@@ -168,8 +173,6 @@ public class MultiplayerGameState extends PlayState {
                     if(host.equals(myId)){
                         this.isHost = true;
                     }
-
-
 
                     timeToStartGame -= dt;
                 } else {
@@ -245,6 +248,7 @@ public class MultiplayerGameState extends PlayState {
         */
         //Update logic of the rival
         //rivalShip.update(delta,incomeMessage.getPositionY());
+        System.out.println(incomeMessage.getPositionY());
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
         // Reset for next update
