@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -43,6 +44,7 @@ public class PlayState extends GameState {
     protected ShapeRenderer sr;
     private BitmapFont scoreFont, magazineFont, wallHealthFont;
     private GlyphLayout layout;
+    private Texture bg;
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
@@ -68,12 +70,6 @@ public class PlayState extends GameState {
 
     private int level;
     private int totalZombies;
-
-    private float maxDelay;
-    private float minDelay;
-    private float currentDelay;
-    private float bgTimer;
-    private boolean musicStarted;
 
     //Spawndelay for powerups
     private int spawnDelay;
@@ -105,6 +101,7 @@ public class PlayState extends GameState {
         wallHealthFont = new BitmapFont();
         magazineFont = new BitmapFont();
         layout = new GlyphLayout();
+        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
 
         //sets up camera
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
@@ -173,13 +170,6 @@ public class PlayState extends GameState {
         //Create empty button
         effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
-        // set up bg music
-        maxDelay = 1;
-        minDelay = 0.25f;
-        currentDelay = maxDelay;
-        bgTimer = maxDelay;
-        musicStarted = false;
-
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
     }
@@ -199,7 +189,6 @@ public class PlayState extends GameState {
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
-
     }
 
     public void update(float dt) {
@@ -319,6 +308,15 @@ public class PlayState extends GameState {
         sb.setProjectionMatrix(cam.combined);
         sr.setProjectionMatrix(cam.combined);
 
+//        Disabling blending for background covering entire screen improves performance
+        sb.disableBlending();
+        sb.begin();
+        //draw background
+        sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
+        sb.end();
+
+//        Re-enable blending to avoid black boxes around rest of sprites
+        sb.enableBlending();
         // draw player
         player.draw(sb);
 
@@ -342,12 +340,9 @@ public class PlayState extends GameState {
         sr.end();
 
         // draw buttons
-        sb.setColor(0, 1, 1, 1);
         sb.begin();
 
-
 //        Various HUDs
-
 //        Score
         String scoreOutput = "Score: " + Long.toString(this.getScore());
         this.layout.setText(scoreFont, scoreOutput);
