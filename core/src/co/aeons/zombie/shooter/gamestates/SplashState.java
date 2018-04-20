@@ -57,6 +57,8 @@ public class SplashState extends GameState {
                 gsm.setState(GameStateManager.MENU);
             }
         }).start(tweenManager);
+
+        //Initialize resource manager
         ResourceManager.init();
     }
 
