@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class ZombieShooter extends Game {
 
@@ -24,9 +25,9 @@ public class ZombieShooter extends Game {
 	public static Platform platform;
 	public static IGoogleServices googleServices;
 
+
 	public ZombieShooter(Platform platform, IGoogleServices googleServices) {
 		this.platform = platform;
-		ZombieShooter.googleServices = googleServices;
 	}
 
 

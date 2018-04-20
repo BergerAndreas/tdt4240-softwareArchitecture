@@ -15,6 +15,7 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameStateManager;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 import co.aeons.zombie.shooter.tween.SpriteAccessor;
 
 /**
@@ -57,6 +58,8 @@ public class SplashState extends GameState {
             }
         }).start(tweenManager);
 
+        //Initialize resource manager
+        ResourceManager.init();
     }
 
     @Override
