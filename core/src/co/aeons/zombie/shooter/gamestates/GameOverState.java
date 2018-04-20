@@ -31,7 +31,8 @@ public class GameOverState extends GameState {
 	private Skin skin;
 
 	private boolean newHighScore;
-	private TextField usernameTextField;
+	TextField usernameTextField;
+	private TextButton submitHighscoreButton;
 
 	private BitmapFont font;
 	private GlyphLayout layout;
@@ -52,6 +53,11 @@ public class GameOverState extends GameState {
 
 		newHighScore = Save.gd.isHighScore(Save.gd.getTentativeScore());
 
+//		Check if new highscore, if so -> let user input name to highscore list
+		if(newHighScore){
+			initHighscore();
+		}
+
 		// Control inputs
 		Gdx.input.setInputProcessor(this.stage);
 	}
@@ -59,7 +65,7 @@ public class GameOverState extends GameState {
 
     public void update(float dt) {
 
-    }
+	}
 
     public void draw() {
 
@@ -79,7 +85,6 @@ public class GameOverState extends GameState {
 		if(newHighScore){
 			layout.setText(font, "New Highscore: " + Save.gd.getTentativeScore());
 			font.draw(sb, layout, (ZombieShooter.WIDTH)/2, 180);
-			initHighscore();
 
 			stage.act();
 			stage.draw();
@@ -161,11 +166,11 @@ public class GameOverState extends GameState {
 
 //		Highscore input for player's name
 		usernameTextField = new TextField("", skin);
-		usernameTextField.setSize(100, 15);
+		usernameTextField.setSize(100, 20);
 		usernameTextField.setPosition((ZombieShooter.WIDTH - usernameTextField.getWidth())/2,(ZombieShooter.HEIGHT - usernameTextField.getHeight())/2);
 
 //		Button to submit highscore
-		TextButton submitHighscoreButton = new TextButton("Submit", skin);
+		submitHighscoreButton = new TextButton("Submit", skin);
 		submitHighscoreButton.setPosition((ZombieShooter.WIDTH - submitHighscoreButton.getWidth())/2, usernameTextField.getY()-usernameTextField.getHeight()-25);
 
 		//		submitHighscore takes player to Highscores
@@ -176,6 +181,7 @@ public class GameOverState extends GameState {
 				Save.gd.addHighScore(Save.gd.getTentativeScore(), usernameTextField.getText());
 				Save.save();
 				System.out.println(usernameTextField.getText());
+				System.out.println(usernameTextField.getMessageText());
 //				Stop gameover music, and start ingame music
 				Jukebox.getGameoverMusic().stop();
 				Jukebox.playIngameMusic();
