@@ -18,12 +18,18 @@ public class SuperObject {
 
     protected int width;
     protected int height;
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String id;
 
 
     public SuperObject() {
         this.id = "" + UUID.randomUUID();
     }
+
 
     public String getId() {
         return id;

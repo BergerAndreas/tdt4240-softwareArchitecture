@@ -59,7 +59,7 @@ public class PlayState extends GameState {
     private long score;
 
     //Boundaries
-    private Rectangle playerLane;
+    protected Rectangle playerLane;
     private Rectangle fireBounds;
     private Rectangle cycleUpButtonBounds;
     private Rectangle cycleDownButtonBounds;
@@ -84,7 +84,7 @@ public class PlayState extends GameState {
     private int effectTimer;
 
     //Used to increase damage on bullets
-    private int damageModifier;
+    protected int damageModifier;
     private int level;
 
     //Flag to check if powerup is used
@@ -178,7 +178,8 @@ public class PlayState extends GameState {
     }
 
     public void update(float dt) {
-        checkCollisions();
+        checkZombieWallCollision();
+        checkZombieBulletCollision();
         updateTimers(dt);
         zombieSpawnLogic();
         player.update(dt);
@@ -202,12 +203,15 @@ public class PlayState extends GameState {
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
-            zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
-            zombieAPI+="t"+":"+x+","+y+";";
-            zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
-            zombieAPI+="z"+":"+x+","+y+";";
-            zombies.add(new SinusZombie(x, y, Difficulty.getDifficulty()));
-            zombieAPI+="s"+":"+x+","+y+";";
+
+            Trump t = new Trump(x, y, Difficulty.getDifficulty());
+            zombies.add(t);
+            zombieAPI+="t"+":"+x+","+y+","+t.getId()+";";
+
+            Zombie z = new Zombie(x, y, Difficulty.getDifficulty());
+            zombies.add(z);
+            zombieAPI+="z"+":"+x+","+y+","+z.getId()+";";
+
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
@@ -291,18 +295,8 @@ public class PlayState extends GameState {
         this.effectTimer = 0;
     }
 
-    protected void checkCollisions() {
-        //zombie-wall collision
-        for (int i = 0; i < zombies.size(); i++) {
-            Zombie zombie = zombies.get(i);
-            if (zombie.collide(wall)) {
-                zombie.setStopped(true);
-                wall.takeDamage(zombie.attack());
-            }
 
-        }
-
-        // bullet-zombie collision
+    protected void checkZombieBulletCollision() {
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
             for (int j = 0; j < zombies.size(); j++) {
@@ -320,6 +314,17 @@ public class PlayState extends GameState {
                     break;
                 }
             }
+        }
+    }
+
+    protected void checkZombieWallCollision() {
+        for (int i = 0; i < zombies.size(); i++) {
+            Zombie zombie = zombies.get(i);
+            if (zombie.collide(wall)) {
+                zombie.setStopped(true);
+                wall.takeDamage(zombie.attack());
+            }
+
         }
     }
 
@@ -405,7 +410,7 @@ public class PlayState extends GameState {
     }
 
     //Method called when FireButton pressed
-    private void onFireButtonPressed() {
+    protected void onFireButtonPressed() {
         player.shoot();
     }
 

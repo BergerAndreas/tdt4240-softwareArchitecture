@@ -1,35 +1,24 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.List;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.SecondPlayer;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Zombie;
+import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
-import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
@@ -64,6 +53,9 @@ public class MultiplayerGameState extends PlayState {
     private BitmapFont infoMessage;
     private GlyphLayout layout;
 
+    //Dead bullets and zombies
+    String deadZombies = "NONE";
+    String deadBullets = "NONE";
 
     //Times start -> finish
     private float timeToStartGame;
@@ -208,13 +200,24 @@ public class MultiplayerGameState extends PlayState {
         updateIncomeMessage(dt);
         updateOutComeMessage(dt);
         if (isHost) {
-            super.update(dt);
-        } else {
-            super.checkCollisions();
+            this.checkZombieBulletCollision();
+            super.checkZombieWallCollision();
             super.updateTimers(dt);
-            //secondPlayer.update(dt);
+            super.zombieSpawnLogic();
+            super.player.update(dt);
             super.updatePlayerBullets(dt);
             super.updateZombies(dt);
+            super.spawnEffectButton();
+            super.updateWallHealth();
+            secondPlayer.update(dt);
+
+        } else {
+            super.checkZombieWallCollision();
+            super.updateTimers(dt);
+            super.player.update(dt);
+            super.updatePlayerBullets(dt);
+            super.updateZombies(dt);
+            secondPlayer.update(dt);
 
 
         }
@@ -233,6 +236,40 @@ public class MultiplayerGameState extends PlayState {
 
 
         //Act here
+    }
+
+    @Override
+    protected void checkZombieBulletCollision() {
+        //To send bullets and zombies to be removed
+        deadZombies = "";
+        deadBullets = "";
+
+        for (int i = 0; i < bullets.size(); i++) {
+            Bullet b = bullets.get(i);
+            for (int j = 0; j < zombies.size(); j++) {
+                Zombie a = zombies.get(j);
+                if (a.collide(b)) {
+                    deadBullets+=b.getId()+",";
+                    bullets.remove(i);
+                    i--;
+                    a.getHurt(b.getDamage() * damageModifier);
+                    if (a.getHealth() <= 0) {
+                        Zombie.deathSound();
+                        deadZombies+=a.getId()+",";
+                        zombies.remove(j);
+                        j--;
+                        this.incrementScore(a.getScore());
+                    }
+                    break;
+                }
+            }
+        }
+        if(deadZombies.equals("")){
+            deadZombies = "NONE";
+        }
+        if (deadBullets.equals("")) {
+            deadBullets = "NONE";
+        }
     }
 
     public void updateIncomeMessage(float dt) {
@@ -276,10 +313,17 @@ public class MultiplayerGameState extends PlayState {
         //rivalShip.update(delta,incomeMessage.getPositionY());
         if (!isHost) {
             //TODO: Add to get zombies
-            clientZombies(incomeMessage.getZombies());
+            clientSpawnZombies(incomeMessage.getZombies());
+            clientDeadZombies(incomeMessage.getDeadZombies());
+            //clientDeadBullets(incomeMessage.getDeadBullets());
 
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
+
+        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)){
+            secondPlayer.shoot();
+            System.out.println(""+this.bullets.size());
+        }
 
         // Reset for next update
         incomeMessage.resetOperations();
@@ -287,7 +331,21 @@ public class MultiplayerGameState extends PlayState {
 
     }
 
-    private void clientZombies(String incomingZombies) {
+    private void clientDeadZombies(String deadZombies) {
+        if (!deadZombies.equals("NONE")) {
+            String[] deadZombieIds = deadZombies.split(",");
+            List<String> deadZombieIdsList = Arrays.asList(deadZombieIds);
+            for (int i = 0; i < zombies.size(); i++) {
+                if (deadZombieIdsList.contains(zombies.get(i).getId())) {
+                    zombies.remove(i);
+                    i--;
+                }
+            }
+        }
+
+    }
+
+    private void clientSpawnZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
             String[] z = incomingZombies.split(";");
             for(String s: z){
@@ -295,11 +353,16 @@ public class MultiplayerGameState extends PlayState {
                 String coordinates = s.split(":")[1];
                 float x = Float.parseFloat(coordinates.split(",")[0]);
                 float y = Float.parseFloat(coordinates.split(",")[1]);
+                String id = coordinates.split(",")[2];
                 if (type.equals("z")) {
                     //TODO: fix difficulty in multiplayer
-                    zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
+                    Zombie newZombie = new Zombie(x, y, Difficulty.getDifficulty());
+                    newZombie.setId(id);
+                    zombies.add(newZombie);
                 }else if(type.equals("t")){
-                    zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
+                    Trump newTrump = new Trump(x, y, Difficulty.getDifficulty());
+                    newTrump.setId(id);
+                    zombies.add(newTrump);
                 }
             }
         }
@@ -307,13 +370,18 @@ public class MultiplayerGameState extends PlayState {
 
     public void updateOutComeMessage(float dt) {
         //Update outcome message
-        Vector2 tmpVec = new Vector2();
-        stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(), Gdx.input.getY()));
-        outcomeMessage.setPositionY(tmpVec.y);
+        //Vector2 tmpVec = new Vector2();
+        //stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(), Gdx.input.getY()));
+        outcomeMessage.setPositionY(player.gety());
 
         if (isHost) {
             outcomeMessage.setZombies(zombieAPI);
+            outcomeMessage.setDeadBullets(deadBullets);
+            outcomeMessage.setDeadZombies(deadZombies);
+            deadZombies = "NONE";
+            deadBullets = "NONE";
             zombieAPI = "NONE";
+
         }
 
         //Finally we send the message
@@ -322,6 +390,16 @@ public class MultiplayerGameState extends PlayState {
 
         //We reset the operations so as not to interfere in the next interaction
         outcomeMessage.resetOperations();
+
+
+    }
+    @Override
+    protected void onFireButtonPressed() {
+        if(player.shoot()){
+
+            outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
+
+        }
 
 
     }
