@@ -123,15 +123,12 @@ public class MultiplayerMessage {
             if (!result[4].equals("NONE")) {
                 deadBullets = result[4];
             }
-            if (!result[5].equals("NONE")) {
-                buttonSpawn=result[5];
-            }
         }
     }
 
     public String getForSendMessage() {
         return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
-                deadZombies + ";;ANTON;;" + deadBullets+";;ANTON;;"+buttonSpawn;
+                deadZombies + ";;ANTON;;" + deadBullets;
 
     }
 

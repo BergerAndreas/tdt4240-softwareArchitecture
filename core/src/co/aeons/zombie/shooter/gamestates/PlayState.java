@@ -52,7 +52,6 @@ public class PlayState extends GameState {
 
     //API
     protected String zombieAPI;
-    protected String effectButtonApi = "NONE";
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
@@ -207,8 +206,6 @@ public class PlayState extends GameState {
         if (effectButtonSpawnTimer > spawnDelay && effectButtonIsClicked) {
 
             effectButton = buttonFactory.produceRandomEffectButton();
-
-            effectButtonApi = effectButton.getButtonType() + "," + effectButton.getX() + "," + effectButton.getY();
 
             this.stage.addActor(effectButton);
 

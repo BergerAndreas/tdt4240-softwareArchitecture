@@ -217,7 +217,6 @@ public class MultiplayerGameState extends PlayState {
             super.player.update(dt);
             super.updatePlayerBullets(dt);
             super.updateZombies(dt);
-            super.spawnEffectButton();
             super.updateWallHealth();
             secondPlayer.update(dt);
 
@@ -325,7 +324,6 @@ public class MultiplayerGameState extends PlayState {
             //TODO: Add to get zombies
             clientSpawnZombies(incomeMessage.getZombies());
             clientDeadZombies(incomeMessage.getDeadZombies());
-            clientSpawnButton(incomeMessage.getButtonSpawn());
             //clientDeadBullets(incomeMessage.getDeadBullets());
 
         }
@@ -391,32 +389,6 @@ public class MultiplayerGameState extends PlayState {
             }
         }
     }
-    private void clientSpawnButton(String buttonSpawn) {
-        if (!buttonSpawn.equals("NONE")) {
-            String type = buttonSpawn.split(",")[0];
-            float x = Float.parseFloat(buttonSpawn.split(",")[1]);
-            float y = Float.parseFloat(buttonSpawn.split(",")[2]);
-            Rectangle bound = new Rectangle(
-                    x,
-                    y,
-                    cam.viewportWidth / 8,
-                    cam.viewportHeight / 6
-            );
-            if (type.equals("n")) {
-                effectButton = new NukeButton(bound);
-            }
-            if (type.equals("i")) {
-                effectButton = new InstaKill(bound);
-            }
-            if (type.equals("d")) {
-                effectButton = new DoublePoints(bound);
-            }
-            if (type.equals("h")) {
-                effectButton = new WallHealthButton(bound);
-            }
-
-        }
-    }
 
     public void updateOutComeMessage(float dt) {
         //Update outcome message
@@ -428,12 +400,10 @@ public class MultiplayerGameState extends PlayState {
             outcomeMessage.setZombies(zombieAPI);
             outcomeMessage.setDeadBullets(deadBullets);
             outcomeMessage.setDeadZombies(deadZombies);
-            outcomeMessage.setButtonSpawn(effectButtonApi);
             //FIXME: Kanskje vi trenger disse
             //deadZombies = "NONE";
             //deadBullets = "NONE";
             zombieAPI = "NONE";
-            effectButtonApi = "NONE";
 
         }
 
