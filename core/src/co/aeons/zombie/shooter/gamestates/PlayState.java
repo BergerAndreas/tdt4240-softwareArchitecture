@@ -47,7 +47,7 @@ public class PlayState extends GameState {
 
     //Background texture
     private Texture bg;
-    protected StringBuilder zombieAPI;
+    protected String zombieAPI;
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
@@ -116,7 +116,8 @@ public class PlayState extends GameState {
         spawnTimer = 1.0f;
         spawnCooldown = 1.0f;
 
-        spawnZombies();
+        //spawnZombies();
+        zombieAPI = "NONE";
 
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
@@ -190,21 +191,20 @@ public class PlayState extends GameState {
         // String for multiplayer api
         // Format:
         //zombietype:x,y;
-        zombieAPI = new StringBuilder();
+        zombieAPI = "";
+        //zombieAPI = new StringBuilder();
 
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
             zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
-            zombieAPI.append("t").append(":").append(x).append(",").append(y).append(";"); //TODO Maybe fix ending ;
+            zombieAPI+="t"+":"+x+","+y+";";
             zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
-            zombieAPI.append("z").append(":").append(x).append(",").append(y).append(";"); //TODO Maybe fix ending ;
+            zombieAPI+="z"+":"+x+","+y+";";
 
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
-        //Remove trailing semicolon
-        zombieAPI.deleteCharAt(zombieAPI.length()-1);
     }
 
 
@@ -250,7 +250,7 @@ public class PlayState extends GameState {
     }
 
     protected void updateWallHealth() {
-        if (wall.getHealth() <= 0) {
+        if (wall.getWallHealth() <= 0) {
             Jukebox.getIngameMusic().stop();
             Jukebox.playGameoverMusic();
             Save.gd.setTentativeScore(this.getScore());
@@ -285,7 +285,7 @@ public class PlayState extends GameState {
         this.effectTimer = 0;
     }
 
-    private void checkCollisions() {
+    protected void checkCollisions() {
         //zombie-wall collision
         for (int i = 0; i < zombies.size(); i++) {
             Zombie zombie = zombies.get(i);
@@ -366,7 +366,7 @@ public class PlayState extends GameState {
         this.layout.setText(magazineFont, magazineOutput);
         scoreFont.draw(sb, layout, cam.viewportWidth - 250, (fireButton.getY() + fireBounds.getHeight()) / 2);
 //        Wall-health
-        String wallHealthOutput = "❤" + Integer.toString(this.wall.getHealth());
+        String wallHealthOutput = "❤" + Integer.toString(this.wall.getWallHealth());
         this.layout.setText(wallHealthFont, wallHealthOutput);
         scoreFont.draw(sb, layout, (this.wall.getx() + this.wall.getRectangle().getWidth()) / 2 + 25, (this.wall.gety() + this.wall.getRectangle().getHeight()) / 2);
 

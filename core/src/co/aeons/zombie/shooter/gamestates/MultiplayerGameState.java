@@ -210,6 +210,12 @@ public class MultiplayerGameState extends PlayState {
         if (isHost) {
             super.update(dt);
         } else {
+            super.checkCollisions();
+            super.updateTimers(dt);
+            //secondPlayer.update(dt);
+            super.updatePlayerBullets(dt);
+            super.updateZombies(dt);
+
 
         }
 
@@ -233,6 +239,7 @@ public class MultiplayerGameState extends PlayState {
         //Fetch the input message
         incomeMessage = ZombieShooter.googleServices.receiveGameMessage();
         //Check if opponent has requested to leave the room
+        /*
         if (incomeMessage.checkOperation(incomeMessage.MASK_LEAVE)) {
             abandonSecondPlayer = true;
             //TODO: exit game or something here?
@@ -258,6 +265,7 @@ public class MultiplayerGameState extends PlayState {
             System.out.println("Damage received");
             //rivalShip.receiveDamage();
         }
+        */
         /*
         TODO:Fix win state
         if(rivalShip.isCompletelyDefeated()){
@@ -280,7 +288,21 @@ public class MultiplayerGameState extends PlayState {
     }
 
     private void clientZombies(String incomingZombies) {
-        
+        if (!incomingZombies.equals("NONE")) {
+            String[] z = incomingZombies.split(";");
+            for(String s: z){
+                String type = s.split(":")[0];
+                String coordinates = s.split(":")[1];
+                float x = Float.parseFloat(coordinates.split(",")[0]);
+                float y = Float.parseFloat(coordinates.split(",")[1]);
+                if (type.equals("z")) {
+                    //TODO: fix difficulty in multiplayer
+                    zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
+                }else if(type.equals("t")){
+                    zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
+                }
+            }
+        }
     }
 
     public void updateOutComeMessage(float dt) {
@@ -290,9 +312,8 @@ public class MultiplayerGameState extends PlayState {
         outcomeMessage.setPositionY(tmpVec.y);
 
         if (isHost) {
-            outcomeMessage.setZombies(zombieAPI.toString());
-            zombieAPI.setLength(0);
-            zombieAPI.append("NONE");
+            outcomeMessage.setZombies(zombieAPI);
+            zombieAPI = "NONE";
         }
 
         //Finally we send the message

@@ -10,7 +10,7 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 public class Wall extends SuperObject {
 
     private Texture wallTexture;
-    private int health;
+    private int wallHealth;
 
     public Wall() {
 
@@ -23,7 +23,7 @@ public class Wall extends SuperObject {
         this.bounds = new Rectangle(x,y,width,height);
 
         this.wallTexture = new Texture("walls/redBrick.jpg");
-        this.health = 500;
+        this.wallHealth = 500;
     }
 
     public void draw(SpriteBatch batch) {
@@ -33,10 +33,10 @@ public class Wall extends SuperObject {
     }
 
     public void takeDamage(int damage){
-        this.health -= damage;
+        this.wallHealth -= damage;
     }
 
-    public int getHealth() {
-        return health;
+    public int getWallHealth() {
+        return wallHealth;
     }
 }

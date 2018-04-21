@@ -44,11 +44,14 @@ public class MultiplayerMessage {
         // Al principio la posición inicial es la mitad de la altura
         // TODO Esto deben de recogerlo de cada clase, no puesto aqui
         positionY = 130;//TODO: FIx ZombieShooter.cam.viewportHeight/2;
+
+        zombies = "NONE";
     }
 
     public void resetOperations(){
         // Operation = 00000
         operations = MASK_NO_OPT;
+        zombies = "NONE";
     }
 
     public void setOperation(int i){
@@ -85,8 +88,9 @@ public class MultiplayerMessage {
             String[] result = s.split(";;ANTON;;");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
-            zombies = result[2];
-            System.out.println(zombies);
+            if(!result[2].equals("NONE")){
+                zombies = result[2];
+            }
         }
     }
 
