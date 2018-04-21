@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -16,9 +17,15 @@ import co.aeons.zombie.shooter.entities.SecondPlayer;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
+import co.aeons.zombie.shooter.entities.buttons.DoublePoints;
+import co.aeons.zombie.shooter.entities.buttons.EffectButton;
+import co.aeons.zombie.shooter.entities.buttons.InstaKill;
+import co.aeons.zombie.shooter.entities.buttons.NukeButton;
+import co.aeons.zombie.shooter.entities.buttons.WallHealthButton;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
+import co.aeons.zombie.shooter.utils.utils;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
@@ -86,6 +93,7 @@ public class MultiplayerGameState extends PlayState {
 
     //Check if the player wants to leave the room or not
     private boolean leaveRoom;
+    private EffectButton effectButton;
 
     public MultiplayerGameState(GameStateManager gsm, String option) {
         super(gsm);
@@ -113,6 +121,7 @@ public class MultiplayerGameState extends PlayState {
 
         //FIXME: Remove
         this.stage = new Stage(gamePort, sb);
+        this.effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
         //TODO: Initialize powerups
 
@@ -382,7 +391,25 @@ public class MultiplayerGameState extends PlayState {
             String type = buttonSpawn.split(",")[0];
             float x = Float.parseFloat(buttonSpawn.split(",")[1]);
             float y = Float.parseFloat(buttonSpawn.split(",")[2]);
-            System.out.println(type);
+            Rectangle bound = new Rectangle(
+                    x,
+                    y,
+                    cam.viewportWidth / 8,
+                    cam.viewportHeight / 6
+            );
+            if (type.equals("n")) {
+                effectButton = new NukeButton(bound);
+            }
+            if (type.equals("i")) {
+                effectButton = new InstaKill(bound);
+            }
+            if (type.equals("d")) {
+                effectButton = new DoublePoints(bound);
+            }
+            if (type.equals("h")) {
+                effectButton = new WallHealthButton(bound);
+            }
+
         }
     }
 
@@ -401,6 +428,7 @@ public class MultiplayerGameState extends PlayState {
             //deadZombies = "NONE";
             //deadBullets = "NONE";
             zombieAPI = "NONE";
+            effectButtonApi = "NONE";
 
         }
 
@@ -443,6 +471,9 @@ public class MultiplayerGameState extends PlayState {
             super.draw();
         } else {
             super.draw();
+            super.sb.begin();
+            effectButton.draw(super.sb, 1);
+            super.sb.end();
         }
         sb.setProjectionMatrix(cam.combined);
         //Draw other player
