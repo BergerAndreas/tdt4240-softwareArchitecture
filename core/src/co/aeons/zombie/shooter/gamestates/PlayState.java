@@ -229,7 +229,6 @@ public class PlayState extends GameState {
             }
             spawnCooldown += 1.0f;
             if (spawnCooldown % 17 == 0) {
-                System.out.println("Difficulty increased");
                 level += 2;
             }
         }
@@ -254,6 +253,7 @@ public class PlayState extends GameState {
         if (wall.getHealth() <= 0) {
             Jukebox.getIngameMusic().stop();
             Jukebox.playGameoverMusic();
+            Save.gd.setTentativeScore(this.getScore());
             gsm.setState(GameStateManager.GAMEOVER);
         }
     }
@@ -417,16 +417,12 @@ public class PlayState extends GameState {
     }
 
     private void onCycleUpPressed() {
-        //TODO: Uncomment me to print next weapon
-        //System.out.println("Next Weapon");
         player.nextWeapon();
         reloadFireButtonTexture();
     }
 
     private void onCycleDownPressed() {
         player.prevWeapon();
-        //TODO: Uncomment me to print previous weapon
-        //System.out.println("Previous Weapon");
         reloadFireButtonTexture();
     }
 

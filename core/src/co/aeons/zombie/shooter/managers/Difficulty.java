@@ -6,7 +6,6 @@ public class Difficulty {
 
     public static void setDifficulty(int d){
         difficulty = d;
-        System.out.println(getDifficulty());
     }
 
     public static int getDifficulty(){
