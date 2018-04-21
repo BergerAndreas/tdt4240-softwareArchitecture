@@ -53,7 +53,7 @@ public class Player extends SuperObject {
 
 	public void prevWeapon() {
 		currentWeaponIndex --;
-		if(currentWeaponIndex < 0 || currentWeaponIndex > weapons.size()) {
+		if(currentWeaponIndex < 0 || currentWeaponIndex >= weapons.size()) {
 			currentWeaponIndex = weapons.size() - 1;
 		}
 		this.currentWeapon = weapons.get(currentWeaponIndex);

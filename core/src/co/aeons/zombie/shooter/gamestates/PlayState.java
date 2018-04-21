@@ -27,7 +27,7 @@ import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
 import co.aeons.zombie.shooter.factories.RandomButtonFactory;
-import co.aeons.zombie.shooter.managers.Difficulty;
+import co.aeons.zombie.shooter.factories.RandomZombieFactory;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.Save;
@@ -67,8 +67,11 @@ public class PlayState extends GameState {
     private Rectangle cycleDownButtonBounds;
     private Rectangle muteButtonBounds;
 
-    //buttons
+    //Factories
     private RandomButtonFactory buttonFactory;
+    private RandomZombieFactory zombieFactory;
+
+    //buttons
     private FireButton fireButton;
     private MuteButton muteButton;
     private CycleUpButton cycleUpButton;
@@ -80,7 +83,9 @@ public class PlayState extends GameState {
     private int spawnDelay;
     private float effectButtonSpawnTimer;
     private float spawnCooldown;
-    private float spawnTimer;
+    private int zombieSpawnTimer;
+
+    private int zombieSpawnCount;
 
     //Duration of an effect
     private int effectTimer;
@@ -123,11 +128,12 @@ public class PlayState extends GameState {
         wall = new Wall();
 
         level = 1;
-        spawnTimer = 1.0f;
+        zombieSpawnTimer = 100;
         spawnCooldown = 1.0f;
 
         //spawnZombies();
         zombieAPI = "NONE";
+        zombieSpawnCount = 10;
 
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
@@ -135,8 +141,9 @@ public class PlayState extends GameState {
         damageModifier = 1;
         effectTimer = 0;
 
-        //Button initialization
+        //Factory initialization
         buttonFactory = new RandomButtonFactory(cam);
+        zombieFactory = new RandomZombieFactory();
 
         //Create bounds for buttons
         fireBounds = new Rectangle(
@@ -187,7 +194,7 @@ public class PlayState extends GameState {
         checkZombieWallCollision();
         checkZombieBulletCollision();
         updateTimers(dt);
-        zombieSpawnLogic();
+        spawnZombie();
         player.update(dt);
         updatePlayerBullets(dt);
         updateZombies(dt);
@@ -195,34 +202,6 @@ public class PlayState extends GameState {
         updateWallHealth();
         framerate.update();
     }
-
-    private void spawnZombies() {
-
-        int numToSpawn = 4 + level - 1;
-
-        // String for multiplayer api
-        // Format:
-        //zombietype:x,y;
-        zombieAPI = "";
-        //zombieAPI = new StringBuilder();
-
-        for (int i = 0; i < numToSpawn; i++) {
-            float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
-            float y = randInt(0, ZombieShooter.HEIGHT - 100);
-
-            Trump t = new Trump(x, y, Difficulty.getDifficulty());
-            zombies.add(t);
-            zombieAPI += "t" + ":" + x + "," + y + "," + t.getId() + ";";
-
-            Zombie z = new Zombie(x, y, Difficulty.getDifficulty());
-            zombies.add(z);
-            zombieAPI += "z" + ":" + x + "," + y + "," + z.getId() + ";";
-
-            // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
-
-        }
-    }
-
 
     protected void spawnEffectButton() {
         if (effectButtonSpawnTimer > spawnDelay && effectButtonIsClicked) {
@@ -241,16 +220,35 @@ public class PlayState extends GameState {
         }
     }
 
-    protected void zombieSpawnLogic() {
-        if (Math.floor(spawnTimer) != spawnCooldown) {
-            if (Math.floor(spawnTimer) % 9 == 0) {
-                spawnZombies();
+    protected void spawnZombie() {
+        if (zombieSpawnTimer <= 0) {
+            zombieSpawnTimer += 10;
+            zombieAPI = "";
+            for (int i = 0; i < 5; i++) {
+                if (zombieSpawnCount <= 0) {
+                    break;
+                }
+                Zombie currentZombie = zombieFactory.spawnRandomZombie();
+                zombies.add(currentZombie);
+                zombieAPI +=
+                        currentZombie.getType() + ":" +
+                                currentZombie.getx() + "," +
+                                currentZombie.gety() + "," +
+                                currentZombie.getId() + ";";
+                System.out.println(zombieAPI);
+
+                zombieSpawnCount--;
             }
-            spawnCooldown += 1.0f;
-            if (spawnCooldown % 17 == 0) {
+
+            if (zombieSpawnCount <= 0) {
                 level += 2;
+                if (zombieSpawnTimer <= 3000) {
+                    zombieSpawnTimer = 500 * level;
+                }
+                zombieSpawnCount += 10 + level;
             }
         }
+
     }
 
     protected void updateTimers(float dt) {
@@ -261,7 +259,7 @@ public class PlayState extends GameState {
         }
 
         // next level
-        spawnTimer += dt;
+        zombieSpawnTimer -= dt;
         // update spawn powerup button effectButtonSpawnTimer
         if (effectButtonIsClicked) {
             this.effectButtonSpawnTimer += dt;

@@ -14,6 +14,7 @@ import java.util.List;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.SecondPlayer;
+import co.aeons.zombie.shooter.entities.SinusZombie;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
@@ -212,7 +213,7 @@ public class MultiplayerGameState extends PlayState {
             this.checkZombieBulletCollision();
             super.checkZombieWallCollision();
             super.updateTimers(dt);
-            super.zombieSpawnLogic();
+            super.spawnZombie();
             super.player.update(dt);
             super.updatePlayerBullets(dt);
             super.updateZombies(dt);
@@ -382,6 +383,10 @@ public class MultiplayerGameState extends PlayState {
                     Trump newTrump = new Trump(x, y, Difficulty.getDifficulty());
                     newTrump.setId(id);
                     zombies.add(newTrump);
+                }else if (type.equals("s")) {
+                    SinusZombie newSinusZombie = new SinusZombie(x, y, Difficulty.getDifficulty());
+                    newSinusZombie.setId(id);
+                    zombies.add(newSinusZombie);
                 }
             }
         }
