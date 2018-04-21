@@ -67,7 +67,8 @@ public class ZombieShooter extends Game {
 		//		Initialize background music
 		Jukebox.playIngameMusic();
 //		Load save file
-		Save.load();
+		//FIXME: FIx save
+		//Save.load();
 
 		gsm = new GameStateManager();
 

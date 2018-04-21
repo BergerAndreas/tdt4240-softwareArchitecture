@@ -20,6 +20,7 @@ public class Save {
     public static void save() {
         try {
 //            Append = false will overwrite file
+
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("highscores.sav"));
             out.writeObject(gd);
             out.close();
