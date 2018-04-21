@@ -49,26 +49,29 @@ public class ZombieShooter extends Game {
 		);
 		gamePort.apply();
 
-
-		Jukebox.load("sounds/explode.ogg", "explode");
-		Jukebox.load("sounds/extralife.ogg", "extralife");
-		Jukebox.load("sounds/largesaucer.ogg", "largesaucer");
+//		In-game audio
 		Jukebox.load("sounds/music.mp3", "despacito");
 		Jukebox.load("sounds/gameover.mp3", "gameover");
 		Jukebox.load("sounds/Gunshot.mp3", "gunshot");
 		Jukebox.load("sounds/ZombieHitSound.mp3", "zombieHit");
 		Jukebox.load("sounds/Powerup.mp3", "powerup");
-		Jukebox.load("sounds/saucershoot.ogg", "saucershoot");
-		Jukebox.load("sounds/shoot.ogg", "shoot");
-		Jukebox.load("sounds/smallsaucer.ogg", "smallsaucer");
-		Jukebox.load("sounds/thruster.ogg", "thruster");
+		Jukebox.load("sounds/elite.mp3", "elite");
+		Jukebox.load("sounds/blyat.mp3", "blyat");
+		Jukebox.load("sounds/drrr.mp3", "drrr");
+		Jukebox.load("sounds/pom.mp3", "pom");
+		Jukebox.load("sounds/quickMafs.mp3", "quickMafs");
+		Jukebox.load("sounds/rawSauce.mp3", "rawSauce");
+		Jukebox.load("sounds/skiddipipopop.mp3", "skiddipipopop");
+		Jukebox.load("sounds/skrra.mp3", "skrra");
+		Jukebox.load("sounds/skya.mp3", "skya");
+		Jukebox.load("sounds/pistolReload.wav", "pistolReload");
+		Jukebox.load("sounds/brReload.wav", "brReload");
+		Jukebox.load("sounds/shotgunReload.wav", "shotgunReload");
 
 		//		Initialize background music
 		Jukebox.playIngameMusic();
-//		Jukebox.playGameoverMusic();
 
 		gsm = new GameStateManager();
-
 	}
 
 	public void render() {

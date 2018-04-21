@@ -291,12 +291,11 @@ public class PlayState extends GameState {
                     a.getHurt(b.getDamage()*damageModifier);
 
                     if (a.getHealth() <= 0){
+                        Zombie.deathSound();
                         zombies.remove(j);
                         j--;
                         this.incrementScore(a.getScore());
                     }
-
-                    Jukebox.play("zombieHit");
                     break;
                 }
             }
@@ -386,8 +385,6 @@ public class PlayState extends GameState {
     //Method called when FireButton pressed
     private void onFireButtonPressed() {
         player.shoot();
-        System.out.println("FireButton pressed");
-        Jukebox.play("gunshot");
     }
 
     //Method called when FireButton pressed
@@ -398,8 +395,6 @@ public class PlayState extends GameState {
 
 
     private void onEffectButtonPressed() {
-        System.out.println("Instakill activated");
-        Jukebox.play("powerup");
         effectButton.effect(this);
         effectButton.remove();
         effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));

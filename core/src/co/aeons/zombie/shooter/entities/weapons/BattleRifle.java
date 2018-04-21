@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import co.aeons.zombie.shooter.entities.bullets.BRBullet;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class BattleRifle extends Weapon {
 
@@ -36,11 +37,11 @@ public class BattleRifle extends Weapon {
                 for (int i = 0; i < 3; i++) {
                     output.add(bullets.poll());
                 }
-
+                playSound();
                 if(bullets.isEmpty()) {
                     reload();
+                    Jukebox.play("brReload");
                 }
-
                 isFired = true;
                 fireRate = 0.5f;
             }else reload();
@@ -57,6 +58,11 @@ public class BattleRifle extends Weapon {
             setBulletDelay(i % 3);
             bullets.add(getNewBullet());
         }
+    }
+
+    @Override
+    public void playSound() {
+        Jukebox.play("drrr");
     }
 
     @Override
