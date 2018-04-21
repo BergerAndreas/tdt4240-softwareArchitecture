@@ -30,9 +30,10 @@ public class Zombie extends SuperObject {
 
 	protected float health;
 
-    private float attackTimer;
-    private float attackCooldown;
-    private int attackCounter;
+    private float attackTimer = 1.0f;
+
+	private float attackCooldown = 2.0f;
+    private int attackCounter = 0;
 
     protected int damage;
 
@@ -59,11 +60,7 @@ public class Zombie extends SuperObject {
 		createIdleAnimation();
 		createAttackAnimation();
 
-        attackTimer = 1.0f;
-        attackCooldown = 2.0f;
-        attackCounter = 0;
     }
-
 
 	private void createIdleAnimation() {
 		this.runningAnimation = ResourceManager.getZombieRunningAnimation();
