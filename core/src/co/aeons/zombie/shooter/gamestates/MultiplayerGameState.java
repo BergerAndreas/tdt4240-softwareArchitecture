@@ -249,13 +249,13 @@ public class MultiplayerGameState extends PlayState {
             for (int j = 0; j < zombies.size(); j++) {
                 Zombie a = zombies.get(j);
                 if (a.collide(b)) {
-                    deadBullets+=b.getId()+",";
+                    deadBullets += b.getId() + ",";
                     bullets.remove(i);
                     i--;
                     a.getHurt(b.getDamage() * damageModifier);
                     if (a.getHealth() <= 0) {
                         Zombie.deathSound();
-                        deadZombies+=a.getId()+",";
+                        deadZombies += a.getId() + ",";
                         zombies.remove(j);
                         j--;
                         this.incrementScore(a.getScore());
@@ -264,7 +264,7 @@ public class MultiplayerGameState extends PlayState {
                 }
             }
         }
-        if(deadZombies.equals("")){
+        if (deadZombies.equals("")) {
             deadZombies = "NONE";
         }
         if (deadBullets.equals("")) {
@@ -320,9 +320,8 @@ public class MultiplayerGameState extends PlayState {
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
-        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)){
+        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)) {
             secondPlayer.shoot();
-            System.out.println(""+this.bullets.size());
         }
 
         // Reset for next update
@@ -347,8 +346,9 @@ public class MultiplayerGameState extends PlayState {
 
     private void clientSpawnZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
+            System.out.println("Client received"+ zombies);
             String[] z = incomingZombies.split(";");
-            for(String s: z){
+            for (String s : z) {
                 String type = s.split(":")[0];
                 String coordinates = s.split(":")[1];
                 float x = Float.parseFloat(coordinates.split(",")[0]);
@@ -359,13 +359,14 @@ public class MultiplayerGameState extends PlayState {
                     Zombie newZombie = new Zombie(x, y, Difficulty.getDifficulty());
                     newZombie.setId(id);
                     zombies.add(newZombie);
-                }else if(type.equals("t")){
+                } else if (type.equals("t")) {
                     Trump newTrump = new Trump(x, y, Difficulty.getDifficulty());
                     newTrump.setId(id);
                     zombies.add(newTrump);
                 }
             }
         }
+        System.out.println("Number of zombies"+ zombies.size());
     }
 
     public void updateOutComeMessage(float dt) {
@@ -378,8 +379,9 @@ public class MultiplayerGameState extends PlayState {
             outcomeMessage.setZombies(zombieAPI);
             outcomeMessage.setDeadBullets(deadBullets);
             outcomeMessage.setDeadZombies(deadZombies);
-            deadZombies = "NONE";
-            deadBullets = "NONE";
+            //FIXME: Kanskje vi trenger disse
+            //deadZombies = "NONE";
+            //deadBullets = "NONE";
             zombieAPI = "NONE";
 
         }
@@ -393,9 +395,10 @@ public class MultiplayerGameState extends PlayState {
 
 
     }
+
     @Override
     protected void onFireButtonPressed() {
-        if(player.shoot()){
+        if (player.shoot()) {
 
             outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
 
