@@ -46,6 +46,7 @@ public class PlayState extends GameState {
 
     //Background texture
     private Texture bg;
+    protected StringBuilder zombieAPI;
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
@@ -195,14 +196,24 @@ public class PlayState extends GameState {
 
         int numToSpawn = 4 + level - 1;
 
+        // String for multiplayer api
+        // Format:
+        //zombietype:x,y;
+        zombieAPI = new StringBuilder();
+
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
             zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
+            zombieAPI.append("t").append(":").append(x).append(",").append(y).append(";"); //TODO Maybe fix ending ;
             zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
+            zombieAPI.append("z").append(":").append(x).append(",").append(y).append(";"); //TODO Maybe fix ending ;
+
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
+        //Remove trailing semicolon
+        zombieAPI.deleteCharAt(zombieAPI.length()-1);
     }
 
 
