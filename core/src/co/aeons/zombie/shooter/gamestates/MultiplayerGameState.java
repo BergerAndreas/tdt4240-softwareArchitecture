@@ -254,7 +254,7 @@ public class MultiplayerGameState extends PlayState {
                     i--;
                     a.getHurt(b.getDamage() * damageModifier);
                     if (a.getHealth() <= 0) {
-                        Zombie.deathSound();
+                        a.deathSound();
                         deadZombies+=a.getId()+",";
                         zombies.remove(j);
                         j--;
