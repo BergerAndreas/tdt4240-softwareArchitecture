@@ -106,9 +106,9 @@ public class PlayState extends GameState {
         cam.update();
         stage = new Stage(gamePort, sb);
 
-        bullets = new ArrayList<Bullet>();
+        bullets = new ArrayList<>();
         player = new Player(bullets);
-        zombies = new ArrayList<Zombie>();
+        zombies = new ArrayList<>();
         wall = new Wall();
 
         level = 1;
@@ -172,21 +172,6 @@ public class PlayState extends GameState {
         Gdx.input.setCatchBackKey(true);
     }
 
-
-    private void spawnZombies() {
-
-        int numToSpawn = 4 + level - 1;
-
-        for (int i = 0; i < numToSpawn; i++) {
-            float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
-            float y = randInt(0, ZombieShooter.HEIGHT - 100);
-            zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
-            zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
-            // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
-
-        }
-    }
-
     public void update(float dt) {
         checkCollisions();
 
@@ -205,6 +190,21 @@ public class PlayState extends GameState {
 
         updateWallHealth();
     }
+
+    private void spawnZombies() {
+
+        int numToSpawn = 4 + level - 1;
+
+        for (int i = 0; i < numToSpawn; i++) {
+            float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
+            float y = randInt(0, ZombieShooter.HEIGHT - 100);
+            zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
+            zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
+            // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
+
+        }
+    }
+
 
     protected void spawnEffectButton() {
         if (effectButtonSpawnTimer > spawnDelay && effectButtonIsClicked) {
