@@ -34,4 +34,10 @@ public class NukeButton extends EffectButton{
         Jukebox.play("rawSauce");
     }
 
+    @Override
+    public String getButtonType() {
+        //Returns N for nuke
+        return "n";
+    }
+
 }

@@ -49,7 +49,10 @@ public class PlayState extends GameState {
 
     //Background texture
     private Texture bg;
+
+    //API
     protected String zombieAPI;
+    protected String effectButtonApi = "NONE";
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
@@ -225,6 +228,9 @@ public class PlayState extends GameState {
         if (effectButtonSpawnTimer > spawnDelay && effectButtonIsClicked) {
 
             effectButton = buttonFactory.produceRandomEffectButton();
+
+            effectButtonApi = effectButton.getButtonType() + "," + effectButton.getX() + "," + effectButton.getY();
+
             this.stage.addActor(effectButton);
 
             //Reset variables for next spawning
@@ -527,8 +533,9 @@ public class PlayState extends GameState {
     }
 
     public void incrementScore(long score) {
-        this.score += score* scoreModifier;
+        this.score += score * scoreModifier;
     }
+
     public void increaseWallHealth(int health) {
         wall.takeDamage(-health);
     }

@@ -19,4 +19,6 @@ public abstract class EffectButton extends GameButton {
 
     public abstract void playSound();
 
+    public abstract String getButtonType();
+
 }

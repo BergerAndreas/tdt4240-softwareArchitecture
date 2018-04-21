@@ -29,4 +29,12 @@ public class InstaKill extends EffectButton {
     public void playSound() {
         Jukebox.play("quickMafs");
     }
+
+    @Override
+    public String getButtonType() {
+        //Returns i for instakill
+        return "i";
+    }
+
+
 }

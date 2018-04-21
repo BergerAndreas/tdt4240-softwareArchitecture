@@ -18,6 +18,7 @@ public class MultiplayerMessage {
     private String zombies;
     private String deadBullets;
     private String deadZombies;
+    private String buttonSpawn;
 
     public MultiplayerMessage() {
         // Códigos que representa en binario :
@@ -47,6 +48,7 @@ public class MultiplayerMessage {
         zombies = "NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
+        buttonSpawn = "NONE";
     }
 
     public void resetOperations() {
@@ -55,6 +57,7 @@ public class MultiplayerMessage {
         zombies = "NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
+        buttonSpawn = "NONE";
     }
 
     public void setOperation(int i) {
@@ -90,12 +93,19 @@ public class MultiplayerMessage {
         this.deadZombies = deadZombies;
     }
 
+    public void setButtonSpawn(String buttonSpawn) {
+        this.buttonSpawn = buttonSpawn;
+    }
     public String getZombies() {
         return this.zombies;
     }
 
     public String getDeadZombies() {
         return this.deadZombies;
+    }
+
+    public String getButtonSpawn(){
+        return this.buttonSpawn;
     }
 
 
@@ -106,7 +116,6 @@ public class MultiplayerMessage {
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
                 zombies = result[2];
-                System.out.println("Zombies: "+zombies);
             }
             if (!result[3].equals("NONE")) {
                 deadZombies = result[3];
@@ -114,16 +123,15 @@ public class MultiplayerMessage {
             if (!result[4].equals("NONE")) {
                 deadBullets = result[4];
             }
+            if (!result[5].equals("NONE")) {
+                buttonSpawn=result[5];
+            }
         }
     }
 
     public String getForSendMessage() {
-        if (!zombies.equals("NONE")) {
-            System.out.println(zombies);
-        }
-        System.out.println();
         return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
-                deadZombies + ";;ANTON;;" + deadBullets;
+                deadZombies + ";;ANTON;;" + deadBullets+";;ANTON;;"+buttonSpawn;
 
     }
 

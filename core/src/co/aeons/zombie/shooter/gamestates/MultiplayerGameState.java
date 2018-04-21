@@ -315,6 +315,7 @@ public class MultiplayerGameState extends PlayState {
             //TODO: Add to get zombies
             clientSpawnZombies(incomeMessage.getZombies());
             clientDeadZombies(incomeMessage.getDeadZombies());
+            clientSpawnButton(incomeMessage.getButtonSpawn());
             //clientDeadBullets(incomeMessage.getDeadBullets());
 
         }
@@ -339,6 +340,7 @@ public class MultiplayerGameState extends PlayState {
 
     }
 
+
     private void clientDeadZombies(String deadZombies) {
         if (!deadZombies.equals("NONE")) {
             String[] deadZombieIds = deadZombies.split(",");
@@ -355,7 +357,6 @@ public class MultiplayerGameState extends PlayState {
 
     private void clientSpawnZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
-            System.out.println("Client received" + zombies);
             String[] z = incomingZombies.split(";");
             for (String s : z) {
                 String type = s.split(":")[0];
@@ -374,7 +375,14 @@ public class MultiplayerGameState extends PlayState {
                     zombies.add(newTrump);
                 }
             }
-            System.out.println("Number of zombies" + zombies.size());
+        }
+    }
+    private void clientSpawnButton(String buttonSpawn) {
+        if (!buttonSpawn.equals("NONE")) {
+            String type = buttonSpawn.split(",")[0];
+            float x = Float.parseFloat(buttonSpawn.split(",")[1]);
+            float y = Float.parseFloat(buttonSpawn.split(",")[2]);
+            System.out.println(type);
         }
     }
 
@@ -388,6 +396,7 @@ public class MultiplayerGameState extends PlayState {
             outcomeMessage.setZombies(zombieAPI);
             outcomeMessage.setDeadBullets(deadBullets);
             outcomeMessage.setDeadZombies(deadZombies);
+            outcomeMessage.setButtonSpawn(effectButtonApi);
             //FIXME: Kanskje vi trenger disse
             //deadZombies = "NONE";
             //deadBullets = "NONE";
