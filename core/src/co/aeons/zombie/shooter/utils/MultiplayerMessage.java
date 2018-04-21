@@ -20,6 +20,7 @@ public class MultiplayerMessage {
     private String deadZombies;
     private String buttonSpawn;
 
+    private int weaponID;
     public MultiplayerMessage() {
         // Códigos que representa en binario :
         // 00000
@@ -49,6 +50,7 @@ public class MultiplayerMessage {
         deadBullets = "NONE";
         deadZombies = "NONE";
         buttonSpawn = "NONE";
+        weaponID = 0;
     }
 
     public void resetOperations() {
@@ -96,6 +98,7 @@ public class MultiplayerMessage {
     public void setButtonSpawn(String buttonSpawn) {
         this.buttonSpawn = buttonSpawn;
     }
+
     public String getZombies() {
         return this.zombies;
     }
@@ -104,7 +107,7 @@ public class MultiplayerMessage {
         return this.deadZombies;
     }
 
-    public String getButtonSpawn(){
+    public String getButtonSpawn() {
         return this.buttonSpawn;
     }
 
@@ -123,14 +126,22 @@ public class MultiplayerMessage {
             if (!result[4].equals("NONE")) {
                 deadBullets = result[4];
             }
+            weaponID = Integer.parseInt(result[5]);
         }
     }
 
     public String getForSendMessage() {
         return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
-                deadZombies + ";;ANTON;;" + deadBullets;
+                deadZombies + ";;ANTON;;" + deadBullets+";;ANTON;;"+weaponID;
 
     }
 
 
+    public void setWeaponID(int weaponID) {
+        this.weaponID = weaponID;
+    }
+
+    public int getWeaponId() {
+        return this.weaponID;
+    }
 }

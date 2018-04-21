@@ -328,20 +328,11 @@ public class MultiplayerGameState extends PlayState {
 
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
-
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)) {
+            secondPlayer.setWeaponId(incomeMessage.getWeaponId());
             secondPlayer.shoot();
         }
-        if (incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_UP)) {
-            secondPlayer.nextWeapon();
-            super.reloadFireButtonTexture();
-
-        }
-        if(incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_DOWN)){
-            secondPlayer.prevWeapon();
-            super.reloadFireButtonTexture();
-        }
-
+        System.out.println("received weapon id:" +incomeMessage.getWeaponId());
         // Reset for next update
         incomeMessage.resetOperations();
 
@@ -381,7 +372,7 @@ public class MultiplayerGameState extends PlayState {
                     Trump newTrump = new Trump(x, y, Difficulty.getDifficulty());
                     newTrump.setId(id);
                     zombies.add(newTrump);
-                }else if (type.equals("s")) {
+                } else if (type.equals("s")) {
                     SinusZombie newSinusZombie = new SinusZombie(x, y, Difficulty.getDifficulty());
                     newSinusZombie.setId(id);
                     zombies.add(newSinusZombie);
@@ -404,10 +395,11 @@ public class MultiplayerGameState extends PlayState {
             //deadZombies = "NONE";
             //deadBullets = "NONE";
             zombieAPI = "NONE";
-
         }
+        outcomeMessage.setWeaponID(player.getWeaponId());
 
         //Finally we send the message
+
 
         ZombieShooter.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
 
@@ -420,23 +412,10 @@ public class MultiplayerGameState extends PlayState {
     @Override
     protected void onFireButtonPressed() {
         if (player.shoot()) {
-
             outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
 
         }
 
-    }
-
-    @Override
-    protected void onCycleUpPressed() {
-        super.onCycleUpPressed();
-        outcomeMessage.setOperation(outcomeMessage.MASK_CYCLE_WEAPON_UP);
-    }
-
-    @Override
-    protected void onCycleDownPressed(){
-        super.onCycleDownPressed();
-        outcomeMessage.setOperation(outcomeMessage.MASK_CYCLE_WEAPON_DOWN);
     }
 
 
