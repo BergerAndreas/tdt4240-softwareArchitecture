@@ -84,7 +84,6 @@ public class PlayState extends GameState {
     private int damageModifier;
     private int level;
 
-
     //Flag to check if powerup is used
     private boolean effectButtonIsClicked;
 
@@ -118,7 +117,6 @@ public class PlayState extends GameState {
         spawnCooldown = 1.0f;
 
         spawnZombies();
-
 
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
@@ -168,7 +166,7 @@ public class PlayState extends GameState {
         cycleDownButton = new CycleDownButton(cycleDownButtonBounds);
 
         //Create empty button
-        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
+       effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
@@ -176,20 +174,12 @@ public class PlayState extends GameState {
 
     public void update(float dt) {
         checkCollisions();
-
         updateTimers(dt);
-
         zombieSpawnLogic();
-
         player.update(dt);
-
         updatePlayerBullets(dt);
-
         updateZombies(dt);
-
-
         spawnEffectButton();
-
         updateWallHealth();
     }
 
@@ -314,16 +304,13 @@ public class PlayState extends GameState {
                 if (a.collide(b)) {
                     bullets.remove(i);
                     i--;
-
                     a.getHurt(b.getDamage() * damageModifier);
-
                     if (a.getHealth() <= 0) {
+                        Zombie.deathSound();
                         zombies.remove(j);
                         j--;
                         this.incrementScore(a.getScore());
                     }
-
-                    Jukebox.play("zombieHit");
                     break;
                 }
             }
@@ -413,8 +400,6 @@ public class PlayState extends GameState {
     //Method called when FireButton pressed
     private void onFireButtonPressed() {
         player.shoot();
-        System.out.println("FireButton pressed");
-        Jukebox.play("gunshot");
     }
 
     //Method called when FireButton pressed
@@ -423,11 +408,9 @@ public class PlayState extends GameState {
         muteButton.loadTextureRegion();
     }
 
-
     private void onEffectButtonPressed() {
-        System.out.println("Instakill activated");
-        Jukebox.play("powerup");
         effectButton.effect(this);
+        effectButton.playSound();
         effectButton.remove();
         effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
         effectButtonIsClicked = true;
@@ -507,7 +490,6 @@ public class PlayState extends GameState {
 
         if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
             //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
-
             player.setPosition(player.getx(), tmpVec2.y);
         }
         return true;

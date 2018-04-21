@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.entities.bullets.ShotgunBullet;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class Shotgun extends Weapon{
 
@@ -31,15 +32,16 @@ public class Shotgun extends Weapon{
                 for (int i = 0; i < pelletCount; i++) {
                     output.add(getNewBullet());
                 }
+                playSound();
                 bullets.poll();
                 if (bullets.isEmpty()) {
                     reload();
+                    Jukebox.play("shotgunReload");
                 }
-
                 isFired = true;
                 fireRate = 0.7f;
             }else reload();
-        }else System.out.println("Reloading!");
+        }
         return output;
     }
 
@@ -51,6 +53,11 @@ public class Shotgun extends Weapon{
         for (int i = 0; i < clipSize; i++) {
             bullets.add(getNewBullet());
         }
+    }
+
+    @Override
+    public void playSound() {
+        Jukebox.play("skrra");
     }
 
     @Override

@@ -2,6 +2,7 @@ package co.aeons.zombie.shooter.entities.buttons;
 
 import com.badlogic.gdx.math.Rectangle;
 import co.aeons.zombie.shooter.gamestates.PlayState;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 /**
  * Created by Danny Duy Nguyen on 09.04.2018.
@@ -13,10 +14,6 @@ public class InstaKill extends EffectButton {
         super(bounds);
     }
 
-    public void effect(){
-        System.out.println("pew pew");
-    }
-
     @Override
     protected String getTexturePath() {
         return "buttons/skullPlaceholder.png";
@@ -26,5 +23,10 @@ public class InstaKill extends EffectButton {
     public void effect(PlayState playState) {
         playState.setDamageModifier(100000);
         playState.setEffectTimer(500);
+    }
+
+    @Override
+    public void playSound() {
+        Jukebox.play("quickMafs");
     }
 }

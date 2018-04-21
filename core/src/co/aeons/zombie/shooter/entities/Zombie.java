@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Zombie extends SuperObject {
@@ -132,5 +133,9 @@ public class Zombie extends SuperObject {
 
 	public void getHurt(float damage){
 		this.health -= damage;
+	}
+
+	public static void deathSound() {
+		Jukebox.play("blyat");
 	}
 }
