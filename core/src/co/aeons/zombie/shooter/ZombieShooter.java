@@ -71,6 +71,7 @@ public class ZombieShooter extends Game {
 		Jukebox.load("sounds/pistolReload.wav", "pistolReload");
 		Jukebox.load("sounds/brReload.wav", "brReload");
 		Jukebox.load("sounds/shotgunReload.wav", "shotgunReload");
+		Jukebox.load("sounds/china.mp3", "china");
 
 		//		Initialize background music
 		Jukebox.playIngameMusic();

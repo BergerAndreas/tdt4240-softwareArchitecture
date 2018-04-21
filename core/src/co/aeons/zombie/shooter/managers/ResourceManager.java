@@ -46,6 +46,7 @@ public class ResourceManager {
                 );
 
     }
+
     public static void createZombieAttackAnimation(){
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/spooder.atlas"));
         zombieAttackAnimation = new Animation<TextureRegion>(
@@ -54,24 +55,42 @@ public class ResourceManager {
                 Animation.PlayMode.LOOP
         );
     }
-    public void createTrumpRunningAnimation(){
 
+    public static void createTrumpRunningAnimation(){
+        TextureAtlas runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/Trump/trump.atlas"));
+        trumpRunningAnimation = new Animation<TextureRegion>(
+                0.1f,
+                runningAtlas.findRegions("trump_walk"),
+                Animation.PlayMode.LOOP
+        );
     }
-    public void createTrumpAttackAnimation(){
 
+    public static void createTrumpAttackAnimation(){
+//        TODO: Make attack animation (is currently walk animation)
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/Trump/trump.atlas"));
+        trumpAttackAnimation = new Animation<TextureRegion>(
+                0.1f,
+                attackAtlas.findRegions("trump_walk"),
+                Animation.PlayMode.LOOP
+        );
     }
+
     public void createPlayerTexture(){
 
     }
+
     public void createBg(){
 
     }
+
     public void createBrBullet(){
 
     }
+
     public void createShotgunBullet(){
 
     }
+
     public void createWallTexture(){
 
     }
@@ -79,9 +98,11 @@ public class ResourceManager {
     public void createBattleRifleTexture(){
 
     }
+
     public void createPistolTexture(){
 
     }
+
     public void createShotgunTexture(){
 
     }
@@ -89,12 +110,23 @@ public class ResourceManager {
     public static Animation<TextureRegion> getZombieRunningAnimation(){
         return zombieRunningAnimation;
     }
+
     public static Animation<TextureRegion> getZombieAttackAnimation(){
         return zombieAttackAnimation;
+    }
+
+    public static Animation<TextureRegion> getTrumpRunningAnimation(){
+        return trumpRunningAnimation;
+    }
+
+    public static Animation<TextureRegion> getTrumpAttackAnimation(){
+        return trumpAttackAnimation;
     }
 
     public static void init() {
         createZombieRunningAnimation();
         createZombieAttackAnimation();
+        createTrumpRunningAnimation();
+        createTrumpAttackAnimation();
     }
 }

@@ -310,7 +310,7 @@ public class PlayState extends GameState {
                     i--;
                     a.getHurt(b.getDamage() * damageModifier);
                     if (a.getHealth() <= 0) {
-                        Zombie.deathSound();
+                        a.deathSound();
                         zombies.remove(j);
                         j--;
                         this.incrementScore(a.getScore());
