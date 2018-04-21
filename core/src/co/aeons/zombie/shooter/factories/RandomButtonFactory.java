@@ -5,9 +5,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
 
+import co.aeons.zombie.shooter.entities.buttons.DoublePoints;
 import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.NukeButton;
+import co.aeons.zombie.shooter.entities.buttons.WallHealthButton;
 import co.aeons.zombie.shooter.utils.utils;
 
 public class RandomButtonFactory {
@@ -22,6 +24,8 @@ public class RandomButtonFactory {
         effectButtons = new ArrayList<String>();
         effectButtons.add("nuke");
         effectButtons.add("instakill");
+        effectButtons.add("double");
+        effectButtons.add("carpenter");
     }
 
     public EffectButton produceRandomEffectButton(){
@@ -33,6 +37,12 @@ public class RandomButtonFactory {
         }
         if(type.equals("instakill")) {
             return new InstaKill(bounds);
+        }
+        if(type.equals("double")) {
+            return new DoublePoints(bounds);
+        }
+        if(type.equals("carpenter")) {
+            return new WallHealthButton(bounds);
         }
         return null;
 
