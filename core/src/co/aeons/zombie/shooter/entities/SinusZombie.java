@@ -13,7 +13,7 @@ public class SinusZombie extends Zombie {
         this.dx = -60;
         this.dy = 4;
         this.d = (int) y;
-        System.out.println(d);
+        setType("s");
 
     }
 

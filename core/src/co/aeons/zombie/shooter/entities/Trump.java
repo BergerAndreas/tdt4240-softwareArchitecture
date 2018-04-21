@@ -12,6 +12,8 @@ public class Trump extends Zombie {
         super(x, y, difficulty);
         this.dx = -10;
         this.health = 50;
+        setType("t");
+
     }
 
     private void createIdleAnimation() {
