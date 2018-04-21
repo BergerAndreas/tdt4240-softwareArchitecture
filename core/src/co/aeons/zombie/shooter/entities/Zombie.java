@@ -13,7 +13,7 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Zombie extends SuperObject {
-	private boolean isStopped = false;
+	protected boolean isStopped = false;
 
 	// Anitmations
 	protected Animation<TextureRegion> runningAnimation;
@@ -30,7 +30,7 @@ public class Zombie extends SuperObject {
 
 	protected float health;
 
-    private float attackTimer;
+    protected float attackTimer;
     private float attackCooldown;
     private int attackCounter;
 
