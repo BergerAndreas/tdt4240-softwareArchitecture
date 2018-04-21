@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.Save;
 import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class ZombieShooter extends Game {
@@ -70,6 +71,9 @@ public class ZombieShooter extends Game {
 
 		//		Initialize background music
 		Jukebox.playIngameMusic();
+
+//		Load save file
+		Save.load();
 
 		gsm = new GameStateManager();
 	}

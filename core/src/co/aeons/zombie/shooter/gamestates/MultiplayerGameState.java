@@ -279,52 +279,8 @@ public class MultiplayerGameState extends PlayState {
 
     }
 
-    private void clientZombies(String jsonZombies) {
-        System.out.println(jsonZombies);
-        if (jsonZombies == null || jsonZombies.isEmpty() || jsonZombies.equals("null")) {
-            return;
-        }
-        if (jsonZombies.equals("EMPTY")) {
-            zombies.clear();
-            return;
-        }
-        String[] zs = jsonZombies.split(";");
-        ArrayList<String> uuids = new ArrayList<>();
-        for (String z : zs) {
-            uuids.add(z.split(":")[0]);
-        }
-
-        //Remove dead zombies
-        for (int i = 0; i < zombies.size(); i++) {
-            if (!uuids.contains(zombies.get(i).getId())) {
-                zombies.remove(i);
-                i--;
-            }
-        }
-
-        for (int i = 0; i < zs.length; i++) {
-            String z = zs[i];
-
-            String id = z.split(":")[0];
-            float x = Float.parseFloat(z.split(":")[1].split(",")[0]);
-            float y = Float.parseFloat(z.split(":")[1].split(",")[1]);
-
-            boolean newZombie = true;
-
-            for (int j = 0; j < zombies.size(); j++) {
-                if (id.equals(zombies.get(j).getId())) {
-                    newZombie = false;
-                    zombies.get(j).setPosition(x, y);
-
-                }
-            }
-            if (newZombie) {
-                zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
-            }
-
-        }
-
-
+    private void clientZombies(String incomingZombies) {
+        
     }
 
     public void updateOutComeMessage(float dt) {
@@ -332,34 +288,11 @@ public class MultiplayerGameState extends PlayState {
         Vector2 tmpVec = new Vector2();
         stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(), Gdx.input.getY()));
         outcomeMessage.setPositionY(tmpVec.y);
-        if (isHost) {
-            String str = "";
-            for (int i = 0; i < zombies.size(); i++) {
-                Zombie z = zombies.get(i);
-                str += z.getId() + ":" + z.getx() + "," + z.gety();
-                if (i < zombies.size() - 1) {
-                    str += ";";
-                }
-            }
-            if (str.isEmpty() || str.equals("")) {
-                str += "EMPTY";
-            }
-            //outcomeMessage.setZombies(this.getZombies());
-            /*
-            JSONObject json = new JSONObject();
-            try {
-                for(Zombie z: zombies){
-                    JSONObject json2 = new JSONObject();
-                    json2.put("x",z.getx());
-                    json2.put("y",z.gety());
-                    json.put(z.getId(), json2);
 
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            */
-            outcomeMessage.setZombies(str);
+        if (isHost) {
+            outcomeMessage.setZombies(zombieAPI.toString());
+            zombieAPI.setLength(0);
+            zombieAPI.append("NONE");
         }
 
         //Finally we send the message

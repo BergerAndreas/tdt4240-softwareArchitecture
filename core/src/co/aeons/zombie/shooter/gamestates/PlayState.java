@@ -1,29 +1,25 @@
 package co.aeons.zombie.shooter.gamestates;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.entities.Player;
+import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
-import co.aeons.zombie.shooter.entities.Player;
-import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.buttons.CycleDownButton;
 import co.aeons.zombie.shooter.entities.buttons.CycleUpButton;
 import co.aeons.zombie.shooter.entities.buttons.EffectButton;
@@ -34,17 +30,24 @@ import co.aeons.zombie.shooter.factories.RandomButtonFactory;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.Save;
 
-import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
+import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
 public class PlayState extends GameState {
 
     protected SpriteBatch sb;
     protected ShapeRenderer sr;
-    private BitmapFont scoreFont, magazineFont, wallHealthFont;
+    protected Stage stage;
+
+    //Makes text easy to use
     private GlyphLayout layout;
+    private BitmapFont scoreFont, magazineFont, wallHealthFont;
+
+    //Background texture
     private Texture bg;
+    protected StringBuilder zombieAPI;
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
@@ -55,10 +58,9 @@ public class PlayState extends GameState {
     //Boundaries
     private Rectangle playerLane;
     private Rectangle fireBounds;
-    private Rectangle effectButtonBounds;
-    private Rectangle cUpBounds;
-    private Rectangle cDownBounds;
-    private Rectangle muteBounds;
+    private Rectangle cycleUpButtonBounds;
+    private Rectangle cycleDownButtonBounds;
+    private Rectangle muteButtonBounds;
 
     //buttons
     private RandomButtonFactory buttonFactory;
@@ -68,25 +70,23 @@ public class PlayState extends GameState {
     private CycleDownButton cycleDownButton;
     private EffectButton effectButton;
 
-    private int level;
-    private int totalZombies;
 
     //Spawndelay for powerups
     private int spawnDelay;
-    private float timer;
+    private float effectButtonSpawnTimer;
     private float spawnCooldown;
     private float spawnTimer;
 
     //Duration of an effect
     private int effectTimer;
 
-    //DamageModifier
+    //Used to increase damage on bullets
     private int damageModifier;
+    private int level;
 
     //Flag to check if powerup is used
-    private boolean isClicked;
+    private boolean effectButtonIsClicked;
 
-    protected Stage stage;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -107,9 +107,9 @@ public class PlayState extends GameState {
         cam.update();
         stage = new Stage(gamePort, sb);
 
-        bullets = new ArrayList<Bullet>();
+        bullets = new ArrayList<>();
         player = new Player(bullets);
-        zombies = new ArrayList<Zombie>();
+        zombies = new ArrayList<>();
         wall = new Wall();
 
         level = 1;
@@ -120,7 +120,7 @@ public class PlayState extends GameState {
 
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
-        isClicked = true;
+        effectButtonIsClicked = true;
         damageModifier = 1;
         effectTimer = 0;
 
@@ -134,7 +134,7 @@ public class PlayState extends GameState {
                 cam.viewportWidth / 8,
                 cam.viewportHeight / 6
         );
-        muteBounds = new Rectangle(
+        muteButtonBounds = new Rectangle(
                 cam.viewportWidth - 50,
                 cam.viewportHeight - 50,
                 cam.viewportWidth / 16,
@@ -146,13 +146,13 @@ public class PlayState extends GameState {
                 cam.viewportWidth / 3,
                 cam.viewportHeight
         );
-        cUpBounds = new Rectangle(
+        cycleUpButtonBounds = new Rectangle(
                 cam.viewportWidth - 300,
                 0,
                 cam.viewportWidth / 16,
                 cam.viewportHeight / 12
         );
-        cDownBounds = new Rectangle(
+        cycleDownButtonBounds = new Rectangle(
                 cam.viewportWidth - 350,
                 0,
                 cam.viewportWidth / 16,
@@ -161,9 +161,9 @@ public class PlayState extends GameState {
 
         //Create buttons with above bounds
         fireButton = new FireButton(fireBounds);
-        muteButton = new MuteButton(muteBounds);
-        cycleUpButton = new CycleUpButton(cUpBounds);
-        cycleDownButton = new CycleDownButton(cDownBounds);
+        muteButton = new MuteButton(muteButtonBounds);
+        cycleUpButton = new CycleUpButton(cycleUpButtonBounds);
+        cycleDownButton = new CycleDownButton(cycleDownButtonBounds);
 
         //Create empty button
        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
@@ -172,35 +172,57 @@ public class PlayState extends GameState {
         Gdx.input.setCatchBackKey(true);
     }
 
+    public void update(float dt) {
+        checkCollisions();
+        updateTimers(dt);
+        zombieSpawnLogic();
+        player.update(dt);
+        updatePlayerBullets(dt);
+        updateZombies(dt);
+        spawnEffectButton();
+        updateWallHealth();
+    }
+
     private void spawnZombies() {
 
         int numToSpawn = 4 + level - 1;
-        totalZombies = numToSpawn;
+
+        // String for multiplayer api
+        // Format:
+        //zombietype:x,y;
+        zombieAPI = new StringBuilder();
 
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
             zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
+            zombieAPI.append("t").append(":").append(x).append(",").append(y).append(";"); //TODO Maybe fix ending ;
             zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
+            zombieAPI.append("z").append(":").append(x).append(",").append(y).append(";"); //TODO Maybe fix ending ;
+
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
+        //Remove trailing semicolon
+        zombieAPI.deleteCharAt(zombieAPI.length()-1);
     }
 
-    public void update(float dt) {
-        // check collision
-        checkCollisions();
 
-        // reset modifier
-        effectTimer -= dt;
-        //TODO: Unccoment me to print effect timer
-        // System.out.println(effectTimer);
-        if(effectTimer <= 0) {
-            resetEffects();
+    protected void spawnEffectButton() {
+        if (effectButtonSpawnTimer > spawnDelay && effectButtonIsClicked) {
+
+            effectButton = buttonFactory.produceRandomEffectButton();
+            this.stage.addActor(effectButton);
+
+            //Reset variables for next spawning
+            //TODO: Change spawndelay range later
+            effectButtonIsClicked = false;
+            spawnDelay = randInt(0, 10);
+            effectButtonSpawnTimer = 0;
         }
+    }
 
-        // next level
-        spawnTimer += dt;
+    protected void zombieSpawnLogic() {
         if (Math.floor(spawnTimer) != spawnCooldown) {
             if (Math.floor(spawnTimer) % 9 == 0) {
                 spawnZombies();
@@ -211,20 +233,33 @@ public class PlayState extends GameState {
                 level += 2;
             }
         }
+    }
 
-        // update player
-        player.update(dt);
-
-        // update player bullets
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).update(dt);
-            if (bullets.get(i).shouldRemove()) {
-                bullets.remove(i);
-                i--;
-            }
+    protected void updateTimers(float dt) {
+        // Cooldown effectButtonSpawnTimer on effects gained by effect button
+        effectTimer -= dt;
+        if (effectTimer <= 0) {
+            resetEffects();
         }
 
-        // update zombies
+        // next level
+        spawnTimer += dt;
+        // update spawn powerup button effectButtonSpawnTimer
+        if (effectButtonIsClicked) {
+            this.effectButtonSpawnTimer += dt;
+        }
+    }
+
+    protected void updateWallHealth() {
+        if (wall.getHealth() <= 0) {
+            Jukebox.getIngameMusic().stop();
+            Jukebox.playGameoverMusic();
+            gsm.setState(GameStateManager.GAMEOVER);
+        }
+    }
+
+    //Update and remove zombies
+    protected void updateZombies(float dt) {
         for (int i = 0; i < zombies.size(); i++) {
             zombies.get(i).update(dt);
             if (zombies.get(i).shouldRemove()) {
@@ -232,29 +267,15 @@ public class PlayState extends GameState {
                 i--;
             }
         }
+    }
 
-        // update spawn powerup button timer
-        if (isClicked) {
-            this.timer += dt;
-        }
-
-        // update buttons
-        if (timer > spawnDelay && isClicked) {
-
-            effectButton = buttonFactory.produceRandomEffectButton();
-            this.stage.addActor(effectButton);
-
-            //Reset variables for next spawning
-            //TODO: Change spawndelay range later
-            isClicked = false;
-            spawnDelay = randInt(0, 10);
-            timer = 0;
-        }
-
-        if (wall.getHealth() <= 0) {
-            Jukebox.getIngameMusic().stop();
-            Jukebox.playGameoverMusic();
-            gsm.setState(GameStateManager.GAMEOVER);
+    protected void updatePlayerBullets(float dt) {
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).update(dt);
+            if (bullets.get(i).shouldRemove()) {
+                bullets.remove(i);
+                i--;
+            }
         }
     }
 
@@ -268,7 +289,7 @@ public class PlayState extends GameState {
         //zombie-wall collision
         for (int i = 0; i < zombies.size(); i++) {
             Zombie zombie = zombies.get(i);
-            if(zombie.collide(wall)){
+            if (zombie.collide(wall)) {
                 zombie.setStopped(true);
                 wall.takeDamage(zombie.attack());
             }
@@ -283,10 +304,8 @@ public class PlayState extends GameState {
                 if (a.collide(b)) {
                     bullets.remove(i);
                     i--;
-
-                    a.getHurt(b.getDamage()*damageModifier);
-
-                    if (a.getHealth() <= 0){
+                    a.getHurt(b.getDamage() * damageModifier);
+                    if (a.getHealth() <= 0) {
                         Zombie.deathSound();
                         zombies.remove(j);
                         j--;
@@ -341,15 +360,15 @@ public class PlayState extends GameState {
 //        Score
         String scoreOutput = "Score: " + Long.toString(this.getScore());
         this.layout.setText(scoreFont, scoreOutput);
-        scoreFont.draw(sb, layout, (this.wall.getx() - layout.width)/2, cam.viewportHeight-5);
+        scoreFont.draw(sb, layout, (this.wall.getx() - layout.width) / 2, cam.viewportHeight - 5);
 //        Magazine-size
         String magazineOutput = Integer.toString(player.getCurrentWeapon().getRemainingBullets()) + "/" + Integer.toString(player.getCurrentWeapon().getClipSize());
         this.layout.setText(magazineFont, magazineOutput);
-        scoreFont.draw(sb, layout, cam.viewportWidth - 250, (fireButton.getY() + fireBounds.getHeight())/2);
+        scoreFont.draw(sb, layout, cam.viewportWidth - 250, (fireButton.getY() + fireBounds.getHeight()) / 2);
 //        Wall-health
         String wallHealthOutput = "❤" + Integer.toString(this.wall.getHealth());
         this.layout.setText(wallHealthFont, wallHealthOutput);
-        scoreFont.draw(sb, layout, (this.wall.getx()+this.wall.getRectangle().getWidth())/2 + 25, (this.wall.gety()+this.wall.getRectangle().getHeight())/2);
+        scoreFont.draw(sb, layout, (this.wall.getx() + this.wall.getRectangle().getWidth()) / 2 + 25, (this.wall.gety() + this.wall.getRectangle().getHeight()) / 2);
 
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
@@ -393,8 +412,8 @@ public class PlayState extends GameState {
         effectButton.effect(this);
         effectButton.playSound();
         effectButton.remove();
-        effectButton = new InstaKill(new Rectangle(0,0,0,0));
-        isClicked = true;
+        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
+        effectButtonIsClicked = true;
     }
 
     private void onCycleUpPressed() {
@@ -404,7 +423,7 @@ public class PlayState extends GameState {
         reloadFireButtonTexture();
     }
 
-    private void onCycleDownPressed(){
+    private void onCycleDownPressed() {
         player.prevWeapon();
         //TODO: Uncomment me to print previous weapon
         //System.out.println("Previous Weapon");
@@ -429,6 +448,7 @@ public class PlayState extends GameState {
     public void setEffectTimer(int effectTimer) {
         this.effectTimer = effectTimer;
     }
+
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         //Need to have this or buttons won't work
