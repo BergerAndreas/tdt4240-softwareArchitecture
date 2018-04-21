@@ -10,17 +10,16 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class Pistol extends Weapon {
 
-    private static final float RELOAD_TIME = 2.0f;
+    private static final float RELOAD_TIME = 1.5f;
 
     public Pistol(float x, float y) {
         super(x, y);
-        clipSize = 12;
-        fireRate = 0.3f;
+        clipSize = 20;
+        fireRate = 0.1f;
 
         texturePath = "weapons/pistol1.png";
         weaponTexture = new Texture(texturePath);
         bullets = new LinkedList<Bullet>();
-        reloadTime = 0.7f;
         reload();
         isReloading = false;
     }
@@ -32,14 +31,12 @@ public class Pistol extends Weapon {
             if(!bullets.isEmpty()) {
                 output.add(bullets.poll());
                 isFired = true;
+                fireRate = 0.1f;
                 playSound();
-                fireRate = 0.3f;
-
                 if (bullets.isEmpty()) {
                     reload();
                     Jukebox.play("pistolReload");
                 }
-
             }else reload();
         }
         return output;
