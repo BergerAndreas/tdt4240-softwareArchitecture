@@ -88,8 +88,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		platform.setActivity(this);
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-		initialize(new ZombieShooter(platform, this), config);
+		initialize(new ZombieShooter(platform, this, getFilesDir()), config);
 	}
 
 	@Override

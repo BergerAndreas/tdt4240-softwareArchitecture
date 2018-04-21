@@ -23,7 +23,7 @@ public class Wall extends SuperObject {
         this.bounds = new Rectangle(x,y,width,height);
 
         this.wallTexture = new Texture("walls/redBrick.jpg");
-        this.wallHealth = 15000;
+        this.wallHealth = 500;
     }
 
     public void draw(SpriteBatch batch) {

@@ -289,7 +289,6 @@ public class MultiplayerGameState extends PlayState {
 
     private void clientZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
-            System.out.println("Clientzombies "+incomingZombies);
             String[] z = incomingZombies.split(";");
             for(String s: z){
                 String type = s.split(":")[0];

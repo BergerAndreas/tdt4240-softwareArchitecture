@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.io.File;
+
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.Save;
-import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class ZombieShooter extends Game {
 
@@ -19,6 +20,7 @@ public class ZombieShooter extends Game {
 
 	public static OrthographicCamera cam;
 	public static Viewport gamePort;
+	public static File filesDir;
 
 	private GameStateManager gsm;
 
@@ -27,9 +29,10 @@ public class ZombieShooter extends Game {
 	public static IGoogleServices googleServices;
 
 
-	public ZombieShooter(Platform platform, IGoogleServices googleServices) {
+	public ZombieShooter(Platform platform, IGoogleServices googleServices, File filesDir) {
 		this.platform = platform;
 		ZombieShooter.googleServices = googleServices;
+		this.filesDir = filesDir;
 	}
 
 
@@ -73,8 +76,7 @@ public class ZombieShooter extends Game {
 		Jukebox.playIngameMusic();
 
 //		Load save file
-		//FIXME: FIx save
-		//Save.load();
+		Save.load();
 
 		gsm = new GameStateManager();
 	}

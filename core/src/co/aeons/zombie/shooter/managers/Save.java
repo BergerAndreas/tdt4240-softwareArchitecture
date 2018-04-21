@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import co.aeons.zombie.shooter.ZombieShooter;
+
 /**
  * Created by Erikkvo on 15-Apr-18.
  */
@@ -20,8 +22,8 @@ public class Save {
     public static void save() {
         try {
 //            Append = false will overwrite file
-
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("highscores.sav"));
+            FileOutputStream fos = new FileOutputStream(ZombieShooter.filesDir+"highscores.sav");
+            ObjectOutputStream out = new ObjectOutputStream(fos);
             out.writeObject(gd);
             out.close();
         } catch (Exception e) {
@@ -36,7 +38,9 @@ public class Save {
                 init();
                 return;
             }
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("highscores.sav"));
+
+            FileInputStream fos = new FileInputStream(ZombieShooter.filesDir+"highscores.sav");
+            ObjectInputStream in = new ObjectInputStream(fos);
             gd = (GameData) in.readObject();
             in.close();
         } catch (Exception e) {
@@ -46,7 +50,7 @@ public class Save {
     }
 
     public static boolean saveFileExists() {
-        File f = new File("highscores.sav");
+        File f = new File(ZombieShooter.filesDir+"highscores.sav");
         return f.exists();
     }
 

@@ -90,7 +90,6 @@ public class MultiplayerMessage {
             operations = Integer.parseInt(result[1]);
             if(!result[2].equals("NONE")){
                 zombies = result[2];
-                System.out.println(zombies);
             }
         }
     }
