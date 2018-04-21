@@ -30,7 +30,6 @@ import co.aeons.zombie.shooter.factories.RandomButtonFactory;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
-import co.aeons.zombie.shooter.managers.Save;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
@@ -261,7 +260,7 @@ public class PlayState extends GameState {
     }
 
     protected void updateWallHealth() {
-        if (wall.getHealth() <= 0) {
+        if (wall.getWallHealth() <= 0) {
             Jukebox.getIngameMusic().stop();
             Jukebox.playGameoverMusic();
             gsm.setState(GameStateManager.GAMEOVER);
@@ -379,7 +378,7 @@ public class PlayState extends GameState {
         this.layout.setText(magazineFont, magazineOutput);
         scoreFont.draw(sb, layout, cam.viewportWidth - 250, (fireButton.getY() + fireBounds.getHeight()) / 2);
 //        Wall-health
-        String wallHealthOutput = "❤" + Integer.toString(this.wall.getHealth());
+        String wallHealthOutput = "❤" + Integer.toString(this.wall.getWallHealth());
         this.layout.setText(wallHealthFont, wallHealthOutput);
         scoreFont.draw(sb, layout, (this.wall.getx() + this.wall.getRectangle().getWidth()) / 2 + 25, (this.wall.gety() + this.wall.getRectangle().getHeight()) / 2);
 

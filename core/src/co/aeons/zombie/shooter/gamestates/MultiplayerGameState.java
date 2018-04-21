@@ -213,8 +213,8 @@ public class MultiplayerGameState extends PlayState {
             super.checkCollisions();
             super.updateTimers(dt);
             //secondPlayer.update(dt);
-            updatePlayerBullets(dt);
-            updateZombies(dt);
+            super.updatePlayerBullets(dt);
+            super.updateZombies(dt);
 
 
         }
@@ -289,7 +289,7 @@ public class MultiplayerGameState extends PlayState {
 
     private void clientZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
-            System.out.println("Clientzombies"+ incomingZombies);
+            System.out.println("Clientzombies "+incomingZombies);
             String[] z = incomingZombies.split(";");
             for(String s: z){
                 String type = s.split(":")[0];

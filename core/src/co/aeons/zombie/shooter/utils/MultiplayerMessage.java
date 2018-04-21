@@ -51,6 +51,7 @@ public class MultiplayerMessage {
     public void resetOperations(){
         // Operation = 00000
         operations = MASK_NO_OPT;
+        zombies = "NONE";
     }
 
     public void setOperation(int i){
@@ -87,8 +88,8 @@ public class MultiplayerMessage {
             String[] result = s.split(";;ANTON;;");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
-            zombies = result[2];
-            if(!zombies.equals("NONE")){
+            if(!result[2].equals("NONE")){
+                zombies = result[2];
                 System.out.println(zombies);
             }
         }
