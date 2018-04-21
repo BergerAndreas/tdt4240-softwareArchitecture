@@ -51,10 +51,8 @@ public class Zombie extends SuperObject {
 		speed = MathUtils.random(20, 30);
 		score = 20;
 
-		bounds = new Rectangle(0, 0, 40, 50);
+		bounds = new Rectangle(0, 0, width, height);
 		dx = -50*(4+difficulty-1)/4;
-
-
 
 		this.health = 10*difficulty;
 
@@ -63,15 +61,14 @@ public class Zombie extends SuperObject {
 
     }
 
-	private void createIdleAnimation() {
+	protected void createIdleAnimation() {
 		this.runningAnimation = ResourceManager.getZombieRunningAnimation();
 		stateTimeRunning = 0f;
 	}
 
-	private void createAttackAnimation() {
+	protected void createAttackAnimation() {
 		this.attackAnimation = ResourceManager.getZombieAttackAnimation();
 		stateTimeAttacking = 0f;
-
 	}
 
 	public boolean shouldRemove() { return remove; }
@@ -100,9 +97,9 @@ public class Zombie extends SuperObject {
             TextureRegion currentAttackFrame = attackAnimation.getKeyFrame(stateTimeAttacking, true);
             batch.draw(currentAttackFrame, x, y, width, height);
         }
-
         batch.end();
     }
+
     public void setStopped(boolean stopped) {
         isStopped = stopped;
     }
@@ -133,7 +130,7 @@ public class Zombie extends SuperObject {
 		this.health -= damage;
 	}
 
-	public static void deathSound() {
+	public void deathSound() {
 		Jukebox.play("blyat");
 	}
 

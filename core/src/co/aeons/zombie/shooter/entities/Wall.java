@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.ZombieShooter;
-import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class Wall extends SuperObject {
 
     private Texture wallTexture;
-    private int wallHealth;
+
+    private float maxWallHealth;
+    private float currentWallHealth;
+    private Texture bar;
 
     public Wall() {
 
@@ -23,20 +25,40 @@ public class Wall extends SuperObject {
         this.bounds = new Rectangle(x,y,width,height);
 
         this.wallTexture = new Texture("walls/redBrick.jpg");
-        this.wallHealth = 5000;
+        this.maxWallHealth = 1000;
+        this.currentWallHealth = maxWallHealth;
+        this.bar = new Texture("walls/bar.png");
     }
 
     public void draw(SpriteBatch batch) {
         batch.begin();
-        batch.draw(wallTexture, this.x, this.y, this.width, this.height);
+        batch.draw(wallTexture, this.x, this.y, this.width, this.height); // Wall texture
+        batch.draw(bar, this.x, ZombieShooter.HEIGHT/2, this.width*getCurrentWallHealth()/getMaxWallHealth(), 20); // Health bar texture
         batch.end();
     }
 
     public void takeDamage(int damage){
-        this.wallHealth -= damage;
+        this.currentWallHealth -= damage;
     }
 
-    public int getWallHealth() {
-        return wallHealth;
+    public float getCurrentWallHealth() {
+        return currentWallHealth;
     }
+
+    public void setCurrentWallHealth(float currentWallHealth) {
+        this.currentWallHealth = currentWallHealth;
+    }
+
+    public Texture getBar() {
+        return bar;
+    }
+
+    public float getMaxWallHealth() {
+        return maxWallHealth;
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
 }

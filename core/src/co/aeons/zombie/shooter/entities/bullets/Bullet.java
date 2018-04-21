@@ -34,12 +34,12 @@ public class Bullet extends SuperObject {
 
 		width = height = 2;
 
-		this.damage = 5;
+		this.damage = 15;
 
 		lifeTimer = 0;
 		lifeTime = 2;
 		bullet = new Sprite(new Texture("weapons/pistol1.png"));
-		bulletBounds = new Rectangle(this.x, this.y, 10, 10);
+		bulletBounds = new Rectangle(this.x, this.y, width, height);
 
 	}
 	

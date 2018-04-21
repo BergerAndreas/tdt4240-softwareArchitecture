@@ -17,6 +17,7 @@ public class ZombieShooter extends Game {
 
 	public static int WIDTH;
 	public static int HEIGHT;
+	public static final String TITLE = "Ugly Z";
 
 	public static OrthographicCamera cam;
 	public static Viewport gamePort;
@@ -40,6 +41,7 @@ public class ZombieShooter extends Game {
 
 		WIDTH = 640;
 		HEIGHT = 360;
+		Gdx.graphics.setTitle(TITLE);
 
 		cam = new OrthographicCamera(WIDTH, HEIGHT);
 		cam.translate(WIDTH / 2, HEIGHT / 2);
@@ -71,6 +73,7 @@ public class ZombieShooter extends Game {
 		Jukebox.load("sounds/pistolReload.wav", "pistolReload");
 		Jukebox.load("sounds/brReload.wav", "brReload");
 		Jukebox.load("sounds/shotgunReload.wav", "shotgunReload");
+		Jukebox.load("sounds/china.mp3", "china");
 
 		//		Initialize background music
 		Jukebox.playIngameMusic();

@@ -264,7 +264,7 @@ public class PlayState extends GameState {
     }
 
     protected void updateWallHealth() {
-        if (wall.getWallHealth() <= 0) {
+        if (wall.getCurrentWallHealth() <= 0) {
             Jukebox.getIngameMusic().stop();
             Jukebox.playGameoverMusic();
             Save.gd.setTentativeScore(this.getScore());
@@ -311,7 +311,7 @@ public class PlayState extends GameState {
                     i--;
                     a.getHurt(b.getDamage() * damageModifier);
                     if (a.getHealth() <= 0) {
-                        Zombie.deathSound();
+                        a.deathSound();
                         zombies.remove(j);
                         j--;
                         this.incrementScore(a.getScore());
@@ -374,17 +374,21 @@ public class PlayState extends GameState {
 
 //        Various HUDs
 //        Score
-        String scoreOutput = "Score: " + Long.toString(this.getScore());
+        String scoreOutput = "Score:";
         this.layout.setText(scoreFont, scoreOutput);
         scoreFont.draw(sb, layout, (this.wall.getx() - layout.width) / 2, cam.viewportHeight - 5);
+        float scoreHeight = layout.height;
+        scoreOutput = Long.toString(this.getScore());
+        this.layout.setText(scoreFont, scoreOutput);
+        scoreFont.draw(sb, layout, (this.wall.getx() - layout.width) / 2, cam.viewportHeight - 10 - scoreHeight);
 //        Magazine-size
         String magazineOutput = Integer.toString(player.getCurrentWeapon().getRemainingBullets()) + "/" + Integer.toString(player.getCurrentWeapon().getClipSize());
         this.layout.setText(magazineFont, magazineOutput);
         scoreFont.draw(sb, layout, cam.viewportWidth - 250, (fireButton.getY() + fireBounds.getHeight()) / 2);
 //        Wall-health
-        String wallHealthOutput = "❤" + Integer.toString(this.wall.getWallHealth());
+        String wallHealthOutput = String.format("%d",  (long) this.wall.getCurrentWallHealth());
         this.layout.setText(wallHealthFont, wallHealthOutput);
-        scoreFont.draw(sb, layout, (this.wall.getx() + this.wall.getRectangle().getWidth()) / 2 + 25, (this.wall.gety() + this.wall.getRectangle().getHeight()) / 2);
+        scoreFont.draw(sb, layout, (this.wall.getx() + this.wall.getRectangle().getWidth() + layout.width+10)/2, ZombieShooter.HEIGHT/2 + 15);
 
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
@@ -532,6 +536,10 @@ public class PlayState extends GameState {
     }
 
     public void increaseWallHealth(int health) {
-        wall.takeDamage(-health);
+        if( (wall.getCurrentWallHealth() + health > wall.getMaxWallHealth()) ){
+            wall.setCurrentWallHealth(wall.getMaxWallHealth());
+        }else{
+            wall.takeDamage(-health);
+        }
     }
 }
