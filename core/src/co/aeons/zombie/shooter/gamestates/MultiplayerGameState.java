@@ -365,8 +365,8 @@ public class MultiplayerGameState extends PlayState {
                     zombies.add(newTrump);
                 }
             }
+            System.out.println("Number of zombies"+ zombies.size());
         }
-        System.out.println("Number of zombies"+ zombies.size());
     }
 
     public void updateOutComeMessage(float dt) {

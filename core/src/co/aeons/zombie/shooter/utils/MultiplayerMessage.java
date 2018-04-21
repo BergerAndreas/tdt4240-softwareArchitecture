@@ -118,8 +118,13 @@ public class MultiplayerMessage {
     }
 
     public String getForSendMessage() {
+        if (!zombies.equals("NONE")) {
+            System.out.println(zombies);
+        }
+        System.out.println();
         return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
                 deadZombies + ";;ANTON;;" + deadBullets;
+
     }
 
 
