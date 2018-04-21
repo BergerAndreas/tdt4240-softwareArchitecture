@@ -121,9 +121,6 @@ public class GameOverState extends GameState {
 		highscoreButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-//				Stop gameover music, and start ingame music
-				Jukebox.getGameoverMusic().stop();
-				Jukebox.playIngameMusic();
 				gsm.setState(GameStateManager.HIGHSCORE);
 			}
 		});
@@ -170,9 +167,6 @@ public class GameOverState extends GameState {
 			public void clicked(InputEvent event, float x, float y) {
 				Save.gd.addHighScore(Save.gd.getTentativeScore(), usernameTextField.getText());
 				Save.save();
-//				Stop gameover music, and start ingame music
-				Jukebox.getGameoverMusic().stop();
-				Jukebox.playIngameMusic();
 				gsm.setState(GameStateManager.HIGHSCORE);
 			}
 		});
