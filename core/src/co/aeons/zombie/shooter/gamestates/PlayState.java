@@ -137,7 +137,7 @@ public class PlayState extends GameState {
         );
         muteButtonBounds = new Rectangle(
                 cam.viewportWidth - 50,
-                cam.viewportHeight - 50,
+                cam.viewportHeight - 25,
                 cam.viewportWidth / 16,
                 cam.viewportHeight / 16
         );
