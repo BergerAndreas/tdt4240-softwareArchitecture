@@ -88,7 +88,7 @@ public class HighscoreState extends GameState {
 
         font.getData().setScale(1, 1);
         for(int i=0; i<highscores.length; i++){
-            s = String.format("%2d. %-8s %10s%n", i+1, highscores[i], names[i]);
+            s = String.format("%2d. %-8s %-10s%n", i+1, highscores[i], names[i]);
 //            Sample string for scores to handle width
             layout.setText(font, "9. 9999 BOBBYBR");
             float sampleScoreWidth = layout.width;
