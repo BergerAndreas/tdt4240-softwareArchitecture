@@ -15,7 +15,6 @@ public class Shotgun extends Weapon{
     public Shotgun(float x, float y) {
         super(x, y);
         clipSize = 4;
-        reloadTime = 1.5f;
         fireRate = 0.7f;
         bullets = new LinkedList<Bullet>();
         pelletCount = 24;

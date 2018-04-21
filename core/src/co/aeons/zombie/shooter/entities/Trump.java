@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.ResourceManager;
@@ -14,7 +15,9 @@ public class Trump extends Zombie {
         super(x, y, difficulty);
         this.dx = -25;
         this.health = 50;
+        this.score = 35;
         width = height = 60;
+        bounds = new Rectangle(0, 0, width, height);
     }
 
     @Override

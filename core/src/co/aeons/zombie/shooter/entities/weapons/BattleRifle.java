@@ -23,7 +23,6 @@ public class BattleRifle extends Weapon {
         texturePath = "weapons/assault1.png";
         weaponTexture = new Texture(texturePath);
         bullets = new LinkedList<Bullet>();
-        reloadTime = 1.25f;
         reload();
         isReloading = false;
         bulletDelay = 0;

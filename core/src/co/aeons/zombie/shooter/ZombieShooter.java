@@ -17,6 +17,7 @@ public class ZombieShooter extends Game {
 
 	public static int WIDTH;
 	public static int HEIGHT;
+	public static final String TITLE = "Ugly Z";
 
 	public static OrthographicCamera cam;
 	public static Viewport gamePort;
@@ -40,6 +41,7 @@ public class ZombieShooter extends Game {
 
 		WIDTH = 640;
 		HEIGHT = 360;
+		Gdx.graphics.setTitle(TITLE);
 
 		cam = new OrthographicCamera(WIDTH, HEIGHT);
 		cam.translate(WIDTH / 2, HEIGHT / 2);
