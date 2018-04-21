@@ -16,7 +16,6 @@ import java.util.Random;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Player;
-import co.aeons.zombie.shooter.entities.SinusZombie;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
@@ -85,6 +84,10 @@ public class PlayState extends GameState {
 
     //Used to increase damage on bullets
     protected int damageModifier;
+
+    //Used to increase score
+    protected int scoreModifier;
+
     private int level;
 
     //Flag to check if powerup is used
@@ -293,6 +296,7 @@ public class PlayState extends GameState {
     private void resetEffects() {
         this.damageModifier = 1;
         this.effectTimer = 0;
+        this.scoreModifier = 1;
     }
 
 
@@ -453,6 +457,10 @@ public class PlayState extends GameState {
         this.damageModifier = damageModifier;
     }
 
+    public void setScoreModifier(int scoreModifier) {
+        this.scoreModifier = scoreModifier;
+    }
+
     public void setEffectTimer(int effectTimer) {
         this.effectTimer = effectTimer;
     }
@@ -519,6 +527,6 @@ public class PlayState extends GameState {
     }
 
     public void incrementScore(long score) {
-        this.score += score;
+        this.score += score* scoreModifier;
     }
 }
