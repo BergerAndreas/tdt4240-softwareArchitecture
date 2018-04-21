@@ -403,7 +403,7 @@ public class PlayState extends GameState {
     }
 
     //Method called when FireButton pressed
-    private void onFireButtonPressed() {
+    protected void onFireButtonPressed() {
         player.shoot();
     }
 

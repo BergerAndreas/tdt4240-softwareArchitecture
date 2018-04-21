@@ -63,12 +63,15 @@ public class Player extends SuperObject {
 		return currentWeapon;
 	}
 
-	public void shoot() {
+	public boolean shoot() {
+		boolean canShoot = false;
 		for (Bullet bullet : currentWeapon.shoot()) {
 			bullet.setY(this.y);
 			bullet.setX(this.x);
 			bullets.add(bullet);
+			canShoot = true;
 		}
+		return canShoot;
 	}
 	
 	public void update(float dt) {

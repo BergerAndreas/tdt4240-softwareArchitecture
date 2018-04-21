@@ -209,12 +209,15 @@ public class MultiplayerGameState extends PlayState {
         updateOutComeMessage(dt);
         if (isHost) {
             super.update(dt);
+            secondPlayer.update(dt);
+
         } else {
             super.checkCollisions();
             super.updateTimers(dt);
-            //secondPlayer.update(dt);
+            super.player.update(dt);
             super.updatePlayerBullets(dt);
             super.updateZombies(dt);
+            secondPlayer.update(dt);
 
 
         }
@@ -281,6 +284,11 @@ public class MultiplayerGameState extends PlayState {
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
+        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)){
+            secondPlayer.shoot();
+            System.out.println(""+this.bullets.size());
+        }
+
         // Reset for next update
         incomeMessage.resetOperations();
 
@@ -314,6 +322,7 @@ public class MultiplayerGameState extends PlayState {
         if (isHost) {
             outcomeMessage.setZombies(zombieAPI);
             zombieAPI = "NONE";
+
         }
 
         //Finally we send the message
@@ -322,6 +331,16 @@ public class MultiplayerGameState extends PlayState {
 
         //We reset the operations so as not to interfere in the next interaction
         outcomeMessage.resetOperations();
+
+
+    }
+    @Override
+    protected void onFireButtonPressed() {
+        if(player.shoot()){
+
+            outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
+
+        }
 
 
     }
