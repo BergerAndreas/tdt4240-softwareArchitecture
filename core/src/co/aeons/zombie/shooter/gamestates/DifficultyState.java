@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -31,6 +32,7 @@ public class DifficultyState extends GameState {
     private BitmapFont titleFont, difficultyFont;
     private GlyphLayout layout;
     private String s;
+    private Texture bg;
 
     public DifficultyState(GameStateManager gsm) {
         super(gsm);
@@ -41,6 +43,7 @@ public class DifficultyState extends GameState {
         sb = new SpriteBatch();
         stage = new Stage(gamePort);
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
+        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
         Gdx.input.setInputProcessor(this.stage);
 
         difficultyFont = new BitmapFont();
@@ -121,6 +124,7 @@ public class DifficultyState extends GameState {
         sb.setProjectionMatrix(ZombieShooter.cam.combined);
         sb.begin();
 
+        sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
         titleFont.getData().setScale(2,2);
         layout.setText(titleFont, "Difficulty:");
         titleFont.draw(sb, layout, (cam.viewportWidth - layout.width)/2, cam.viewportHeight - 25);

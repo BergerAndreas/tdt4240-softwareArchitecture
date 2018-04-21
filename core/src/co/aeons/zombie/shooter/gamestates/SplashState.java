@@ -38,7 +38,7 @@ public class SplashState extends GameState {
 
         sb = new SpriteBatch();
         tweenManager = new TweenManager();
-        splashTexture = new Texture("logo.png");
+        splashTexture = new Texture("logo.jpg");
 
         //        Tween does not know there is a successor, thus we need to register it
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());

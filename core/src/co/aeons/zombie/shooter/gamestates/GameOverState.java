@@ -2,6 +2,7 @@ package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -38,6 +39,7 @@ public class GameOverState extends GameState {
 	private GlyphLayout layout;
 	
 	private Stage stage;
+	private Texture bg;
 	
 	public GameOverState(GameStateManager gsm) {
 		super(gsm);
@@ -50,16 +52,25 @@ public class GameOverState extends GameState {
 		layout = new GlyphLayout();
 		stage = new Stage(gamePort);
 		skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
-
+		bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
 		newHighScore = Save.gd.isHighScore(Save.gd.getTentativeScore());
-
-//		Check if new highscore, if so -> let user input name to highscore list
-		if(newHighScore){
-			initHighscore();
-		}
 
 		// Control inputs
 		Gdx.input.setInputProcessor(this.stage);
+
+//		Check if new highscore, if so -> let user input name to highscore list
+		if(newHighScore){
+			String s = "New Highscore: " + Save.gd.getTentativeScore();
+			font.getData().setScale(2,2);
+			layout.setText(font, s);
+			initHighscore();
+		}else{
+			//        Draw "Game Over" to screen
+			String s = "Game Over";
+			font.getData().setScale(2, 2);
+			layout.setText(font, s);
+			InitMenu();
+		}
 	}
 
 
@@ -70,37 +81,17 @@ public class GameOverState extends GameState {
     public void draw() {
 
         sb.setProjectionMatrix(ZombieShooter.cam.combined);
-
         sb.begin();
 
-        String s = "Game Over";
-        font.getData().setScale(2, 2);
-        layout.setText(font, s);
-        float width = layout.width;
+		sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
+		font.draw(sb, layout, (ZombieShooter.WIDTH - layout.width) / 2, ZombieShooter.HEIGHT - 25);
 
-//        Draw on screen
-        font.draw(sb, layout, (ZombieShooter.WIDTH - width) / 2, ZombieShooter.HEIGHT - 25);
-
-//        If a new highscore is not achieved, DO NOT display the below
-		if(newHighScore){
-			layout.setText(font, "New Highscore:\n" + Save.gd.getTentativeScore());
-			font.draw(sb, layout, (ZombieShooter.WIDTH - layout.width)/2, ZombieShooter.HEIGHT - 50);
-
-			stage.act();
-			stage.draw();
-			sb.end();
-			return;
-		}
-		InitMenu();
         sb.end();
-
         stage.act();
         stage.draw();
-
     }
 
 	private void InitMenu() {
-        //Add stuff here
         //Create Table
         Table mainTable = new Table();
         //Set table to fill stage
@@ -119,7 +110,6 @@ public class GameOverState extends GameState {
 		restartButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-//				gsm.resetPlayScreen();
 //				Stop gameover music, and start ingame music
 				Jukebox.getGameoverMusic().stop();
 				Jukebox.playIngameMusic();
@@ -143,7 +133,6 @@ public class GameOverState extends GameState {
         QuitGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//				gsm.resetPlayScreen();
 //				Stop gameover music, and start ingame music
 				Jukebox.getGameoverMusic().stop();
 				Jukebox.playIngameMusic();
@@ -167,6 +156,8 @@ public class GameOverState extends GameState {
 //		Highscore input for player's name
 		usernameTextField = new TextField("", skin);
 		usernameTextField.setSize(100, 20);
+		usernameTextField.setMaxLength(8); // Max chars
+		usernameTextField.setAlignment(1); // Center text
 		usernameTextField.setPosition((ZombieShooter.WIDTH - usernameTextField.getWidth())/2,(ZombieShooter.HEIGHT - usernameTextField.getHeight())/2);
 
 //		Button to submit highscore
@@ -177,7 +168,6 @@ public class GameOverState extends GameState {
 		submitHighscoreButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-//				TODO: Handle input correctly. textfield ain't working as is
 				Save.gd.addHighScore(Save.gd.getTentativeScore(), usernameTextField.getText());
 				Save.save();
 //				Stop gameover music, and start ingame music
