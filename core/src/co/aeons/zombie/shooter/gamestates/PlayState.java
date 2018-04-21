@@ -16,6 +16,7 @@ import java.util.Random;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Player;
+import co.aeons.zombie.shooter.entities.SinusZombie;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
@@ -205,7 +206,8 @@ public class PlayState extends GameState {
             zombieAPI+="t"+":"+x+","+y+";";
             zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
             zombieAPI+="z"+":"+x+","+y+";";
-
+            zombies.add(new SinusZombie(x, y, Difficulty.getDifficulty()));
+            zombieAPI+="s"+":"+x+","+y+";";
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
