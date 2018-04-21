@@ -19,7 +19,6 @@ public class FireButton extends GameButton {
     //Used to define what sprite to draw
     @Override
     protected String getTexturePath() {
-        System.out.println(texturePath);
         return texturePath;
     }
 

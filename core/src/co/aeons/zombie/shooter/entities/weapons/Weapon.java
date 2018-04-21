@@ -36,6 +36,7 @@ public abstract class Weapon {
     public abstract ArrayList<Bullet> shoot();
 
     public abstract void reload();
+    public abstract void playSound();
 
     public abstract Bullet getNewBullet();
 

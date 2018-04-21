@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class Wall extends SuperObject {
 
@@ -39,20 +40,3 @@ public class Wall extends SuperObject {
         return wallHealth;
     }
 }
-
-
-//spar blekk. ikke bruk mange new lines pless!
-
-
-
-
-
-
-
-
-
-
-// Bli pult torstain
-
-
-

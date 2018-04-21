@@ -69,7 +69,6 @@ public class Player extends SuperObject {
 			bullet.setX(this.x);
 			bullets.add(bullet);
 		}
-		Jukebox.play("shoot");
 	}
 	
 	public void update(float dt) {

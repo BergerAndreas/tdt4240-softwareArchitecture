@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class Pistol extends Weapon {
 
@@ -31,10 +32,12 @@ public class Pistol extends Weapon {
             if(!bullets.isEmpty()) {
                 output.add(bullets.poll());
                 isFired = true;
+                playSound();
                 fireRate = 0.3f;
 
                 if (bullets.isEmpty()) {
                     reload();
+                    Jukebox.play("pistolReload");
                 }
 
             }else reload();
@@ -50,6 +53,11 @@ public class Pistol extends Weapon {
         for (int i = 0; i < clipSize; i++) {
             bullets.add(getNewBullet());
         }
+    }
+
+    @Override
+    public void playSound() {
+        Jukebox.play("pom");
     }
 
     @Override

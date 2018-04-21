@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.gamestates.PlayState;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class NukeButton extends EffectButton{
 
@@ -25,9 +26,12 @@ public class NukeButton extends EffectButton{
 
     @Override
     public void effect(PlayState playState) {
-
         playState.getZombies().clear();
+    }
 
+    @Override
+    public void playSound() {
+        Jukebox.play("rawSauce");
     }
 
 }
