@@ -6,11 +6,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -34,6 +30,7 @@ import co.aeons.zombie.shooter.factories.RandomButtonFactory;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.Save;
 
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
@@ -258,6 +255,7 @@ public class PlayState extends GameState {
         if (wall.getHealth() <= 0) {
             Jukebox.getIngameMusic().stop();
             Jukebox.playGameoverMusic();
+            Save.gd.setTentativeScore(this.getScore());
             gsm.setState(GameStateManager.GAMEOVER);
         }
     }

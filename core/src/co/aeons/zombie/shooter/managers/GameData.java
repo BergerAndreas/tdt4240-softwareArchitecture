@@ -37,7 +37,7 @@ public class GameData implements Serializable {
         return tentativeScore;
     }
 
-    public void setTenativeScore(long i) {
+    public void setTentativeScore(long i) {
         tentativeScore = i;
     }
 

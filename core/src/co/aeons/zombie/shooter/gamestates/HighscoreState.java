@@ -33,7 +33,6 @@ public class HighscoreState extends GameState {
     private long[] highscores;
     private String[] names;
 
-
     public HighscoreState(GameStateManager gsm) {
         super(gsm);
     }
@@ -43,9 +42,8 @@ public class HighscoreState extends GameState {
         font = new BitmapFont();
         stage = new Stage(gamePort);
         layout = new GlyphLayout();
-        System.out.println("HIGHSCORES");
 
-//        Load save file to highscore list
+//        Load save file to screen
         Save.load();
         highscores = Save.gd.getHighScores();
         names = Save.gd.getNames();
@@ -54,17 +52,16 @@ public class HighscoreState extends GameState {
         Gdx.input.setInputProcessor(this.stage);
         TextButton backButton = new TextButton("Back", skin);
 
+//        Back button takes user to Menu screen
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gsm.setState(GameStateManager.GAMEOVER);
+                gsm.setState(GameStateManager.MENU);
             }
         });
 
-
         backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth()) / 2, 50);
         stage.addActor(backButton);
-
     }
 
     @Override
