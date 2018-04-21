@@ -31,6 +31,7 @@ import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.Save;
+import co.aeons.zombie.shooter.utils.FrameRate;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
@@ -40,6 +41,7 @@ public class PlayState extends GameState {
     protected SpriteBatch sb;
     protected ShapeRenderer sr;
     protected Stage stage;
+    private FrameRate framerate;
 
     //Makes text easy to use
     private GlyphLayout layout;
@@ -101,6 +103,7 @@ public class PlayState extends GameState {
         magazineFont = new BitmapFont();
         layout = new GlyphLayout();
         bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
+        framerate = new FrameRate();
 
         //sets up camera
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
@@ -182,6 +185,7 @@ public class PlayState extends GameState {
         updateZombies(dt);
         spawnEffectButton();
         updateWallHealth();
+        framerate.update();
     }
 
     private void spawnZombies() {
@@ -382,6 +386,7 @@ public class PlayState extends GameState {
         this.stage.addActor(muteButton);
         this.stage.act();
         this.stage.draw();
+        framerate.render();
 
     }
 
