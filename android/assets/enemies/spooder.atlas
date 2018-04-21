@@ -1,24 +1,31 @@
 
-pack.png
+spooder.png
 size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-spoder
+enemies/spooder
   rotate: false
   xy: 2, 2
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-spoder
+enemies/spooder
   rotate: false
   xy: 260, 2
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-spoder
+enemies/spooder
+  rotate: false
+  xy: 260, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+enemies/spooder
   rotate: false
   xy: 518, 2
   size: 256, 256

@@ -19,7 +19,7 @@ public class InstaKill extends EffectButton {
 
     @Override
     protected String getTexturePath() {
-        return "skullPlaceholder.png";
+        return "buttons/skullPlaceholder.png";
     }
 
     @Override

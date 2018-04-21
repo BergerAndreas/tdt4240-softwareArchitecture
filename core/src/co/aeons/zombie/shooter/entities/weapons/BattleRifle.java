@@ -17,11 +17,12 @@ public class BattleRifle extends Weapon {
         super(x, y);
 
         clipSize = 36;
-        fireRate = 1;
+        fireRate = 0.5f;
+
         texturePath = "weapons/assault1.png";
         weaponTexture = new Texture(texturePath);
         bullets = new LinkedList<Bullet>();
-        reloadTime = 2.5f;
+        reloadTime = 1.25f;
         reload();
         isReloading = false;
         bulletDelay = 0;
@@ -30,11 +31,18 @@ public class BattleRifle extends Weapon {
     @Override
     public ArrayList<Bullet> shoot() {
         ArrayList<Bullet> output = new ArrayList<Bullet>();
-        if(!isReloading){
+        if(!isReloading && !isFired){
             if(!bullets.isEmpty()) {
                 for (int i = 0; i < 3; i++) {
                     output.add(bullets.poll());
                 }
+
+                if(bullets.isEmpty()) {
+                    reload();
+                }
+
+                isFired = true;
+                fireRate = 0.5f;
             }else reload();
         }
         return output;

@@ -152,11 +152,11 @@ public class GameOverState extends GameState {
 		});
 
         //Add buttons to table
-        mainTable.add(restartButton);
+        mainTable.add(restartButton).width(150).pad(5);
         mainTable.row();
-        mainTable.add(highscoreButton);
+        mainTable.add(highscoreButton).width(150).pad(5);
         mainTable.row();
-        mainTable.add(QuitGameButton);
+        mainTable.add(QuitGameButton).width(150).pad(5);
 
         // Adds maintable to stage
         stage.addActor(mainTable);

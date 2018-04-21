@@ -21,7 +21,7 @@ public class Wall extends SuperObject {
 
         this.bounds = new Rectangle(x,y,width,height);
 
-        this.wallTexture = new Texture("logo.png");
+        this.wallTexture = new Texture("walls/redBrick.jpg");
         this.health = 500;
     }
 

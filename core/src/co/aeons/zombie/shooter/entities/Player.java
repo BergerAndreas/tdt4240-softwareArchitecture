@@ -34,11 +34,11 @@ public class Player extends SuperObject {
 		this.currentWeaponIndex = 0;
 		this.currentWeapon = weapons.get(currentWeaponIndex);
 
-		x = 50;
+		x = 40;
 		y = ZombieShooter.HEIGHT / 2;
 
 
-		this.playerTexture = new Texture("nukjøyrarme.png");
+		this.playerTexture = new Texture("players/alfyboi.png");
 		
 	}
 

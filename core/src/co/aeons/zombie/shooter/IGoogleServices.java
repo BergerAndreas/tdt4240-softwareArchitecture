@@ -1,5 +1,7 @@
 package co.aeons.zombie.shooter;
 
+import java.util.ArrayList;
+
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 
@@ -20,6 +22,10 @@ public interface IGoogleServices
 
     void sendGameMessage(String message);
     MultiplayerMessage receiveGameMessage();
+
+    String getHostId();
+    String getMyId();
+
 
 
 }

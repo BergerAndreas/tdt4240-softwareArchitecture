@@ -1,5 +1,6 @@
 package co.aeons.zombie.shooter.managers;
 
+import co.aeons.zombie.shooter.gamestates.DifficultyState;
 import co.aeons.zombie.shooter.gamestates.GameOverState;
 import co.aeons.zombie.shooter.gamestates.GameState;
 import co.aeons.zombie.shooter.gamestates.HighscoreState;
@@ -17,6 +18,7 @@ public class GameStateManager {
     public static final int MENU = 0;
     public static final int PLAY = 893746;
     public static final int HIGHSCORE = 3847;
+    public static final int DIFFICULTY = 87239234;
     public static final int GAMEOVER = 928478;
     public static final int SPLASH = 3465283;
     public static final int MULTIPLAYERMENU = 1235125;
@@ -41,6 +43,9 @@ public class GameStateManager {
         }
         if (state == HIGHSCORE) {
             gameState = new HighscoreState(this);
+        }
+        if (state == DIFFICULTY) {
+            gameState = new DifficultyState(this);
         }
         if (state == GAMEOVER) {
             gameState = new GameOverState(this);

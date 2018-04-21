@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.Save;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class ZombieShooter extends Game {
 
@@ -24,6 +25,7 @@ public class ZombieShooter extends Game {
 	//Google play
 	public static Platform platform;
 	public static IGoogleServices googleServices;
+
 
 	public ZombieShooter(Platform platform, IGoogleServices googleServices) {
 		this.platform = platform;
@@ -74,7 +76,7 @@ public class ZombieShooter extends Game {
 	public void render() {
 
 		// clear screen to black
-		Gdx.gl.glClearColor(0, 255, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		gsm.update(Gdx.graphics.getDeltaTime());

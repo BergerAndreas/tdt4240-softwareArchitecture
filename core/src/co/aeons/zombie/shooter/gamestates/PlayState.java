@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.Color;
@@ -26,6 +27,7 @@ import co.aeons.zombie.shooter.entities.buttons.FireButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.MuteButton;
 import co.aeons.zombie.shooter.factories.RandomButtonFactory;
+import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.Save;
@@ -39,10 +41,11 @@ public class PlayState extends GameState {
     protected ShapeRenderer sr;
     private BitmapFont scoreFont, magazineFont, wallHealthFont;
     private GlyphLayout layout;
+    private Texture bg;
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
-    private ArrayList<Zombie> zombies;
+    protected ArrayList<Zombie> zombies;
     private Wall wall;
     private long score;
 
@@ -64,12 +67,6 @@ public class PlayState extends GameState {
 
     private int level;
     private int totalZombies;
-
-    private float maxDelay;
-    private float minDelay;
-    private float currentDelay;
-    private float bgTimer;
-    private boolean musicStarted;
 
     //Spawndelay for powerups
     private int spawnDelay;
@@ -101,6 +98,7 @@ public class PlayState extends GameState {
         wallHealthFont = new BitmapFont();
         magazineFont = new BitmapFont();
         layout = new GlyphLayout();
+        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
 
         //sets up camera
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
@@ -169,13 +167,6 @@ public class PlayState extends GameState {
         //Create empty button
         effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
-        // set up bg music
-        maxDelay = 1;
-        minDelay = 0.25f;
-        currentDelay = maxDelay;
-        bgTimer = maxDelay;
-        musicStarted = false;
-
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
     }
@@ -190,22 +181,21 @@ public class PlayState extends GameState {
         for (int i = 0; i < numToSpawn; i++) {
             float x = randInt(ZombieShooter.WIDTH + 50, ZombieShooter.WIDTH + 150);
             float y = randInt(0, ZombieShooter.HEIGHT - 100);
-            zombies.add(new Trump(x, y));
-            zombies.add(new Zombie(x, y));
+            zombies.add(new Trump(x, y, Difficulty.getDifficulty()));
+            zombies.add(new Zombie(x, y, Difficulty.getDifficulty()));
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
         }
-
     }
 
     public void update(float dt) {
-
         // check collision
         checkCollisions();
 
         // reset modifier
         effectTimer -= dt;
-        System.out.println(effectTimer);
+        //TODO: Unccoment me to print effect timer
+        // System.out.println(effectTimer);
         if(effectTimer <= 0) {
             resetEffects();
         }
@@ -316,6 +306,15 @@ public class PlayState extends GameState {
         sb.setProjectionMatrix(cam.combined);
         sr.setProjectionMatrix(cam.combined);
 
+//        Disabling blending for background covering entire screen improves performance
+        sb.disableBlending();
+        sb.begin();
+        //draw background
+        sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
+        sb.end();
+
+//        Re-enable blending to avoid black boxes around rest of sprites
+        sb.enableBlending();
         // draw player
         player.draw(sb);
 
@@ -339,12 +338,9 @@ public class PlayState extends GameState {
         sr.end();
 
         // draw buttons
-        sb.setColor(0, 1, 1, 1);
         sb.begin();
 
-
 //        Various HUDs
-
 //        Score
         String scoreOutput = "Score: " + Long.toString(this.getScore());
         this.layout.setText(scoreFont, scoreOutput);
@@ -409,14 +405,16 @@ public class PlayState extends GameState {
     }
 
     private void onCycleUpPressed() {
-        System.out.println("Next Weapon");
+        //TODO: Uncomment me to print next weapon
+        //System.out.println("Next Weapon");
         player.nextWeapon();
         reloadFireButtonTexture();
     }
 
     private void onCycleDownPressed(){
         player.prevWeapon();
-        System.out.println("Previous Weapon");
+        //TODO: Uncomment me to print previous weapon
+        //System.out.println("Previous Weapon");
         reloadFireButtonTexture();
     }
 
