@@ -101,12 +101,12 @@ public class MultiplayerMessage {
 
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
-            System.out.println(s);
-            String[] result = s.split(";;ANTON;;");
+            String[] result = s.split("$");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
                 zombies = result[2];
+                System.out.println("Zombies: "+zombies);
             }
             if (!result[3].equals("NONE")) {
                 deadZombies = result[3];
@@ -118,8 +118,13 @@ public class MultiplayerMessage {
     }
 
     public String getForSendMessage() {
-        return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
-                deadZombies + ";;ANTON;;" + deadBullets;
+        if (!zombies.equals("NONE")) {
+            System.out.println(zombies);
+        }
+        System.out.println();
+        return positionY + "$" + operations + "$" + zombies + "$" +
+                deadZombies + "$" + deadBullets;
+
     }
 
 
