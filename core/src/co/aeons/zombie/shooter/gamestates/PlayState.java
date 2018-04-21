@@ -171,7 +171,7 @@ public class PlayState extends GameState {
         cycleDownButton = new CycleDownButton(cycleDownButtonBounds);
 
         //Create empty button
-       effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
+        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
@@ -206,11 +206,11 @@ public class PlayState extends GameState {
 
             Trump t = new Trump(x, y, Difficulty.getDifficulty());
             zombies.add(t);
-            zombieAPI+="t"+":"+x+","+y+","+t.getId()+";";
+            zombieAPI += "t" + ":" + x + "," + y + "," + t.getId() + ";";
 
             Zombie z = new Zombie(x, y, Difficulty.getDifficulty());
             zombies.add(z);
-            zombieAPI+="z"+":"+x+","+y+","+z.getId()+";";
+            zombieAPI += "z" + ":" + x + "," + y + "," + z.getId() + ";";
 
             // TODO: 17/04/2018 Unfucke logikken for spawning, nå hanver Trump på toppen av en zambi
 
