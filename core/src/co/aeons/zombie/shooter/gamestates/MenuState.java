@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -28,6 +29,7 @@ public class MenuState extends GameState {
 
     private Skin skin;
     private TextureAtlas atlas;
+    private Texture bg;
 
 
     public MenuState(GameStateManager gsm) {
@@ -40,9 +42,10 @@ public class MenuState extends GameState {
         sr = new ShapeRenderer();
 
         stage = new Stage(gamePort);
-
         atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
+        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
+
         Gdx.input.setInputProcessor(this.stage);
 
 
@@ -113,6 +116,10 @@ public class MenuState extends GameState {
 
         sb.setProjectionMatrix(ZombieShooter.cam.combined);
         sr.setProjectionMatrix(ZombieShooter.cam.combined);
+
+        sb.begin();
+        sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
+        sb.end();
 
         //Make stage show stuff
         this.stage.act();

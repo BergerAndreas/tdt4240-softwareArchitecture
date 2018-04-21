@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,6 +30,7 @@ public class HighscoreState extends GameState {
     private SpriteBatch sb;
     private Skin skin;
     private Stage stage;
+    private Texture bg;
 
     private long[] highscores;
     private String[] names;
@@ -42,6 +44,7 @@ public class HighscoreState extends GameState {
         font = new BitmapFont();
         stage = new Stage(gamePort);
         layout = new GlyphLayout();
+        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
 
 //        Load save file to screen
         Save.load();
@@ -74,27 +77,29 @@ public class HighscoreState extends GameState {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
 
+        sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
         String s = "Highscores";
         font.getData().setScale(2, 2);
         layout.setText(font, s);
         float width = layout.width;
 
 //        Draw highscores on screen
-
         font.draw(sb, s, (cam.viewportWidth - width)/2, cam.viewportHeight - 25);
+
         font.getData().setScale(1, 1);
         for(int i=0; i<highscores.length; i++){
-            s = String.format("%2d. %7s %s", i+1, highscores[i], names[i]);
+            s = String.format("%2d. %-8s %-10s%n", i+1, highscores[i], names[i]);
+//            Sample string for scores to handle width
+            layout.setText(font, "9. 9999 BOBBYBR");
+            float sampleScoreWidth = layout.width;
             layout.setText(font, s);
-            float w = layout.width;
-            font.draw(sb, s, (cam.viewportWidth- w)/2, cam.viewportHeight - 75 - 20*i);
-
+            font.draw(sb, s, (cam.viewportWidth - sampleScoreWidth)/2, cam.viewportHeight - 75 - 20*i);
         }
+
         sb.end();
         stage.act();
         stage.draw();
     }
-
 
     @Override
     public void dispose() {
