@@ -86,6 +86,7 @@ public class MultiplayerMessage {
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             zombies = result[2];
+            System.out.println(zombies);
         }
     }
 
