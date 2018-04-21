@@ -14,10 +14,6 @@ public class InstaKill extends EffectButton {
         super(bounds);
     }
 
-    public void effect(){
-        System.out.println("pew pew");
-    }
-
     @Override
     protected String getTexturePath() {
         return "buttons/skullPlaceholder.png";

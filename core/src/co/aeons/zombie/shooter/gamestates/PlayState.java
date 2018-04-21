@@ -83,7 +83,6 @@ public class PlayState extends GameState {
     //DamageModifier
     private int damageModifier;
 
-
     //Flag to check if powerup is used
     private boolean isClicked;
 
@@ -118,7 +117,6 @@ public class PlayState extends GameState {
         spawnCooldown = 1.0f;
 
         spawnZombies();
-
 
         //Set up variables for powerups
         spawnDelay = randInt(0, 10);
@@ -168,13 +166,11 @@ public class PlayState extends GameState {
         cycleDownButton = new CycleDownButton(cDownBounds);
 
         //Create empty button
-        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
+       effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
     }
-
-
 
     private void spawnZombies() {
 
@@ -393,11 +389,11 @@ public class PlayState extends GameState {
         muteButton.loadTextureRegion();
     }
 
-
     private void onEffectButtonPressed() {
         effectButton.effect(this);
+        effectButton.playSound();
         effectButton.remove();
-        effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
+        effectButton = new InstaKill(new Rectangle(0,0,0,0));
         isClicked = true;
     }
 
@@ -474,7 +470,6 @@ public class PlayState extends GameState {
 
         if (playerLane.contains(tmpVec2.x, tmpVec2.y)) {
             //player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
-
             player.setPosition(player.getx(), tmpVec2.y);
         }
         return true;

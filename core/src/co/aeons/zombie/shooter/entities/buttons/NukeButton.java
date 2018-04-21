@@ -26,9 +26,7 @@ public class NukeButton extends EffectButton{
 
     @Override
     public void effect(PlayState playState) {
-
         playState.getZombies().clear();
-
     }
 
     @Override
