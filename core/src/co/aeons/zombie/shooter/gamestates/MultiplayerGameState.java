@@ -286,33 +286,6 @@ public class MultiplayerGameState extends PlayState {
         incomeMessage = ZombieShooter.googleServices.receiveGameMessage();
         //Check if opponent has requested to leave the room
         /*
-        if (incomeMessage.checkOperation(incomeMessage.MASK_LEAVE)) {
-            abandonSecondPlayer = true;
-            //TODO: exit game or something here?
-        }
-        // Petición recibida de disparo
-        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT))
-            System.out.println("Shoot");
-        //rivalShip.shoot();
-        // Petición recibida de powerUp Burst usado
-        if (incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_DOWN))
-            System.out.println("burst");
-        //rivalBurstPowerUp.setTouched();
-        // Petición recibida de powerUp Regeneración de Vida usado
-        if (incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_UP))
-            System.out.println("life powerup");
-        //rivalRegLifePowerUp.setTouched();
-        // Petición recibida de powerUp Escudo
-        if (incomeMessage.checkOperation(incomeMessage.MASK_SHIELD))
-            System.out.println("Shield powerup");
-        //rivalShieldPoweUp.setTouched();
-        // Petición recibida de recepción de daño
-        if (incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)) {
-            System.out.println("Damage received");
-            //rivalShip.receiveDamage();
-        }
-        */
-        /*
         TODO:Fix win state
         if(rivalShip.isCompletelyDefeated()){
             state = GameState.WIN;
@@ -332,7 +305,6 @@ public class MultiplayerGameState extends PlayState {
             secondPlayer.setWeaponId(incomeMessage.getWeaponId());
             secondPlayer.shoot();
         }
-        System.out.println("received weapon id:" +incomeMessage.getWeaponId());
         // Reset for next update
         incomeMessage.resetOperations();
 
