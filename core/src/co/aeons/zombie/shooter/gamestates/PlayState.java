@@ -529,4 +529,7 @@ public class PlayState extends GameState {
     public void incrementScore(long score) {
         this.score += score* scoreModifier;
     }
+    public void increaseWallHealth(int health) {
+        wall.takeDamage(-health);
+    }
 }
