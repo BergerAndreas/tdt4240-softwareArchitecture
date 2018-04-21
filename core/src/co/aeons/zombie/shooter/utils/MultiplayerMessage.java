@@ -8,8 +8,8 @@ public class MultiplayerMessage {
     public final int MASK_LEAVE;
     public final int MASK_SHOOT;
     public final int MASK_HAS_RECEIVE_DAMAGE;
-    public final int MASK_REG_LIFE;
-    public final int MASK_BURST;
+    public final int MASK_CYCLE_WEAPON_UP;
+    public final int MASK_CYCLE_WEAPON_DOWN;
     public final int MASK_SHIELD;
 
     private int operations;
@@ -28,9 +28,9 @@ public class MultiplayerMessage {
         // 000010
         MASK_SHOOT = 2;
         // 000100
-        MASK_REG_LIFE = 4;
+        MASK_CYCLE_WEAPON_UP = 4;
         // 001000
-        MASK_BURST = 8;
+        MASK_CYCLE_WEAPON_DOWN = 8;
         // 010000
         MASK_HAS_RECEIVE_DAMAGE = 16;
         // 100000
@@ -101,7 +101,7 @@ public class MultiplayerMessage {
 
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
-            String[] result = s.split("$");
+            String[] result = s.split(";;ANTON;;");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
@@ -122,8 +122,8 @@ public class MultiplayerMessage {
             System.out.println(zombies);
         }
         System.out.println();
-        return positionY + "$" + operations + "$" + zombies + "$" +
-                deadZombies + "$" + deadBullets;
+        return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
+                deadZombies + ";;ANTON;;" + deadBullets;
 
     }
 

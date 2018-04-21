@@ -286,11 +286,11 @@ public class MultiplayerGameState extends PlayState {
             System.out.println("Shoot");
         //rivalShip.shoot();
         // Petición recibida de powerUp Burst usado
-        if (incomeMessage.checkOperation(incomeMessage.MASK_BURST))
+        if (incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_DOWN))
             System.out.println("burst");
         //rivalBurstPowerUp.setTouched();
         // Petición recibida de powerUp Regeneración de Vida usado
-        if (incomeMessage.checkOperation(incomeMessage.MASK_REG_LIFE))
+        if (incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_UP))
             System.out.println("life powerup");
         //rivalRegLifePowerUp.setTouched();
         // Petición recibida de powerUp Escudo
@@ -323,6 +323,15 @@ public class MultiplayerGameState extends PlayState {
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)) {
             secondPlayer.shoot();
         }
+        if (incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_UP)) {
+            secondPlayer.nextWeapon();
+            super.reloadFireButtonTexture();
+
+        }
+        if(incomeMessage.checkOperation(incomeMessage.MASK_CYCLE_WEAPON_DOWN)){
+            secondPlayer.prevWeapon();
+            super.reloadFireButtonTexture();
+        }
 
         // Reset for next update
         incomeMessage.resetOperations();
@@ -346,7 +355,7 @@ public class MultiplayerGameState extends PlayState {
 
     private void clientSpawnZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
-            System.out.println("Client received"+ zombies);
+            System.out.println("Client received" + zombies);
             String[] z = incomingZombies.split(";");
             for (String s : z) {
                 String type = s.split(":")[0];
@@ -365,7 +374,7 @@ public class MultiplayerGameState extends PlayState {
                     zombies.add(newTrump);
                 }
             }
-            System.out.println("Number of zombies"+ zombies.size());
+            System.out.println("Number of zombies" + zombies.size());
         }
     }
 
@@ -404,7 +413,18 @@ public class MultiplayerGameState extends PlayState {
 
         }
 
+    }
 
+    @Override
+    protected void onCycleUpPressed() {
+        super.onCycleUpPressed();
+        outcomeMessage.setOperation(outcomeMessage.MASK_CYCLE_WEAPON_UP);
+    }
+
+    @Override
+    protected void onCycleDownPressed(){
+        super.onCycleDownPressed();
+        outcomeMessage.setOperation(outcomeMessage.MASK_CYCLE_WEAPON_DOWN);
     }
 
 

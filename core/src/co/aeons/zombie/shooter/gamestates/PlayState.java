@@ -428,17 +428,17 @@ public class PlayState extends GameState {
         effectButtonIsClicked = true;
     }
 
-    private void onCycleUpPressed() {
+    protected void onCycleUpPressed() {
         player.nextWeapon();
         reloadFireButtonTexture();
     }
 
-    private void onCycleDownPressed() {
+    protected void onCycleDownPressed() {
         player.prevWeapon();
         reloadFireButtonTexture();
     }
 
-    private void reloadFireButtonTexture() {
+    protected void reloadFireButtonTexture() {
         fireButton.setTexturePath(player.getCurrentWeapon().getTexturePath());
         fireButton.loadTextureRegion();
     }
