@@ -30,7 +30,7 @@ public class Zombie extends SuperObject {
 
 	protected float health;
 
-    private float attackTimer = 1.0f;
+    protected float attackTimer = 1.0f;
 
 	private float attackCooldown = 2.0f;
     private int attackCounter = 0;

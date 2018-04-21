@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameStateManager;
+import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.Save;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
@@ -59,6 +60,9 @@ public class HighscoreState extends GameState {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+//				Stop gameover music, and start ingame music
+                Jukebox.getGameoverMusic().stop();
+                Jukebox.playIngameMusic();
                 gsm.setState(GameStateManager.MENU);
             }
         });
