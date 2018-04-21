@@ -16,6 +16,7 @@ import java.util.Random;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Player;
+import co.aeons.zombie.shooter.entities.SinusZombie;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
