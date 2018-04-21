@@ -19,6 +19,7 @@ public class Save {
 //    TODO: Find out how/when to save file, so it does not overwrite file each time
     public static void save() {
         try {
+//            Append = false will overwrite file
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("highscores.sav"));
             out.writeObject(gd);
             out.close();

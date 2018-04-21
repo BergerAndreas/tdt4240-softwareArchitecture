@@ -101,7 +101,6 @@ public class PlayState extends GameState {
         wallHealthFont = new BitmapFont();
         magazineFont = new BitmapFont();
         layout = new GlyphLayout();
-        Save.init();
 
         //sets up camera
         cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);

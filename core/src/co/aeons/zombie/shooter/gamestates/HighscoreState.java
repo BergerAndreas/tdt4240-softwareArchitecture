@@ -56,20 +56,16 @@ public class HighscoreState extends GameState {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 gsm.setState(GameStateManager.MENU);
             }
         });
 
-
         backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth()) / 2, 50);
         stage.addActor(backButton);
-
     }
 
     @Override
     public void update(float dt) {
-
 
     }
 

@@ -83,8 +83,8 @@ public class GameOverState extends GameState {
 
 //        If a new highscore is not achieved, DO NOT display the below
 		if(newHighScore){
-			layout.setText(font, "New Highscore: " + Save.gd.getTentativeScore());
-			font.draw(sb, layout, (ZombieShooter.WIDTH)/2, 180);
+			layout.setText(font, "New Highscore:\n" + Save.gd.getTentativeScore());
+			font.draw(sb, layout, (ZombieShooter.WIDTH - layout.width)/2, ZombieShooter.HEIGHT - 50);
 
 			stage.act();
 			stage.draw();
@@ -180,15 +180,12 @@ public class GameOverState extends GameState {
 //				TODO: Handle input correctly. textfield ain't working as is
 				Save.gd.addHighScore(Save.gd.getTentativeScore(), usernameTextField.getText());
 				Save.save();
-				System.out.println(usernameTextField.getText());
-				System.out.println(usernameTextField.getMessageText());
 //				Stop gameover music, and start ingame music
 				Jukebox.getGameoverMusic().stop();
 				Jukebox.playIngameMusic();
 				gsm.setState(GameStateManager.HIGHSCORE);
 			}
 		});
-
 		stage.addActor(usernameTextField);
 		stage.addActor(submitHighscoreButton);
 	}
