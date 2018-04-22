@@ -31,9 +31,9 @@ public class ZombieShooter extends Game {
 
 
 	public ZombieShooter(Platform platform, IGoogleServices googleServices, File filesDir) {
-		this.platform = platform;
+		ZombieShooter.platform = platform;
 		ZombieShooter.googleServices = googleServices;
-		this.filesDir = filesDir;
+		ZombieShooter.filesDir = filesDir;
 	}
 
 

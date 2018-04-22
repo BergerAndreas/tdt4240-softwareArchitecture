@@ -1,8 +1,5 @@
 package co.aeons.zombie.shooter.entities.bullets;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class BRBullet extends Bullet {

@@ -1,7 +1,5 @@
 package co.aeons.zombie.shooter;
 
-import java.util.ArrayList;
-
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 

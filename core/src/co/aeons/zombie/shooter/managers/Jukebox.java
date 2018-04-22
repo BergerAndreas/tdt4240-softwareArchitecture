@@ -1,8 +1,6 @@
 package co.aeons.zombie.shooter.managers;
 
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;

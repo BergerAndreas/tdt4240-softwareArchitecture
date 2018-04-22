@@ -1,7 +1,5 @@
 package co.aeons.zombie.shooter.entities.weapons;
 
-import com.badlogic.gdx.graphics.Texture;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 

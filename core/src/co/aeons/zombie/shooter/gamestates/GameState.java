@@ -2,7 +2,6 @@ package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
 
 import co.aeons.zombie.shooter.managers.GameStateManager;
 

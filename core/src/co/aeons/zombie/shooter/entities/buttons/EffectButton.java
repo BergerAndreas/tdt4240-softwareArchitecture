@@ -3,7 +3,6 @@ package co.aeons.zombie.shooter.entities.buttons;
 import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.gamestates.PlayState;
-import co.aeons.zombie.shooter.managers.Jukebox;
 
 public abstract class EffectButton extends GameButton {
 

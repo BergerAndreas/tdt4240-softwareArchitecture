@@ -48,14 +48,13 @@ public class RandomButtonFactory {
     }
 
     private Rectangle getNewBounds(OrthographicCamera cam) {
-        Rectangle bound = new Rectangle(
+
+        return new Rectangle(
                 Utils.randInt(100, (int) cam.viewportWidth - 100),
                 Utils.randInt(100, (int) cam.viewportHeight - 100),
                 cam.viewportWidth / 8,
                 cam.viewportHeight / 6
         );
-
-        return bound;
     }
 
 }

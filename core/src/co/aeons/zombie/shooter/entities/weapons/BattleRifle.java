@@ -1,7 +1,5 @@
 package co.aeons.zombie.shooter.entities.weapons;
 
-import com.badlogic.gdx.graphics.Texture;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -69,8 +67,7 @@ public class BattleRifle extends Weapon {
 
     @Override
     public Bullet getNewBullet() {
-        Bullet bill = new BRBullet(this.x, this.y, this.bulletDelay);
-        return bill;
+        return new BRBullet(this.x, this.y, this.bulletDelay);
     }
 
     public void setBulletDelay(int bulletDelay) {

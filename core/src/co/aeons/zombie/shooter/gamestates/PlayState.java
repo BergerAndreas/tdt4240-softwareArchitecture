@@ -16,7 +16,6 @@ import java.util.Random;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.Player;
-import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Wall;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
@@ -415,8 +414,7 @@ public class PlayState extends GameState {
     // helper function to generate random integer
     public static int randInt(int min, int max) {
         Random rand = new Random();
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-        return randomNum;
+        return rand.nextInt((max - min) + 1) + min;
     }
 
     //Method called when FireButton pressed

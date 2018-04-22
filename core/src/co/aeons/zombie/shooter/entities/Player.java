@@ -10,7 +10,6 @@ import co.aeons.zombie.shooter.entities.weapons.BattleRifle;
 import co.aeons.zombie.shooter.entities.weapons.Pistol;
 import co.aeons.zombie.shooter.entities.weapons.Shotgun;
 import co.aeons.zombie.shooter.entities.weapons.Weapon;
-import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Player extends SuperObject {
