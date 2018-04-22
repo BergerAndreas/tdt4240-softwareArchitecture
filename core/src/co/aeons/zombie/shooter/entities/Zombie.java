@@ -1,6 +1,5 @@
 package co.aeons.zombie.shooter.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -8,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.Jukebox;
 import co.aeons.zombie.shooter.managers.ResourceManager;
 
@@ -16,11 +14,9 @@ public class Zombie extends SuperObject {
 	protected boolean isStopped = false;
 	protected String type;
 
-	// Anitmations
+	// Animations
 	protected Animation<TextureRegion> runningAnimation;
 	protected Animation<TextureRegion> attackAnimation;
-	protected TextureAtlas runningAtlas;
-	protected TextureAtlas attackAtlas;
 
 	// Tracks elapsed time for animations
 	protected float stateTimeRunning;
