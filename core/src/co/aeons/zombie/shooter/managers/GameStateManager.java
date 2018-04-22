@@ -16,6 +16,8 @@ public class GameStateManager {
     // current game state
     private GameState gameState;
 
+    private static GameStateManager single_instance = null;
+
     public static final int MENU = 0;
     public static final int PLAY = 893746;
     public static final int HIGHSCORE = 3847;
@@ -28,7 +30,15 @@ public class GameStateManager {
     public static final int MULTIPLAYERSEEINVITE = 231223239;
     public static final int HELP = 45678313;
 
-    public GameStateManager() {
+    //Singleton
+    public static GameStateManager GameStateManager() {
+        if (single_instance == null) {
+            single_instance = new GameStateManager();
+        }
+        return single_instance;
+    }
+
+    private GameStateManager() {
         setState(SPLASH);
     }
 
@@ -52,19 +62,19 @@ public class GameStateManager {
         if (state == GAMEOVER) {
             gameState = new GameOverState(this);
         }
-        if(state == MULTIPLAYERMENU){
+        if (state == MULTIPLAYERMENU) {
             gameState = new MultiplayerMenuState(this);
         }
-        if(state == MULTIPLAYERQUICK){
-            gameState = new MultiplayerGameState(this,"QUICK");
+        if (state == MULTIPLAYERQUICK) {
+            gameState = new MultiplayerGameState(this, "QUICK");
         }
-        if(state == MULTIPLAYERINVITE){
-            gameState = new MultiplayerGameState(this,"INVITE");
+        if (state == MULTIPLAYERINVITE) {
+            gameState = new MultiplayerGameState(this, "INVITE");
         }
-        if(state == MULTIPLAYERSEEINVITE){
-            gameState = new MultiplayerGameState(this,"SEE_INVITATIONS");
+        if (state == MULTIPLAYERSEEINVITE) {
+            gameState = new MultiplayerGameState(this, "SEE_INVITATIONS");
         }
-        if(state == HELP){
+        if (state == HELP) {
             gameState = new HelpState(this);
         }
     }

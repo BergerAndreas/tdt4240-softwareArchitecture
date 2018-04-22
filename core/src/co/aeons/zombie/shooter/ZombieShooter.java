@@ -85,7 +85,7 @@ public class ZombieShooter extends Game {
 //		Load save file
 		Save.load();
 
-		gsm = new GameStateManager();
+		gsm = GameStateManager.GameStateManager();
 	}
 
 	public void render() {

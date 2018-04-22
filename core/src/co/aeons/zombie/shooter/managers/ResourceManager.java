@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ResourceManager {
+
+
     //Zombies
     private static Animation<TextureRegion> zombieRunningAnimation;
     private static  Animation<TextureRegion> zombieAttackAnimation;
@@ -32,6 +34,7 @@ public class ResourceManager {
     private static  Texture pistolTexture;
     private static  Texture shotgunTexture;
     private static Texture healthBar;
+
 
     //Buttons
     // TODO: 4/20/2018 Buttons and powerups
