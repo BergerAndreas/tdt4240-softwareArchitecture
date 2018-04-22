@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.entities.SuperObject;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Bullet extends SuperObject {
 	
@@ -38,7 +39,7 @@ public class Bullet extends SuperObject {
 
 		lifeTimer = 0;
 		lifeTime = 2;
-		bullet = new Sprite(new Texture("weapons/pistol1.png"));
+		bullet = ResourceManager.getBullet();
 		bulletBounds = new Rectangle(this.x, this.y, width, height);
 
 	}

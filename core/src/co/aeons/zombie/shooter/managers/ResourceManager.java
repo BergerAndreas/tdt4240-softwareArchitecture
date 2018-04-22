@@ -22,6 +22,7 @@ public class ResourceManager {
     //Background
     private static  Texture bg;
     //Bullets
+    private static  Sprite bullet;
     private static  Sprite brBullet;
     private static  Sprite shotGunBullet;
     //Wall texture
@@ -30,11 +31,12 @@ public class ResourceManager {
     private static  Texture battleRifleTexture;
     private static  Texture pistolTexture;
     private static  Texture shotgunTexture;
+    private static Texture healthBar;
 
     //Buttons
     // TODO: 4/20/2018 Buttons and powerups
 
-    public static void createZombieRunningAnimation(){
+    private static void createZombieRunningAnimation(){
         //Opens textureAtlas containing enemy spritesheet information
         TextureAtlas runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/pack.atlas"));
         //Fetches all sprites matching keyword 'spoder'
@@ -46,7 +48,7 @@ public class ResourceManager {
                 );
     }
 
-    public static void createZombieAttackAnimation(){
+    private static void createZombieAttackAnimation(){
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/spooder.atlas"));
         zombieAttackAnimation = new Animation<TextureRegion>(
                 0.1f,
@@ -55,7 +57,7 @@ public class ResourceManager {
         );
     }
 
-    public static void createTrumpRunningAnimation(){
+    private static void createTrumpRunningAnimation(){
         TextureAtlas runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/Trump/trump.atlas"));
         trumpRunningAnimation = new Animation<TextureRegion>(
                 0.1f,
@@ -64,7 +66,7 @@ public class ResourceManager {
         );
     }
 
-    public static void createTrumpAttackAnimation(){
+    private static void createTrumpAttackAnimation(){
 //        TODO: Make attack animation (is currently walk animation)
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/Trump/trump.atlas"));
         trumpAttackAnimation = new Animation<TextureRegion>(
@@ -74,7 +76,7 @@ public class ResourceManager {
         );
     }
 
-    public static void createSanicRunningAnimation() {
+    private static void createSanicRunningAnimation() {
         TextureAtlas runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/sanic/sanicrun/sanicrunning.atlas"));
         sanicRunningAnimation = new Animation<TextureRegion>(
                 0.1f,
@@ -83,7 +85,7 @@ public class ResourceManager {
         );
     }
 
-    public static void createSanicAttackAnimation() {
+    private static void createSanicAttackAnimation() {
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/sanic/sanicattack/sanicattack.atlas"));
         sanicAttackAnimation = new Animation<TextureRegion>(
                 0.1f,
@@ -92,36 +94,41 @@ public class ResourceManager {
         );
     }
 
-    public void createPlayerTexture(){
-
+    private static void createPlayerTexture(){
+        playerTexture = new Texture("players/alfyboi.png");
     }
 
-    public void createBg(){
-
+    private static void createBg(){
+        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
     }
 
-    public void createBrBullet(){
-
+    private static void createBullet(){
+        bullet = new Sprite(new Texture("weapons/pistol1.png"));
     }
 
-    public void createShotgunBullet(){
-
+    private static void createBrBullet(){
+        brBullet = new Sprite(new Texture("weapons/assault1.png"));
     }
 
-    public void createWallTexture(){
-
+    private static void createShotgunBullet(){
+        shotGunBullet = new Sprite(new Texture("weapons/shotgun1.png"));
     }
 
-    public void createBattleRifleTexture(){
-
+    private static void createWallTexture(){
+        wallTexture = new Texture("walls/redBrick.jpg");
+        healthBar = new Texture("walls/bar.png");
     }
 
-    public void createPistolTexture(){
-
+    private static void createBattleRifleTexture(){
+        battleRifleTexture = new Texture("weapons/assault1.png");
     }
 
-    public void createShotgunTexture(){
+    private static void createPistolTexture(){
+        pistolTexture = new Texture("weapons/pistol1.png");
+    }
 
+    private static void createShotgunTexture(){
+        shotgunTexture = new Texture("weapons/shotgun1.png");
     }
 
     public static Animation<TextureRegion> getZombieRunningAnimation(){
@@ -148,12 +155,67 @@ public class ResourceManager {
         return sanicAttackAnimation;
     }
 
+    public static Texture getPlayerTexture() {
+        return playerTexture;
+    }
+
+    public static Texture getBg() {
+        return bg;
+    }
+
+    public static Sprite getBrBullet() {
+        return brBullet;
+    }
+
+    public static Sprite getShotGunBullet() {
+        return shotGunBullet;
+    }
+
+    public static Sprite getBullet() {
+        return bullet;
+    }
+
+    public static Texture getWallTexture() {
+        return wallTexture;
+    }
+
+    public static Texture getHealthBar() {
+        return healthBar;
+    }
+
+    public static Texture getBattleRifleTexture() {
+        return battleRifleTexture;
+    }
+
+    public static Texture getPistolTexture() {
+        return pistolTexture;
+    }
+
+    public static Texture getShotgunTexture() {
+        return shotgunTexture;
+    }
+
     public static void init() {
+//        Animations
         createZombieRunningAnimation();
         createZombieAttackAnimation();
         createTrumpRunningAnimation();
         createTrumpAttackAnimation();
         createSanicRunningAnimation();
         createSanicAttackAnimation();
+//        Player
+        createPlayerTexture();
+//        Background
+        createBg();
+//        Wall and health
+        createWallTexture();
+//        Bullets
+        createBrBullet();
+        createBullet();
+        createShotgunBullet();
+//        Weapons
+        createPistolTexture();
+        createShotgunTexture();
+        createBattleRifleTexture();
     }
 }

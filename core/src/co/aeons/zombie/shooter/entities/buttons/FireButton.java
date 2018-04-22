@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class FireButton extends GameButton {
 
-    //Creates the listener interface fo r this button
+    //Creates the listener interface for this button
     private String texturePath = "weapons/pistol1.png";
 
     public FireButton(Rectangle bounds) {

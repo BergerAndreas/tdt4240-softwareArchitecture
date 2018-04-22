@@ -11,6 +11,7 @@ import co.aeons.zombie.shooter.entities.weapons.Pistol;
 import co.aeons.zombie.shooter.entities.weapons.Shotgun;
 import co.aeons.zombie.shooter.entities.weapons.Weapon;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Player extends SuperObject {
 	
@@ -37,9 +38,8 @@ public class Player extends SuperObject {
 		x = 40;
 		y = ZombieShooter.HEIGHT / 2;
 
+		this.playerTexture = ResourceManager.getPlayerTexture();
 
-		this.playerTexture = new Texture("players/alfyboi.png");
-		
 	}
 
 	public void setPosition(float x, float y) {

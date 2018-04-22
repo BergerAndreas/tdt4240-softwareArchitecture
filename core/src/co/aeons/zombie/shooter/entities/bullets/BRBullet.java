@@ -3,13 +3,15 @@ package co.aeons.zombie.shooter.entities.bullets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import co.aeons.zombie.shooter.managers.ResourceManager;
+
 public class BRBullet extends Bullet {
 
     private int i;
     public BRBullet(float x, float y, int i) {
         super(x, y);
         this.i = i;
-        this.bullet = new Sprite(new Texture("weapons/assault1.png"));
+        this.bullet = ResourceManager.getBrBullet();
         this.damage = 7;
     }
 
