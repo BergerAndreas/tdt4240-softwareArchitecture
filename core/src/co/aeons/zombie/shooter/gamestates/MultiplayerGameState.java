@@ -18,6 +18,7 @@ import co.aeons.zombie.shooter.entities.SecondPlayer;
 import co.aeons.zombie.shooter.entities.SinusZombie;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Zombie;
+import co.aeons.zombie.shooter.entities.bullets.BRBullet;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.entities.buttons.DoublePoints;
 import co.aeons.zombie.shooter.entities.buttons.EffectButton;
@@ -353,6 +354,13 @@ public class MultiplayerGameState extends PlayState {
                         Bullet newBullet = new Bullet(bulletX, bulletY);
                         newBullet.setId(bulletID);
                         bullets.add(newBullet);
+                    } else if (bulletType.equals("br")) {
+                        float bulletX = Float.parseFloat(bulletInfo.split(",")[0]);
+                        float bulletY = Float.parseFloat(bulletInfo.split(",")[1]);
+                        String bulletID = bulletInfo.split(",")[2];
+                        Bullet newBullet = new BRBullet(bulletX, bulletY,0);
+                        newBullet.setId(bulletID);
+                        bullets.add(newBullet);
                     }
                 }
                 incomingBulletFlag++;
@@ -460,13 +468,23 @@ public class MultiplayerGameState extends PlayState {
             bulletShotFlag++;
             bulletAPI = bulletShotFlag + "#";
 
-            if (player.getCurrentWeapon().getType().equals("p")) {
+            String currentWeaponType = player.getCurrentWeapon().getType();
+            if (currentWeaponType.equals("p")) {
                 Bullet b = bullets.get(bullets.size() - 1);
                 String bulletID = b.getId();
                 String bulletType = b.getType();
                 float bulletX = b.getx();
                 float bulletY = b.gety();
                 bulletAPI += bulletType + ":" + bulletX + "," + bulletY + "," + bulletID;
+            } else if (currentWeaponType.equals("br")) {
+                for(int i=0;i<3;i++){
+                    Bullet b = bullets.get(bullets.size() - 1 -i);
+                    String bulletID = b.getId();
+                    String bulletType = b.getType();
+                    float bulletX = b.getx();
+                    float bulletY = b.gety();
+                    bulletAPI += bulletType + ":" + bulletX + "," + bulletY + "," + bulletID+";";
+                }
             }
 
             outcomeMessage.setBullets(bulletAPI);
