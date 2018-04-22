@@ -22,7 +22,6 @@ public abstract class GameButton extends Button {
         loadTextureRegion();
     }
 
-    //TODO: Make protected
     public void loadTextureRegion() {
         ButtonStyle style = new ButtonStyle();
         String texture = getTexturePath();

@@ -110,7 +110,6 @@ public class MultiplayerGameState extends PlayState {
 
         incomingBulletFlag = 0;
 
-        //FIXME: Remove
         this.stage = new Stage(gamePort, sb);
         this.effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
         deadZombiesBuffer = new ArrayList<>();
@@ -135,7 +134,6 @@ public class MultiplayerGameState extends PlayState {
 
     @Override
     public void init() {
-        //TODO: Move this to improve multiplayer?
         super.init();
         //Set multiplayer difficulty
         Difficulty.setDifficulty(1);
@@ -188,7 +186,6 @@ public class MultiplayerGameState extends PlayState {
 
                     //Here we start the game
                     updateStart(dt);
-                    //state = GameState.START;
                 }
                 break;
             case CANCEL:
@@ -378,7 +375,6 @@ public class MultiplayerGameState extends PlayState {
                     float y = Float.parseFloat(coordinates.split(",")[1]);
                     String id = coordinates.split(",")[2];
                     if (type.equals("z")) {
-                        //TODO: fix difficulty in multiplayer
                         Zombie newZombie = new Zombie(x, y, Difficulty.getDifficulty());
                         newZombie.setId(id);
                         zombies.add(newZombie);

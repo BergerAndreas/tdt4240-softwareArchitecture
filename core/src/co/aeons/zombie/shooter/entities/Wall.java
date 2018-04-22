@@ -17,7 +17,6 @@ public class Wall extends SuperObject {
 
     public Wall() {
 
-        //TODO: MOVE TO GAME CONSTANTS
         this.x = 75;
         this.y = 0;
         this.width = 50;

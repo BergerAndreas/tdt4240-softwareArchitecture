@@ -66,7 +66,6 @@ public class ResourceManager {
     }
 
     private static void createTrumpAttackAnimation(){
-//        TODO: Make attack animation (is currently walk animation)
         TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/Trump/trump.atlas"));
         trumpAttackAnimation = new Animation<TextureRegion>(
                 0.1f,

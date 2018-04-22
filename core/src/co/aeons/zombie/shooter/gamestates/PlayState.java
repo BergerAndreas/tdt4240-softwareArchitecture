@@ -214,7 +214,6 @@ public class PlayState extends GameState {
             this.stage.addActor(effectButton);
 
             //Reset variables for next spawning
-            //TODO: Change spawndelay range later
             effectButtonIsClicked = false;
             spawnDelay = randInt(10, 20);
             effectButtonSpawnTimer = 0;

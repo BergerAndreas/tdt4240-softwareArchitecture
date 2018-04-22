@@ -11,7 +11,6 @@ public class MultiplayerMessage {
     public final int MASK_CYCLE_WEAPON_UP;
     public final int MASK_CYCLE_WEAPON_DOWN;
     public final int MASK_GAMEFINISHED;
-    //TODO: Clean up unused masks
 
     private int operations;
     private float positionY;
