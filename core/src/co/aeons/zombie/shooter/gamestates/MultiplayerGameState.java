@@ -315,7 +315,7 @@ public class MultiplayerGameState extends PlayState {
             //TODO: Add to get zombies
             clientSpawnZombies(incomeMessage.getZombies());
             clientDeadZombies(incomeMessage.getDeadZombies());
-            //clientDeadBullets(incomeMessage.getDeadBullets());
+            clientDeadBullets(incomeMessage.getDeadBullets());
 
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
@@ -438,7 +438,7 @@ public class MultiplayerGameState extends PlayState {
 
         if (isHost) {
             outcomeMessage.setZombies(zombieAPI);
-            //outcomeMessage.setDeadBullets(deadBullets);
+            outcomeMessage.setDeadBullets(deadBullets);
             outcomeMessage.setDeadZombies(deadZombies);
             //FIXME: Kanskje vi trenger disse
             //deadZombies = "NONE";

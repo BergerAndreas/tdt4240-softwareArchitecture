@@ -19,7 +19,7 @@ public class MultiplayerMessage {
     private String deadZombies;
 
     private String bullets;
-    //private String deadBullets;
+    private String deadBullets;
 
     private int weaponID;
     public MultiplayerMessage() {
@@ -50,6 +50,7 @@ public class MultiplayerMessage {
         zombies = "0#NONE";
         bullets = "0#NONE";
         deadZombies = "NONE";
+        deadBullets = "NONE";
         weaponID = 0;
     }
 
@@ -112,13 +113,17 @@ public class MultiplayerMessage {
             if (!result[4].equals("NONE")) {
                 bullets = result[4];
             }
-            weaponID = Integer.parseInt(result[5]);
+            if (!result[5].equals("NONE")) {
+                deadBullets = result[5];
+                System.out.println(deadBullets);
+            }
+            weaponID = Integer.parseInt(result[6]);
         }
     }
 
     public String getForSendMessage() {
         return positionY + "§" + operations + "§" + zombies + "§" +
-                deadZombies + "§" + bullets+"§"+weaponID;
+                deadZombies + "§" + bullets+"§"+deadBullets+"§"+weaponID;
 
     }
 
@@ -139,4 +144,11 @@ public class MultiplayerMessage {
         return bullets;
     }
 
+    public void setDeadBullets(String deadBullets) {
+        this.deadBullets = deadBullets;
+    }
+
+    public String getDeadBullets() {
+        return deadBullets;
+    }
 }
