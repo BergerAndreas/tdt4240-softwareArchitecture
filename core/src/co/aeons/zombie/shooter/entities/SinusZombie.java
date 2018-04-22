@@ -3,6 +3,9 @@ package co.aeons.zombie.shooter.entities;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.ResourceManager;
+
 public class SinusZombie extends Zombie {
 
     private int d;
@@ -37,6 +40,19 @@ public class SinusZombie extends Zombie {
     }
 
     @Override
+    protected void createIdleAnimation() {
+        this.runningAnimation = ResourceManager.getSanicRunningAnimation();
+        stateTimeRunning = 0f;
+    }
+
+    @Override
+    protected void createAttackAnimation() {
+        this.attackAnimation = ResourceManager.getSanicAttackAnimation();
+        stateTimeRunning = 0f;
+    }
+
+//    Allow running in y-direction
+    @Override
     public void draw(SpriteBatch batch) {
         batch.begin();
         if (!isStopped) {
@@ -46,9 +62,12 @@ public class SinusZombie extends Zombie {
             TextureRegion currentAttackFrame = attackAnimation.getKeyFrame(stateTimeAttacking, true);
             batch.draw(currentAttackFrame, x, f(y), width, height);
         }
-
         batch.end();
     }
 
+    @Override
+    public void deathSound() {
+        Jukebox.play("elite");
+    }
 
 }

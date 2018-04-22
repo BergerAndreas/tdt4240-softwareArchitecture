@@ -56,6 +56,7 @@ public class PlayState extends GameState {
     protected Player player;
     protected ArrayList<Bullet> bullets;
     protected ArrayList<Zombie> zombies;
+
     private Wall wall;
     private long score;
 
@@ -265,6 +266,7 @@ public class PlayState extends GameState {
 
     protected void updateWallHealth() {
         if (wall.getCurrentWallHealth() <= 0) {
+            wall.playSound();
             Jukebox.getIngameMusic().stop();
             Jukebox.playGameoverMusic();
             Save.gd.setTentativeScore(this.getScore());
@@ -300,7 +302,6 @@ public class PlayState extends GameState {
         this.scoreModifier = 1;
     }
 
-
     protected void checkZombieBulletCollision() {
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
@@ -329,7 +330,6 @@ public class PlayState extends GameState {
                 zombie.setStopped(true);
                 wall.takeDamage(zombie.attack());
             }
-
         }
     }
 
@@ -388,7 +388,7 @@ public class PlayState extends GameState {
 //        Wall-health
         String wallHealthOutput = String.format("%d",  (long) this.wall.getCurrentWallHealth());
         this.layout.setText(wallHealthFont, wallHealthOutput);
-        scoreFont.draw(sb, layout, (this.wall.getx() + this.wall.getRectangle().getWidth() + layout.width+10)/2, ZombieShooter.HEIGHT/2 + 15);
+        wallHealthFont.draw(sb, layout, (this.wall.getx() + this.wall.getRectangle().getWidth() + layout.width+10)/2, ZombieShooter.HEIGHT/2 + 15);
 
         fireButton.draw(sb, 1);
         muteButton.draw(sb, 1);
@@ -470,6 +470,10 @@ public class PlayState extends GameState {
         this.effectTimer = effectTimer;
     }
 
+    public Wall getWall() {
+        return wall;
+    }
+
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         //Need to have this or buttons won't work
@@ -535,11 +539,4 @@ public class PlayState extends GameState {
         this.score += score * scoreModifier;
     }
 
-    public void increaseWallHealth(int health) {
-        if( (wall.getCurrentWallHealth() + health > wall.getMaxWallHealth()) ){
-            wall.setCurrentWallHealth(wall.getMaxWallHealth());
-        }else{
-            wall.takeDamage(-health);
-        }
-    }
 }

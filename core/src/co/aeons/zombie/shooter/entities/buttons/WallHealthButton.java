@@ -3,6 +3,7 @@ package co.aeons.zombie.shooter.entities.buttons;
 import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.gamestates.PlayState;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class WallHealthButton extends EffectButton {
     public WallHealthButton(Rectangle bounds) {
@@ -16,12 +17,12 @@ public class WallHealthButton extends EffectButton {
 
     @Override
     public void effect(PlayState playState) {
-        playState.increaseWallHealth(100);
+        playState.getWall().increaseWallHealth(100);
     }
 
     @Override
     public void playSound() {
-
+        Jukebox.play("repair");
     }
 
     @Override
