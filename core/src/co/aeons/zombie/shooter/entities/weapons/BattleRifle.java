@@ -11,14 +11,14 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class BattleRifle extends Weapon {
 
-    public static final float RELOAD_TIME = 2.5f;
+    public static final float RELOAD_TIME = 1.5f;
     private int bulletDelay;
 
     public BattleRifle(float x, float y) {
         super(x, y);
 
         clipSize = 36;
-        fireRate = 0.5f;
+        fireRate = 0.25f;
 
         texturePath = "weapons/assault1.png";
         weaponTexture = new Texture(texturePath);
@@ -42,7 +42,7 @@ public class BattleRifle extends Weapon {
                     Jukebox.play("brReload");
                 }
                 isFired = true;
-                fireRate = 0.5f;
+                fireRate = 0.25f;
             }else reload();
         }
         return output;

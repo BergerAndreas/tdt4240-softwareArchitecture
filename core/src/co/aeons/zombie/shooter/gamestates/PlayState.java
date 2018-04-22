@@ -52,6 +52,7 @@ public class PlayState extends GameState {
 
     //API
     protected String zombieAPI;
+    private int currentZombieFlag;
 
     protected Player player;
     protected ArrayList<Bullet> bullets;
@@ -131,7 +132,8 @@ public class PlayState extends GameState {
         spawnCooldown = 1.0f;
 
         //spawnZombies();
-        zombieAPI = "NONE";
+        currentZombieFlag = 0;
+        zombieAPI = currentZombieFlag +"#NONE";
         zombieSpawnCount = 10;
 
         //Set up variables for powerups
@@ -220,7 +222,8 @@ public class PlayState extends GameState {
     protected void spawnZombie() {
         if (zombieSpawnTimer <= 0) {
             zombieSpawnTimer += 10;
-            zombieAPI = "";
+            currentZombieFlag++;
+            zombieAPI = currentZombieFlag + "#";
             for (int i = 0; i < 5; i++) {
                 if (zombieSpawnCount <= 0) {
                     break;
@@ -239,9 +242,7 @@ public class PlayState extends GameState {
 
             if (zombieSpawnCount <= 0) {
                 level += 2;
-                if (zombieSpawnTimer <= 3000) {
-                    zombieSpawnTimer = 500 * level;
-                }
+                zombieSpawnTimer = 500;
                 zombieSpawnCount += 10 + level;
             }
         }

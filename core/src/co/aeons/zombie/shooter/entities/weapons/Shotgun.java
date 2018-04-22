@@ -10,12 +10,12 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 public class Shotgun extends Weapon{
 
     private int pelletCount;
-    private static final float RELOAD_TIME = 4.0f;
+    private static final float RELOAD_TIME = 1.0f;
 
     public Shotgun(float x, float y) {
         super(x, y);
         clipSize = 4;
-        fireRate = 0.7f;
+        fireRate = 0.3f;
         bullets = new LinkedList<Bullet>();
         pelletCount = 24;
         reload();
@@ -38,7 +38,7 @@ public class Shotgun extends Weapon{
                     Jukebox.play("shotgunReload");
                 }
                 isFired = true;
-                fireRate = 0.7f;
+                fireRate = 0.3f;
             }else reload();
         }
         return output;

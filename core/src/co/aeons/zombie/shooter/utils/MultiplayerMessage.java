@@ -18,7 +18,6 @@ public class MultiplayerMessage {
     private String zombies;
     private String deadBullets;
     private String deadZombies;
-    private String buttonSpawn;
 
     private int weaponID;
     public MultiplayerMessage() {
@@ -46,20 +45,15 @@ public class MultiplayerMessage {
         positionY = 130;//TODO: FIx ZombieShooter.cam.viewportHeight/2;
 
         //Assign NONE to set initial state
-        zombies = "NONE";
+        zombies = "0#NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
-        buttonSpawn = "NONE";
         weaponID = 0;
     }
 
     public void resetOperations() {
         // Operation = 00000
         operations = MASK_NO_OPT;
-        zombies = "NONE";
-        deadBullets = "NONE";
-        deadZombies = "NONE";
-        buttonSpawn = "NONE";
     }
 
     public void setOperation(int i) {
@@ -95,10 +89,6 @@ public class MultiplayerMessage {
         this.deadZombies = deadZombies;
     }
 
-    public void setButtonSpawn(String buttonSpawn) {
-        this.buttonSpawn = buttonSpawn;
-    }
-
     public String getZombies() {
         return this.zombies;
     }
@@ -107,14 +97,12 @@ public class MultiplayerMessage {
         return this.deadZombies;
     }
 
-    public String getButtonSpawn() {
-        return this.buttonSpawn;
-    }
 
 
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
-            String[] result = s.split(";;ANTON;;");
+            String[] result = s.split("§");
+                System.out.println(s);
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
@@ -131,8 +119,8 @@ public class MultiplayerMessage {
     }
 
     public String getForSendMessage() {
-        return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
-                deadZombies + ";;ANTON;;" + deadBullets+";;ANTON;;"+weaponID;
+        return positionY + "§" + operations + "§" + zombies + "§" +
+                deadZombies + "§" + deadBullets+"§"+weaponID;
 
     }
 
@@ -143,5 +131,9 @@ public class MultiplayerMessage {
 
     public int getWeaponId() {
         return this.weaponID;
+    }
+
+    public String getDeadBullets() {
+        return deadBullets;
     }
 }
