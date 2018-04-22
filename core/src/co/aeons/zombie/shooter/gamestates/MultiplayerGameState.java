@@ -69,6 +69,8 @@ public class MultiplayerGameState extends PlayState {
     private float timeToStartGame;
     private float timeToLeftGame;
 
+    private int spawnZombieFlag = 0;
+
     // FirstPlayer powerups
     //TODO: change these to fit with our powerups
     /*
@@ -340,30 +342,35 @@ public class MultiplayerGameState extends PlayState {
     }
 
     private void clientSpawnZombies(String incomingZombies) {
-        if (!incomingZombies.equals("NONE")) {
-            System.out.println(incomingZombies);
-            String[] z = incomingZombies.split(";");
-            for (String s : z) {
-                String type = s.split(":")[0];
-                String coordinates = s.split(":")[1];
-                float x = Float.parseFloat(coordinates.split(",")[0]);
-                float y = Float.parseFloat(coordinates.split(",")[1]);
-                String id = coordinates.split(",")[2];
-                if (type.equals("z")) {
-                    //TODO: fix difficulty in multiplayer
-                    Zombie newZombie = new Zombie(x, y, Difficulty.getDifficulty());
-                    newZombie.setId(id);
-                    zombies.add(newZombie);
-                } else if (type.equals("t")) {
-                    Trump newTrump = new Trump(x, y, Difficulty.getDifficulty());
-                    newTrump.setId(id);
-                    zombies.add(newTrump);
-                } else if (type.equals("s")) {
-                    SinusZombie newSinusZombie = new SinusZombie(x, y, Difficulty.getDifficulty());
-                    newSinusZombie.setId(id);
-                    zombies.add(newSinusZombie);
+        if (Integer.parseInt(incomingZombies.split(";")[0]) > spawnZombieFlag){
+            incomingZombies = incomingZombies.split(";")[1];
+            if (!incomingZombies.equals("NONE")) {
+                System.out.println(incomingZombies);
+                String[] z = incomingZombies.split(";");
+                for (String s : z) {
+                    String type = s.split(":")[0];
+                    String coordinates = s.split(":")[1];
+                    float x = Float.parseFloat(coordinates.split(",")[0]);
+                    float y = Float.parseFloat(coordinates.split(",")[1]);
+                    String id = coordinates.split(",")[2];
+                    if (type.equals("z")) {
+                        //TODO: fix difficulty in multiplayer
+                        Zombie newZombie = new Zombie(x, y, Difficulty.getDifficulty());
+                        newZombie.setId(id);
+                        zombies.add(newZombie);
+                    } else if (type.equals("t")) {
+                        Trump newTrump = new Trump(x, y, Difficulty.getDifficulty());
+                        newTrump.setId(id);
+                        zombies.add(newTrump);
+                    } else if (type.equals("s")) {
+                        SinusZombie newSinusZombie = new SinusZombie(x, y, Difficulty.getDifficulty());
+                        newSinusZombie.setId(id);
+                        zombies.add(newSinusZombie);
+                    }
                 }
             }
+            spawnZombieFlag++;
+
         }
     }
 
