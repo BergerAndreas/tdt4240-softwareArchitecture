@@ -23,6 +23,8 @@ import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
+import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.Save;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
@@ -230,7 +232,7 @@ public class MultiplayerGameState extends PlayState {
             super.player.update(dt);
             super.updatePlayerBullets(dt);
             super.updateZombies(dt);
-            super.updateWallHealth();
+            updateWallHealth();
             secondPlayer.update(dt);
 
         } else {
@@ -288,6 +290,9 @@ public class MultiplayerGameState extends PlayState {
         if (deadZombies.equals("")) {
             deadZombies = "NONE";
         }
+        if (deadBullets.equals("")) {
+            deadBullets = oldDeadBullets;
+        }
 
     }
 
@@ -316,11 +321,20 @@ public class MultiplayerGameState extends PlayState {
             clientSpawnZombies(incomeMessage.getZombies());
             clientDeadZombies(incomeMessage.getDeadZombies());
             clientDeadBullets(incomeMessage.getDeadBullets());
+            super.getWall().setCurrentWallHealth(incomeMessage.getWallHealth());
+            super.setScore(incomeMessage.getScore());
 
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
 
+        if (incomeMessage.checkOperation(incomeMessage.MASK_GAMEFINISHED)) {
+            Save.gd.setTentativeScore(this.getScore());
+            gsm.setState(GameStateManager.GAMEOVER);
+
+        }
         secondPlayerShootBullets(incomeMessage.getBullets());
+
+
         /*
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)) {
             secondPlayer.setWeaponId(incomeMessage.getWeaponId());
@@ -444,6 +458,8 @@ public class MultiplayerGameState extends PlayState {
             //deadZombies = "NONE";
             //deadBullets = "NONE";
             //zombieAPI = "NONE";
+            outcomeMessage.setScore(super.getScore());
+            outcomeMessage.setWallHealth(super.getWall().getCurrentWallHealth());
         }
         outcomeMessage.setWeaponID(player.getWeaponId());
 
@@ -497,6 +513,22 @@ public class MultiplayerGameState extends PlayState {
         }
 
     }
+
+
+    @Override
+    protected void updateWallHealth() {
+        if (super.wall.getCurrentWallHealth() <= 0) {
+            wall.playSound();
+            Jukebox.getIngameMusic().stop();
+            Jukebox.playGameoverMusic();
+            outcomeMessage.setOperation(outcomeMessage.MASK_GAMEFINISHED);
+            ZombieShooter.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
+            Save.gd.setTentativeScore(this.getScore());
+            gsm.setState(GameStateManager.GAMEOVER);
+        }
+    }
+
+
 
     @Override
     public boolean keyDown(int keycode) {
