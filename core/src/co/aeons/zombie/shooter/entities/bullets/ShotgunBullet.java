@@ -1,19 +1,16 @@
 package co.aeons.zombie.shooter.entities.bullets;
 
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import co.aeons.zombie.shooter.managers.ResourceManager;
-import co.aeons.zombie.shooter.utils.utils;
+import co.aeons.zombie.shooter.utils.Utils;
 
 public class ShotgunBullet extends Bullet {
 
     public ShotgunBullet(float x, float y) {
         super(x, y);
         lifeTime = 0.4f;
-        this.speed = utils.randInt(400, 500);
-        this.dy = utils.randInt(-100, 100);
+        this.speed = Utils.randInt(400, 500);
+        this.dy = Utils.randInt(-100, 100);
         this.dx = speed;
         this.bullet = ResourceManager.getShotGunBullet();
         this.damage = 5;

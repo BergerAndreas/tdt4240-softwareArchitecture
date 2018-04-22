@@ -10,7 +10,7 @@ import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
 import co.aeons.zombie.shooter.entities.buttons.NukeButton;
 import co.aeons.zombie.shooter.entities.buttons.WallHealthButton;
-import co.aeons.zombie.shooter.utils.utils;
+import co.aeons.zombie.shooter.utils.Utils;
 
 public class RandomButtonFactory {
 
@@ -29,7 +29,7 @@ public class RandomButtonFactory {
     }
 
     public EffectButton produceRandomEffectButton(){
-        String type = effectButtons.get(utils.randInt(0, effectButtons.size() -1));
+        String type = effectButtons.get(Utils.randInt(0, effectButtons.size() -1));
         Rectangle bounds = this.getNewBounds(this.cam);
 
         if(type.equals("nuke")){
@@ -49,8 +49,8 @@ public class RandomButtonFactory {
 
     private Rectangle getNewBounds(OrthographicCamera cam) {
         Rectangle bound = new Rectangle(
-                utils.randInt(100, (int) cam.viewportWidth - 100),
-                utils.randInt(100, (int) cam.viewportHeight - 100),
+                Utils.randInt(100, (int) cam.viewportWidth - 100),
+                Utils.randInt(100, (int) cam.viewportHeight - 100),
                 cam.viewportWidth / 8,
                 cam.viewportHeight / 6
         );
