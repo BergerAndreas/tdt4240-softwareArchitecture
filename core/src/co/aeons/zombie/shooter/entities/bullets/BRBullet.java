@@ -26,4 +26,8 @@ public class BRBullet extends Bullet {
     public void setX(float x) {
         super.setX(x+i*30);
     }
+
+    public String getType(){
+        return "br";
+    }
 }

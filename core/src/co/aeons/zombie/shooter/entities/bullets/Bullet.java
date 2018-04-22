@@ -82,6 +82,11 @@ public class Bullet extends SuperObject {
 		this.damage = damage;
 	}
 
+
+	public String getType(){
+		return "b";
+	}
+
 }
 
 

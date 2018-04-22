@@ -102,6 +102,9 @@ public class MultiplayerGameState extends PlayState {
     private boolean leaveRoom;
     private EffectButton effectButton;
     private int deadZombiesBufferlength;
+    private int bulletShotFlag;
+    private int incomingBulletFlag;
+    private String bulletAPI;
 
     public MultiplayerGameState(GameStateManager gsm, String option) {
         super(gsm);
@@ -123,6 +126,11 @@ public class MultiplayerGameState extends PlayState {
 
         timeToStartGame = MAX_TIME_TO_START_GAME;
         timeToLeftGame = MAX_TIME_TO_LEFT_GAME;
+        bulletShotFlag = 0;
+        bulletAPI = bulletShotFlag + "#NONE";
+
+
+        incomingBulletFlag = 0;
 
         abandonFirstPlayer = false;
         abandonSecondPlayer = false;
@@ -241,10 +249,6 @@ public class MultiplayerGameState extends PlayState {
         }
 
 
-
-
-
-
         //Act here
     }
 
@@ -281,8 +285,8 @@ public class MultiplayerGameState extends PlayState {
             iterationStart = deadZombiesBuffer.size() - deadZombiesBufferlength;
         }
         deadZombies = "";
-        for(int i = iterationStart;i<deadZombiesBuffer.size();i++){
-            deadZombies+=deadZombiesBuffer.get(i)+",";
+        for (int i = iterationStart; i < deadZombiesBuffer.size(); i++) {
+            deadZombies += deadZombiesBuffer.get(i) + ",";
         }
 
         if (deadZombies.equals("")) {
@@ -298,7 +302,7 @@ public class MultiplayerGameState extends PlayState {
         if (incomeMessage.checkOperation(incomeMessage.MASK_LEAVE)) {
             ZombieShooter.googleServices.leaveRoom();
             gsm.setState(GameStateManager.MENU);
-        }else{
+        } else {
             timeToLeftGame = MAX_TIME_TO_LEFT_GAME;
         }
 
@@ -319,13 +323,41 @@ public class MultiplayerGameState extends PlayState {
 
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
+
+        secondPlayerShootBullets(incomeMessage.getBullets());
+        /*
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)) {
             secondPlayer.setWeaponId(incomeMessage.getWeaponId());
             secondPlayer.shoot();
         }
+        */
         // Reset for next update
         incomeMessage.resetOperations();
 
+
+    }
+
+    private void secondPlayerShootBullets(String incomingBullets) {
+
+        if (Integer.parseInt(incomingBullets.split("#")[0]) > incomingBulletFlag) {
+            incomingBullets = incomingBullets.split("#")[1];
+            if (!incomingBullets.equals("NONE")) {
+                List<String> bulletList = Arrays.asList(incomingBullets.split(";"));
+                for (String b : bulletList) {
+                    String bulletType = b.split(":")[0];
+                    String bulletInfo = b.split(":")[1];
+                    if (bulletType.equals("b")) {
+                        float bulletX = Float.parseFloat(bulletInfo.split(",")[0]);
+                        float bulletY = Float.parseFloat(bulletInfo.split(",")[1]);
+                        String bulletID = bulletInfo.split(",")[2];
+                        Bullet newBullet = new Bullet(bulletX, bulletY);
+                        newBullet.setId(bulletID);
+                        bullets.add(newBullet);
+                    }
+                }
+                incomingBulletFlag++;
+            }
+        }
 
     }
 
@@ -358,7 +390,7 @@ public class MultiplayerGameState extends PlayState {
     }
 
     private void clientSpawnZombies(String incomingZombies) {
-        if (Integer.parseInt(incomingZombies.split("#")[0]) > spawnZombieFlag){
+        if (Integer.parseInt(incomingZombies.split("#")[0]) > spawnZombieFlag) {
             incomingZombies = incomingZombies.split("#")[1];
             if (!incomingZombies.equals("NONE")) {
                 String[] z = incomingZombies.split(";");
@@ -397,7 +429,7 @@ public class MultiplayerGameState extends PlayState {
 
         if (isHost) {
             outcomeMessage.setZombies(zombieAPI);
-            outcomeMessage.setDeadBullets(deadBullets);
+            //outcomeMessage.setDeadBullets(deadBullets);
             outcomeMessage.setDeadZombies(deadZombies);
             //FIXME: Kanskje vi trenger disse
             //deadZombies = "NONE";
@@ -425,15 +457,27 @@ public class MultiplayerGameState extends PlayState {
     @Override
     protected void onFireButtonPressed() {
         if (player.shoot()) {
-            outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
+            bulletShotFlag++;
+            bulletAPI = bulletShotFlag + "#";
+
+            if (player.getCurrentWeapon().getType().equals("p")) {
+                Bullet b = bullets.get(bullets.size() - 1);
+                String bulletID = b.getId();
+                String bulletType = b.getType();
+                float bulletX = b.getx();
+                float bulletY = b.gety();
+                bulletAPI += bulletType + ":" + bulletX + "," + bulletY + "," + bulletID;
+            }
+
+            outcomeMessage.setBullets(bulletAPI);
 
         }
 
     }
 
     @Override
-    public boolean keyDown(int keycode){
-        if(keycode == Input.Keys.BACK){
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.BACK) {
             leaveRoom = true;
             return true;
         }

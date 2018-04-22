@@ -62,4 +62,8 @@ public class Pistol extends Weapon {
        return new Bullet(this.x, this.y);
     }
 
+
+    public String getType(){
+        return "p";
+    }
 }

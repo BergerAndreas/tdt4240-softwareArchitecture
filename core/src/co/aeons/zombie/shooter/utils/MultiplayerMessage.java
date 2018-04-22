@@ -16,8 +16,10 @@ public class MultiplayerMessage {
     private float positionY;
 
     private String zombies;
-    private String deadBullets;
     private String deadZombies;
+
+    private String bullets;
+    //private String deadBullets;
 
     private int weaponID;
     public MultiplayerMessage() {
@@ -46,7 +48,7 @@ public class MultiplayerMessage {
 
         //Assign NONE to set initial state
         zombies = "0#NONE";
-        deadBullets = "NONE";
+        bullets = "0#NONE";
         deadZombies = "NONE";
         weaponID = 0;
     }
@@ -81,9 +83,6 @@ public class MultiplayerMessage {
         this.zombies = zombies;
     }
 
-    public void setDeadBullets(String deadBullets) {
-        this.deadBullets = deadBullets;
-    }
 
     public void setDeadZombies(String deadZombies) {
         this.deadZombies = deadZombies;
@@ -111,7 +110,7 @@ public class MultiplayerMessage {
                 deadZombies = result[3];
             }
             if (!result[4].equals("NONE")) {
-                deadBullets = result[4];
+                bullets = result[4];
             }
             weaponID = Integer.parseInt(result[5]);
         }
@@ -119,7 +118,7 @@ public class MultiplayerMessage {
 
     public String getForSendMessage() {
         return positionY + "§" + operations + "§" + zombies + "§" +
-                deadZombies + "§" + deadBullets+"§"+weaponID;
+                deadZombies + "§" + bullets+"§"+weaponID;
 
     }
 
@@ -132,7 +131,12 @@ public class MultiplayerMessage {
         return this.weaponID;
     }
 
-    public String getDeadBullets() {
-        return deadBullets;
+
+    public void setBullets(String bullets) {
+        this.bullets = bullets;
     }
+    public String getBullets() {
+        return bullets;
+    }
+
 }

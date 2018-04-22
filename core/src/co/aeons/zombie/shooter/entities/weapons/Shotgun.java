@@ -63,4 +63,9 @@ public class Shotgun extends Weapon{
     public Bullet getNewBullet() {
         return new ShotgunBullet(x, y);
     }
+
+
+    public String getType(){
+        return "s";
+    }
 }

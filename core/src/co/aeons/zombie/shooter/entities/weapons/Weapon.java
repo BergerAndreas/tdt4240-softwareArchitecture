@@ -73,4 +73,6 @@ public abstract class Weapon {
     public String getTexturePath() {
         return texturePath;
     }
+
+    public abstract String getType();
 }
