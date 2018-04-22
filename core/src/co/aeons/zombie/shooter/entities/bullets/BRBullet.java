@@ -17,7 +17,8 @@ public class BRBullet extends Bullet {
 
     @Override
     public void update(float dt) {
-        x += dx*dt;bulletBounds.setPosition(x, y);
+        x += dx*dt;
+        bulletBounds.setPosition(x, y);
         lifeTimer += dt;
         if(lifeTimer > lifeTime) {
             remove = true;
@@ -26,6 +27,7 @@ public class BRBullet extends Bullet {
 
     @Override
     public void setX(float x) {
+        // Space out bullets
         super.setX(x+i*30);
     }
 
