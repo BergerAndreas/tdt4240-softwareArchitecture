@@ -127,7 +127,7 @@ public class DifficultyState extends GameState {
         sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
         titleFont.getData().setScale(2,2);
         layout.setText(titleFont, "Difficulty:");
-        titleFont.draw(sb, layout, (cam.viewportWidth - layout.width)/2, cam.viewportHeight - 25);
+        titleFont.draw(sb, layout, (cam.viewportWidth - layout.width)/2, cam.viewportHeight - 10);
         layout.setText(difficultyFont, s);
         difficultyFont.draw(sb, layout, (cam.viewportWidth - layout.width)/2, cam.viewportHeight - 60);
 

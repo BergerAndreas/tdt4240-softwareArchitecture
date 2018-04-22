@@ -13,17 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.GameStateManager;
-import co.aeons.zombie.shooter.managers.Jukebox;
-import co.aeons.zombie.shooter.managers.Save;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
 
 /**
- * Created by Erikkvo on 15-Apr-18.
+ * Created by Erikkvo on 22-Apr-18.
  */
 
-public class HighscoreState extends GameState {
+public class HelpState extends GameState {
 
     private BitmapFont font;
     private GlyphLayout layout;
@@ -33,41 +31,31 @@ public class HighscoreState extends GameState {
     private Stage stage;
     private Texture bg;
 
-    private long[] highscores;
-    private String[] names;
-
-    public HighscoreState(GameStateManager gsm) {
+    public HelpState(GameStateManager gsm) {
         super(gsm);
     }
 
+    @Override
     public void init() {
         sb = new SpriteBatch();
         font = new BitmapFont();
         stage = new Stage(gamePort);
         layout = new GlyphLayout();
-        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
-
-//        Load save file to screen
-        Save.load();
-        highscores = Save.gd.getHighScores();
-        names = Save.gd.getNames();
+        bg = new Texture(Gdx.files.internal("backgrounds/tutorial.png"));
 
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
         Gdx.input.setInputProcessor(this.stage);
         TextButton backButton = new TextButton("Back", skin);
 
-//        Back button takes user to Menu screen
+//        Back button takes user back to Menu screen
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//				Stop gameover music, and start ingame music
-                Jukebox.getGameoverMusic().stop();
-                Jukebox.playIngameMusic();
                 gsm.setState(GameStateManager.MENU);
             }
         });
 
-        backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth()) / 2, 50);
+        backButton.setPosition((ZombieShooter.WIDTH - backButton.getWidth()) / 2, 25);
         stage.addActor(backButton);
     }
 
@@ -81,24 +69,15 @@ public class HighscoreState extends GameState {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
 
-        sb.draw(bg, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
-        String s = "Highscores";
+        String s = "Tutorial";
         font.getData().setScale(2, 2);
         layout.setText(font, s);
         float width = layout.width;
 
-//        Draw highscores on screen
+//        Draw tutorial image on screen
+        sb.draw(bg, 0, 60, ZombieShooter.WIDTH, ZombieShooter.HEIGHT-100);
+//        Draw Tutorial on screen
         font.draw(sb, s, (cam.viewportWidth - width)/2, cam.viewportHeight - 10);
-
-        font.getData().setScale(1, 1);
-        for(int i=0; i<highscores.length; i++){
-            s = String.format("%2d. %-8s %-10s%n", i+1, highscores[i], names[i]);
-//            Sample string for scores to handle width
-            layout.setText(font, "9. 9999 BOBBYBR");
-            float sampleScoreWidth = layout.width;
-            layout.setText(font, s);
-            font.draw(sb, s, (cam.viewportWidth - sampleScoreWidth)/2, cam.viewportHeight - 75 - 20*i);
-        }
 
         sb.end();
         stage.act();

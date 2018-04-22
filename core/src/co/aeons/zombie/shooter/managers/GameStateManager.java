@@ -3,6 +3,7 @@ package co.aeons.zombie.shooter.managers;
 import co.aeons.zombie.shooter.gamestates.DifficultyState;
 import co.aeons.zombie.shooter.gamestates.GameOverState;
 import co.aeons.zombie.shooter.gamestates.GameState;
+import co.aeons.zombie.shooter.gamestates.HelpState;
 import co.aeons.zombie.shooter.gamestates.HighscoreState;
 import co.aeons.zombie.shooter.gamestates.MenuState;
 import co.aeons.zombie.shooter.gamestates.MultiplayerMenuState;
@@ -25,6 +26,7 @@ public class GameStateManager {
     public static final int MULTIPLAYERINVITE = 23847239;
     public static final int MULTIPLAYERQUICK = 238123239;
     public static final int MULTIPLAYERSEEINVITE = 231223239;
+    public static final int HELP = 45678313;
 
     public GameStateManager() {
         setState(SPLASH);
@@ -55,13 +57,15 @@ public class GameStateManager {
         }
         if(state == MULTIPLAYERQUICK){
             gameState = new MultiplayerGameState(this,"QUICK");
-
         }
         if(state == MULTIPLAYERINVITE){
             gameState = new MultiplayerGameState(this,"INVITE");
         }
         if(state == MULTIPLAYERSEEINVITE){
             gameState = new MultiplayerGameState(this,"SEE_INVITATIONS");
+        }
+        if(state == HELP){
+            gameState = new HelpState(this);
         }
     }
 
