@@ -242,7 +242,7 @@ public class PlayState extends GameState {
 
             if (zombieSpawnCount <= 0) {
                 level += 2;
-                zombieSpawnTimer = 250;
+                zombieSpawnTimer = 500;
                 zombieSpawnCount += 10 + level;
             }
         }
