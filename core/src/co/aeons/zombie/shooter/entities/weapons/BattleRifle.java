@@ -75,4 +75,7 @@ public class BattleRifle extends Weapon {
         this.bulletDelay = bulletDelay;
     }
 
+    public String getType(){
+        return "br";
+    }
 }

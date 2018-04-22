@@ -22,7 +22,7 @@ public class RandomZombieFactory {
 
     public Zombie spawnRandomZombie() {
         float x = utils.randInt(ZombieShooter.WIDTH + 10, ZombieShooter.WIDTH + 50);
-        float y = utils.randInt(0, ZombieShooter.HEIGHT - 100);
+        float y = utils.randInt(0, ZombieShooter.HEIGHT - 120);
 
         // TODO: change to be less uniformly random
         String type = zombieTypes.get(utils.randInt(0, zombieTypes.size() - 1));

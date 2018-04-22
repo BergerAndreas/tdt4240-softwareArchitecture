@@ -33,4 +33,9 @@ public class ShotgunBullet extends Bullet {
     }
 
 
+    public String getType(){
+        return "s";
+    }
+
+
 }

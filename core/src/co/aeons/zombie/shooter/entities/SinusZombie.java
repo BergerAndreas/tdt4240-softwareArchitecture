@@ -21,7 +21,7 @@ public class SinusZombie extends Zombie {
     }
 
     private float f(float  y) {
-        return (float) ((d/2)*Math.sin(y*0.5) + (d-50));
+        return (float) ((d/3)*Math.sin(y*0.5) + d);
     }
 
     @Override

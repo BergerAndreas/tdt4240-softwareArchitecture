@@ -18,7 +18,7 @@ public class Shotgun extends Weapon{
         clipSize = 4;
         fireRate = 0.3f;
         bullets = new LinkedList<Bullet>();
-        pelletCount = 24;
+        pelletCount = 12;
         reload();
         isReloading = false;
         texturePath = "weapons/shotgun1.png";
@@ -64,5 +64,10 @@ public class Shotgun extends Weapon{
     @Override
     public Bullet getNewBullet() {
         return new ShotgunBullet(x, y);
+    }
+
+
+    public String getType(){
+        return "s";
     }
 }

@@ -59,7 +59,7 @@ public class PlayState extends GameState {
     protected ArrayList<Bullet> bullets;
     protected ArrayList<Zombie> zombies;
 
-    private Wall wall;
+    protected Wall wall;
     private long score;
 
     //Boundaries
@@ -237,7 +237,6 @@ public class PlayState extends GameState {
                                 currentZombie.getx() + "," +
                                 currentZombie.gety() + "," +
                                 currentZombie.getId() + ";";
-                System.out.println(zombieAPI);
 
                 zombieSpawnCount--;
             }
@@ -541,4 +540,7 @@ public class PlayState extends GameState {
         this.score += score * scoreModifier;
     }
 
+    public void setScore(long score) {
+        this.score = score;
+    }
 }

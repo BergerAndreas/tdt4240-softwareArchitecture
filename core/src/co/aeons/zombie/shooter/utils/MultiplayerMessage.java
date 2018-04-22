@@ -10,16 +10,31 @@ public class MultiplayerMessage {
     public final int MASK_HAS_RECEIVE_DAMAGE;
     public final int MASK_CYCLE_WEAPON_UP;
     public final int MASK_CYCLE_WEAPON_DOWN;
-    public final int MASK_SHIELD;
+    public final int MASK_GAMEFINISHED;
 
     private int operations;
     private float positionY;
 
     private String zombies;
-    private String deadBullets;
     private String deadZombies;
 
+    private String bullets;
+    private String deadBullets;
+
     private int weaponID;
+    private float wallHealth;
+
+
+    private long score;
+
+    public float getWallHealth() {
+        return wallHealth;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
     public MultiplayerMessage() {
         // Códigos que representa en binario :
         // 00000
@@ -35,7 +50,7 @@ public class MultiplayerMessage {
         // 010000
         MASK_HAS_RECEIVE_DAMAGE = 16;
         // 100000
-        MASK_SHIELD = 32;
+        MASK_GAMEFINISHED = 32;
 
         // Al principio no realizan ninguna operación
         operations = MASK_NO_OPT;
@@ -46,9 +61,12 @@ public class MultiplayerMessage {
 
         //Assign NONE to set initial state
         zombies = "0#NONE";
-        deadBullets = "NONE";
+        bullets = "0#NONE";
         deadZombies = "NONE";
+        deadBullets = "NONE";
         weaponID = 0;
+        wallHealth = 0;
+        score = 0;
     }
 
     public void resetOperations() {
@@ -81,9 +99,6 @@ public class MultiplayerMessage {
         this.zombies = zombies;
     }
 
-    public void setDeadBullets(String deadBullets) {
-        this.deadBullets = deadBullets;
-    }
 
     public void setDeadZombies(String deadZombies) {
         this.deadZombies = deadZombies;
@@ -98,13 +113,15 @@ public class MultiplayerMessage {
     }
 
 
-
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
             String[] result = s.split("§");
-                System.out.println(s);
-            positionY = Float.parseFloat(result[0]);
-            operations = Integer.parseInt(result[1]);
+            if(result.length==1){
+                operations = Integer.parseInt(result[0]);
+                return;
+            }
+            operations = Integer.parseInt(result[0]);
+            positionY = Float.parseFloat(result[1]);
             if (!result[2].equals("NONE")) {
                 zombies = result[2];
             }
@@ -112,15 +129,21 @@ public class MultiplayerMessage {
                 deadZombies = result[3];
             }
             if (!result[4].equals("NONE")) {
-                deadBullets = result[4];
+                bullets = result[4];
             }
-            weaponID = Integer.parseInt(result[5]);
+            if (!result[5].equals("NONE")) {
+                deadBullets = result[5];
+            }
+            weaponID = Integer.parseInt(result[6]);
+            wallHealth = Float.parseFloat(result[7]);
+            score = Long.parseLong(result[8]);
         }
     }
 
     public String getForSendMessage() {
-        return positionY + "§" + operations + "§" + zombies + "§" +
-                deadZombies + "§" + deadBullets+"§"+weaponID;
+        return operations+"§"+ positionY + "§" + zombies + "§" +
+                deadZombies + "§" + bullets + "§" + deadBullets + "§"
+                + weaponID + "§" + wallHealth + "§" + score;
 
     }
 
@@ -133,7 +156,28 @@ public class MultiplayerMessage {
         return this.weaponID;
     }
 
+
+    public void setBullets(String bullets) {
+        this.bullets = bullets;
+    }
+
+    public String getBullets() {
+        return bullets;
+    }
+
+    public void setDeadBullets(String deadBullets) {
+        this.deadBullets = deadBullets;
+    }
+
     public String getDeadBullets() {
         return deadBullets;
+    }
+
+    public void setWallHealth(float wallHealth) {
+        this.wallHealth = wallHealth;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
     }
 }
