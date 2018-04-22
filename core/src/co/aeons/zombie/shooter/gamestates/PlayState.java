@@ -236,7 +236,6 @@ public class PlayState extends GameState {
                                 currentZombie.getx() + "," +
                                 currentZombie.gety() + "," +
                                 currentZombie.getId() + ";";
-                System.out.println(zombieAPI);
 
                 zombieSpawnCount--;
             }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
@@ -20,15 +19,11 @@ import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.bullets.BRBullet;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
-import co.aeons.zombie.shooter.entities.buttons.DoublePoints;
 import co.aeons.zombie.shooter.entities.buttons.EffectButton;
 import co.aeons.zombie.shooter.entities.buttons.InstaKill;
-import co.aeons.zombie.shooter.entities.buttons.NukeButton;
-import co.aeons.zombie.shooter.entities.buttons.WallHealthButton;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
-import co.aeons.zombie.shooter.utils.utils;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
@@ -358,9 +353,15 @@ public class MultiplayerGameState extends PlayState {
                         float bulletX = Float.parseFloat(bulletInfo.split(",")[0]);
                         float bulletY = Float.parseFloat(bulletInfo.split(",")[1]);
                         String bulletID = bulletInfo.split(",")[2];
-                        Bullet newBullet = new BRBullet(bulletX, bulletY,0);
+                        Bullet newBullet = new BRBullet(bulletX, bulletY, 0);
                         newBullet.setId(bulletID);
                         bullets.add(newBullet);
+                    } else if (bulletType.equals("s")) {
+                        float bulletY = Float.parseFloat(bulletInfo.split(",")[1]);
+                        secondPlayer.setPosition(secondPlayer.getx(), bulletY);
+                        //2 because shotgun id
+                        secondPlayer.setWeaponId(1);
+                        secondPlayer.shoot();
                     }
                 }
                 incomingBulletFlag++;
@@ -477,14 +478,18 @@ public class MultiplayerGameState extends PlayState {
                 float bulletY = b.gety();
                 bulletAPI += bulletType + ":" + bulletX + "," + bulletY + "," + bulletID;
             } else if (currentWeaponType.equals("br")) {
-                for(int i=0;i<3;i++){
-                    Bullet b = bullets.get(bullets.size() - 1 -i);
+                for (int i = 0; i < 3; i++) {
+                    Bullet b = bullets.get(bullets.size() - 1 - i);
                     String bulletID = b.getId();
                     String bulletType = b.getType();
                     float bulletX = b.getx();
                     float bulletY = b.gety();
-                    bulletAPI += bulletType + ":" + bulletX + "," + bulletY + "," + bulletID+";";
+                    bulletAPI += bulletType + ":" + bulletX + "," + bulletY + "," + bulletID + ";";
                 }
+            } else if (currentWeaponType.equals("s")) {
+                float bulletX = player.getx();
+                float bulletY = player.gety();
+                bulletAPI += currentWeaponType + ":" + bulletX + "," + bulletY;
             }
 
             outcomeMessage.setBullets(bulletAPI);
