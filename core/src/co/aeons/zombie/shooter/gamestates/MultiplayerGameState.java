@@ -342,10 +342,10 @@ public class MultiplayerGameState extends PlayState {
     }
 
     private void clientSpawnZombies(String incomingZombies) {
-        if (Integer.parseInt(incomingZombies.split(";")[0]) > spawnZombieFlag){
-            incomingZombies = incomingZombies.split(";")[1];
+        if (Integer.parseInt(incomingZombies.split("#")[0]) > spawnZombieFlag){
+            incomingZombies = incomingZombies.split("#")[1];
             if (!incomingZombies.equals("NONE")) {
-                System.out.println(incomingZombies);
+                System.out.println("Den fucka printen: "+incomingZombies);
                 String[] z = incomingZombies.split(";");
                 for (String s : z) {
                     String type = s.split(":")[0];
@@ -387,7 +387,7 @@ public class MultiplayerGameState extends PlayState {
             //FIXME: Kanskje vi trenger disse
             //deadZombies = "NONE";
             //deadBullets = "NONE";
-            zombieAPI = "NONE";
+            //zombieAPI = "NONE";
         }
         outcomeMessage.setWeaponID(player.getWeaponId());
 

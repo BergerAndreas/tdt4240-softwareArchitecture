@@ -133,7 +133,7 @@ public class PlayState extends GameState {
 
         //spawnZombies();
         currentZombieFlag = 0;
-        zombieAPI = currentZombieFlag +";NONE";
+        zombieAPI = currentZombieFlag +"#NONE";
         zombieSpawnCount = 10;
 
         //Set up variables for powerups
@@ -222,7 +222,8 @@ public class PlayState extends GameState {
     protected void spawnZombie() {
         if (zombieSpawnTimer <= 0) {
             zombieSpawnTimer += 10;
-            zombieAPI = currentZombieFlag + ";";
+            currentZombieFlag++;
+            zombieAPI = currentZombieFlag + "#";
             for (int i = 0; i < 5; i++) {
                 if (zombieSpawnCount <= 0) {
                     break;
@@ -238,7 +239,6 @@ public class PlayState extends GameState {
 
                 zombieSpawnCount--;
             }
-            currentZombieFlag++;
 
             if (zombieSpawnCount <= 0) {
                 level += 2;

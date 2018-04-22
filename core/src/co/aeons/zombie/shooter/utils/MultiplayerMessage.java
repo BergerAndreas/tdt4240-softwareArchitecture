@@ -46,7 +46,7 @@ public class MultiplayerMessage {
         positionY = 130;//TODO: FIx ZombieShooter.cam.viewportHeight/2;
 
         //Assign NONE to set initial state
-        zombies = "NONE";
+        zombies = "0#NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
         buttonSpawn = "NONE";
@@ -56,7 +56,7 @@ public class MultiplayerMessage {
     public void resetOperations() {
         // Operation = 00000
         operations = MASK_NO_OPT;
-        zombies = "NONE";
+        zombies = "0#NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
         buttonSpawn = "NONE";
