@@ -27,7 +27,7 @@ public class SuperObject {
 
 
     public SuperObject() {
-        this.id = "" + UUID.randomUUID();
+        this.id = UUID.randomUUID().toString().substring(0,8);
     }
 
 

@@ -114,7 +114,7 @@ public class MultiplayerMessage {
 
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
-            String[] result = s.split(";;ANTON;;");
+            String[] result = s.split("§");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
@@ -131,8 +131,8 @@ public class MultiplayerMessage {
     }
 
     public String getForSendMessage() {
-        return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
-                deadZombies + ";;ANTON;;" + deadBullets+";;ANTON;;"+weaponID;
+        return positionY + "§" + operations + "§" + zombies + "§" +
+                deadZombies + "§" + deadBullets+"§"+weaponID;
 
     }
 
@@ -143,5 +143,9 @@ public class MultiplayerMessage {
 
     public int getWeaponId() {
         return this.weaponID;
+    }
+
+    public String getDeadBullets() {
+        return deadBullets;
     }
 }

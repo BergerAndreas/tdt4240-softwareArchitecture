@@ -311,6 +311,19 @@ public class MultiplayerGameState extends PlayState {
 
     }
 
+    private void clientDeadBullets(String deadBullets) {
+        if (!deadBullets.equals("NONE")) {
+            String[] deadBulletsId = deadBullets.split(",");
+            List<String> deadBulletsIdsList = Arrays.asList(deadBulletsId);
+            for (int i = 0; i < bullets.size(); i++) {
+                if (deadBulletsIdsList.contains(bullets.get(i).getId())) {
+                    bullets.remove(i);
+                    i--;
+                }
+            }
+        }
+    }
+
 
     private void clientDeadZombies(String deadZombies) {
         if (!deadZombies.equals("NONE")) {
@@ -328,6 +341,7 @@ public class MultiplayerGameState extends PlayState {
 
     private void clientSpawnZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
+            System.out.println(incomingZombies);
             String[] z = incomingZombies.split(";");
             for (String s : z) {
                 String type = s.split(":")[0];
