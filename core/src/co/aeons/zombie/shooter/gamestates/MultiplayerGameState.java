@@ -162,6 +162,8 @@ public class MultiplayerGameState extends PlayState {
     public void init() {
         //TODO: Move this to improve multiplayer?
         super.init();
+        //Set multiplayer difficulty
+        Difficulty.setDifficulty(1);
         // Create second player
         secondPlayer = new SecondPlayer(super.bullets);
 
@@ -527,7 +529,6 @@ public class MultiplayerGameState extends PlayState {
             gsm.setState(GameStateManager.GAMEOVER);
         }
     }
-
 
 
     @Override
