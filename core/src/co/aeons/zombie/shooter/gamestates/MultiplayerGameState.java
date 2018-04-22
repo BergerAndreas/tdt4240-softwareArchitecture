@@ -1,6 +1,7 @@
 package co.aeons.zombie.shooter.gamestates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -240,16 +241,8 @@ public class MultiplayerGameState extends PlayState {
         }
 
 
-        /*
-        if (timeToLeftGame > 0) {
-            timeToLeftGame -= dt;
-        } else {
-            if (Gdx.input.justTouched()) {
-                ZombieShooter.googleServices.leaveRoom();
-                gsm.setState(GameStateManager.MENU);
-            }
-        }
-        */
+
+
 
 
         //Act here
@@ -301,6 +294,14 @@ public class MultiplayerGameState extends PlayState {
     public void updateIncomeMessage(float dt) {
         //Fetch the input message
         incomeMessage = ZombieShooter.googleServices.receiveGameMessage();
+
+        if (incomeMessage.checkOperation(incomeMessage.MASK_LEAVE)) {
+            ZombieShooter.googleServices.leaveRoom();
+            gsm.setState(GameStateManager.MENU);
+        }else{
+            timeToLeftGame = MAX_TIME_TO_LEFT_GAME;
+        }
+
         //Check if opponent has requested to leave the room
         /*
         TODO:Fix win state
@@ -405,6 +406,11 @@ public class MultiplayerGameState extends PlayState {
         }
         outcomeMessage.setWeaponID(player.getWeaponId());
 
+        if (leaveRoom) {
+            outcomeMessage.setOperation(outcomeMessage.MASK_LEAVE);
+            gsm.setState(GameStateManager.MENU);
+        }
+
         //Finally we send the message
 
 
@@ -423,6 +429,15 @@ public class MultiplayerGameState extends PlayState {
 
         }
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode){
+        if(keycode == Input.Keys.BACK){
+            leaveRoom = true;
+            return true;
+        }
+        return false;
     }
 
 

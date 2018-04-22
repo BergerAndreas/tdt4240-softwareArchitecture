@@ -102,7 +102,6 @@ public class MultiplayerMessage {
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
             String[] result = s.split("§");
-                System.out.println(s);
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
