@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class GameData implements Serializable {
 
+    private static GameData single_instance = null;
     private static final long serialVersionUID = 1;
 
     private final int MAX_SCORES = 10;
@@ -12,9 +13,17 @@ public class GameData implements Serializable {
 
     private long tentativeScore;
 
-    public GameData() {
+
+    private GameData() {
         highScores = new long[MAX_SCORES];
         names = new String[MAX_SCORES];
+    }
+
+    public static GameData GameData() {
+        if (single_instance == null) {
+            single_instance = new GameData();
+        }
+        return single_instance;
     }
 
     // sets up an empty high scores table

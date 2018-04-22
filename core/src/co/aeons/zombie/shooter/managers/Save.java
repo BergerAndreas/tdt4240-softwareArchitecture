@@ -55,7 +55,7 @@ public class Save {
     }
 
     public static void init() {
-        gd = new GameData();
+        gd = GameData.GameData();
         gd.init();
         save();
     }

@@ -16,7 +16,6 @@ public class GameStateManager {
     // current game state
     private GameState gameState;
 
-    private static GameStateManager single_instance = null;
 
     public static final int MENU = 0;
     public static final int PLAY = 893746;
@@ -30,15 +29,8 @@ public class GameStateManager {
     public static final int MULTIPLAYERSEEINVITE = 231223239;
     public static final int HELP = 45678313;
 
-    //Singleton
-    public static GameStateManager GameStateManager() {
-        if (single_instance == null) {
-            single_instance = new GameStateManager();
-        }
-        return single_instance;
-    }
 
-    private GameStateManager() {
+    public GameStateManager() {
         setState(SPLASH);
     }
 
