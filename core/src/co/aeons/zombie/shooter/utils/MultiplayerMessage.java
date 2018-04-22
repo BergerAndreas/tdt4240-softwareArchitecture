@@ -102,11 +102,11 @@ public class MultiplayerMessage {
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
             String[] result = s.split("§");
+                System.out.println(s);
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
                 zombies = result[2];
-                System.out.println(zombies);
             }
             if (!result[3].equals("NONE")) {
                 deadZombies = result[3];

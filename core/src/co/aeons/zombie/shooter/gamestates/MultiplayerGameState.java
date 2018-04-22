@@ -252,6 +252,8 @@ public class MultiplayerGameState extends PlayState {
     @Override
     protected void checkZombieBulletCollision() {
         //To send bullets and zombies to be removed
+        String oldDeadZombies = deadZombies;
+        String oldDeadBullets = deadBullets;
         deadZombies = "";
         deadBullets = "";
 
@@ -276,10 +278,10 @@ public class MultiplayerGameState extends PlayState {
             }
         }
         if (deadZombies.equals("")) {
-            deadZombies = "NONE";
+            deadZombies = oldDeadZombies;
         }
         if (deadBullets.equals("")) {
-            deadBullets = "NONE";
+            deadBullets = oldDeadBullets;
         }
     }
 
