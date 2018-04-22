@@ -25,4 +25,10 @@ public class DoublePoints extends EffectButton {
     public void playSound() {
 
     }
+
+    @Override
+    public String getButtonType() {
+        //Returns d for double points
+        return "d";
+    }
 }

@@ -8,8 +8,8 @@ public class MultiplayerMessage {
     public final int MASK_LEAVE;
     public final int MASK_SHOOT;
     public final int MASK_HAS_RECEIVE_DAMAGE;
-    public final int MASK_REG_LIFE;
-    public final int MASK_BURST;
+    public final int MASK_CYCLE_WEAPON_UP;
+    public final int MASK_CYCLE_WEAPON_DOWN;
     public final int MASK_SHIELD;
 
     private int operations;
@@ -18,7 +18,9 @@ public class MultiplayerMessage {
     private String zombies;
     private String deadBullets;
     private String deadZombies;
+    private String buttonSpawn;
 
+    private int weaponID;
     public MultiplayerMessage() {
         // Códigos que representa en binario :
         // 00000
@@ -28,9 +30,9 @@ public class MultiplayerMessage {
         // 000010
         MASK_SHOOT = 2;
         // 000100
-        MASK_REG_LIFE = 4;
+        MASK_CYCLE_WEAPON_UP = 4;
         // 001000
-        MASK_BURST = 8;
+        MASK_CYCLE_WEAPON_DOWN = 8;
         // 010000
         MASK_HAS_RECEIVE_DAMAGE = 16;
         // 100000
@@ -47,6 +49,8 @@ public class MultiplayerMessage {
         zombies = "NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
+        buttonSpawn = "NONE";
+        weaponID = 0;
     }
 
     public void resetOperations() {
@@ -55,6 +59,7 @@ public class MultiplayerMessage {
         zombies = "NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
+        buttonSpawn = "NONE";
     }
 
     public void setOperation(int i) {
@@ -90,6 +95,10 @@ public class MultiplayerMessage {
         this.deadZombies = deadZombies;
     }
 
+    public void setButtonSpawn(String buttonSpawn) {
+        this.buttonSpawn = buttonSpawn;
+    }
+
     public String getZombies() {
         return this.zombies;
     }
@@ -98,15 +107,18 @@ public class MultiplayerMessage {
         return this.deadZombies;
     }
 
+    public String getButtonSpawn() {
+        return this.buttonSpawn;
+    }
+
 
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
-            String[] result = s.split("$");
+            String[] result = s.split(";;ANTON;;");
             positionY = Float.parseFloat(result[0]);
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
                 zombies = result[2];
-                System.out.println("Zombies: "+zombies);
             }
             if (!result[3].equals("NONE")) {
                 deadZombies = result[3];
@@ -114,18 +126,22 @@ public class MultiplayerMessage {
             if (!result[4].equals("NONE")) {
                 deadBullets = result[4];
             }
+            weaponID = Integer.parseInt(result[5]);
         }
     }
 
     public String getForSendMessage() {
-        if (!zombies.equals("NONE")) {
-            System.out.println(zombies);
-        }
-        System.out.println();
-        return positionY + "$" + operations + "$" + zombies + "$" +
-                deadZombies + "$" + deadBullets;
+        return positionY + ";;ANTON;;" + operations + ";;ANTON;;" + zombies + ";;ANTON;;" +
+                deadZombies + ";;ANTON;;" + deadBullets+";;ANTON;;"+weaponID;
 
     }
 
 
+    public void setWeaponID(int weaponID) {
+        this.weaponID = weaponID;
+    }
+
+    public int getWeaponId() {
+        return this.weaponID;
+    }
 }

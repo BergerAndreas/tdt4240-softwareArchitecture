@@ -23,4 +23,10 @@ public class WallHealthButton extends EffectButton {
     public void playSound() {
 
     }
+
+    @Override
+    public String getButtonType() {
+        //Returns h for health
+        return "h";
+    }
 }

@@ -15,9 +15,9 @@ import co.aeons.zombie.shooter.managers.Jukebox;
 public class Player extends SuperObject {
 	
 	private ArrayList<Bullet> bullets;
-	private ArrayList<Weapon> weapons;
-	private Weapon currentWeapon;
-	private int currentWeaponIndex;
+	protected ArrayList<Weapon> weapons;
+	protected Weapon currentWeapon;
+	protected int currentWeaponIndex;
 
 	private Texture playerTexture;
 
@@ -53,7 +53,7 @@ public class Player extends SuperObject {
 
 	public void prevWeapon() {
 		currentWeaponIndex --;
-		if(currentWeaponIndex < 0 || currentWeaponIndex > weapons.size()) {
+		if(currentWeaponIndex < 0 || currentWeaponIndex >= weapons.size()) {
 			currentWeaponIndex = weapons.size() - 1;
 		}
 		this.currentWeapon = weapons.get(currentWeaponIndex);
@@ -72,6 +72,9 @@ public class Player extends SuperObject {
 			canShoot = true;
 		}
 		return canShoot;
+	}
+	public int getWeaponId(){
+		return currentWeaponIndex;
 	}
 	
 	public void update(float dt) {

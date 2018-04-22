@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -13,12 +14,19 @@ import java.util.List;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.entities.SecondPlayer;
+import co.aeons.zombie.shooter.entities.SinusZombie;
 import co.aeons.zombie.shooter.entities.Trump;
 import co.aeons.zombie.shooter.entities.Zombie;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
+import co.aeons.zombie.shooter.entities.buttons.DoublePoints;
+import co.aeons.zombie.shooter.entities.buttons.EffectButton;
+import co.aeons.zombie.shooter.entities.buttons.InstaKill;
+import co.aeons.zombie.shooter.entities.buttons.NukeButton;
+import co.aeons.zombie.shooter.entities.buttons.WallHealthButton;
 import co.aeons.zombie.shooter.managers.Difficulty;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.utils.MultiplayerMessage;
+import co.aeons.zombie.shooter.utils.utils;
 
 import static co.aeons.zombie.shooter.ZombieShooter.cam;
 import static co.aeons.zombie.shooter.ZombieShooter.gamePort;
@@ -86,6 +94,7 @@ public class MultiplayerGameState extends PlayState {
 
     //Check if the player wants to leave the room or not
     private boolean leaveRoom;
+    private EffectButton effectButton;
 
     public MultiplayerGameState(GameStateManager gsm, String option) {
         super(gsm);
@@ -113,6 +122,7 @@ public class MultiplayerGameState extends PlayState {
 
         //FIXME: Remove
         this.stage = new Stage(gamePort, sb);
+        this.effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
 
         //TODO: Initialize powerups
 
@@ -203,11 +213,10 @@ public class MultiplayerGameState extends PlayState {
             this.checkZombieBulletCollision();
             super.checkZombieWallCollision();
             super.updateTimers(dt);
-            super.zombieSpawnLogic();
+            super.spawnZombie();
             super.player.update(dt);
             super.updatePlayerBullets(dt);
             super.updateZombies(dt);
-            super.spawnEffectButton();
             super.updateWallHealth();
             secondPlayer.update(dt);
 
@@ -277,33 +286,6 @@ public class MultiplayerGameState extends PlayState {
         incomeMessage = ZombieShooter.googleServices.receiveGameMessage();
         //Check if opponent has requested to leave the room
         /*
-        if (incomeMessage.checkOperation(incomeMessage.MASK_LEAVE)) {
-            abandonSecondPlayer = true;
-            //TODO: exit game or something here?
-        }
-        // Petición recibida de disparo
-        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT))
-            System.out.println("Shoot");
-        //rivalShip.shoot();
-        // Petición recibida de powerUp Burst usado
-        if (incomeMessage.checkOperation(incomeMessage.MASK_BURST))
-            System.out.println("burst");
-        //rivalBurstPowerUp.setTouched();
-        // Petición recibida de powerUp Regeneración de Vida usado
-        if (incomeMessage.checkOperation(incomeMessage.MASK_REG_LIFE))
-            System.out.println("life powerup");
-        //rivalRegLifePowerUp.setTouched();
-        // Petición recibida de powerUp Escudo
-        if (incomeMessage.checkOperation(incomeMessage.MASK_SHIELD))
-            System.out.println("Shield powerup");
-        //rivalShieldPoweUp.setTouched();
-        // Petición recibida de recepción de daño
-        if (incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)) {
-            System.out.println("Damage received");
-            //rivalShip.receiveDamage();
-        }
-        */
-        /*
         TODO:Fix win state
         if(rivalShip.isCompletelyDefeated()){
             state = GameState.WIN;
@@ -319,16 +301,16 @@ public class MultiplayerGameState extends PlayState {
 
         }
         secondPlayer.setPosition(secondPlayer.getx(), incomeMessage.getPositionY());
-
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)) {
+            secondPlayer.setWeaponId(incomeMessage.getWeaponId());
             secondPlayer.shoot();
         }
-
         // Reset for next update
         incomeMessage.resetOperations();
 
 
     }
+
 
     private void clientDeadZombies(String deadZombies) {
         if (!deadZombies.equals("NONE")) {
@@ -346,7 +328,6 @@ public class MultiplayerGameState extends PlayState {
 
     private void clientSpawnZombies(String incomingZombies) {
         if (!incomingZombies.equals("NONE")) {
-            System.out.println("Client received"+ zombies);
             String[] z = incomingZombies.split(";");
             for (String s : z) {
                 String type = s.split(":")[0];
@@ -363,9 +344,12 @@ public class MultiplayerGameState extends PlayState {
                     Trump newTrump = new Trump(x, y, Difficulty.getDifficulty());
                     newTrump.setId(id);
                     zombies.add(newTrump);
+                } else if (type.equals("s")) {
+                    SinusZombie newSinusZombie = new SinusZombie(x, y, Difficulty.getDifficulty());
+                    newSinusZombie.setId(id);
+                    zombies.add(newSinusZombie);
                 }
             }
-            System.out.println("Number of zombies"+ zombies.size());
         }
     }
 
@@ -383,10 +367,11 @@ public class MultiplayerGameState extends PlayState {
             //deadZombies = "NONE";
             //deadBullets = "NONE";
             zombieAPI = "NONE";
-
         }
+        outcomeMessage.setWeaponID(player.getWeaponId());
 
         //Finally we send the message
+
 
         ZombieShooter.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
 
@@ -399,11 +384,9 @@ public class MultiplayerGameState extends PlayState {
     @Override
     protected void onFireButtonPressed() {
         if (player.shoot()) {
-
             outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
 
         }
-
 
     }
 
@@ -414,6 +397,9 @@ public class MultiplayerGameState extends PlayState {
             super.draw();
         } else {
             super.draw();
+            super.sb.begin();
+            effectButton.draw(super.sb, 1);
+            super.sb.end();
         }
         sb.setProjectionMatrix(cam.combined);
         //Draw other player

@@ -14,6 +14,7 @@ import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Zombie extends SuperObject {
 	protected boolean isStopped = false;
+	protected String type;
 
 	// Anitmations
 	protected Animation<TextureRegion> runningAnimation;
@@ -45,7 +46,7 @@ public class Zombie extends SuperObject {
 		this.y = y;
 
 		this.damage = 10*difficulty;
-
+		this.type = "z";
 		width = height = 40;
 		speed = MathUtils.random(20, 30);
 		score = 20;
@@ -131,5 +132,13 @@ public class Zombie extends SuperObject {
 
 	public void deathSound() {
 		Jukebox.play("blyat");
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

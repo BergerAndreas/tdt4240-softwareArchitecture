@@ -15,6 +15,9 @@ public class Trump extends Zombie {
         super(x, y, difficulty);
         this.dx = -25;
         this.health = 50;
+
+        setType("t");
+
         this.score = 35;
         width = height = 60;
         bounds = new Rectangle(0, 0, width, height);
