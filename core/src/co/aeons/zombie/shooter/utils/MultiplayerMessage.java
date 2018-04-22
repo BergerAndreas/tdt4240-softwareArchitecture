@@ -116,8 +116,12 @@ public class MultiplayerMessage {
     public void setPropertiesFromMessage(String s) {
         if (!s.isEmpty() || !s.equals("")) {
             String[] result = s.split("§");
-            positionY = Float.parseFloat(result[0]);
-            operations = Integer.parseInt(result[1]);
+            if(result.length==1){
+                operations = Integer.parseInt(result[0]);
+                return;
+            }
+            operations = Integer.parseInt(result[0]);
+            positionY = Float.parseFloat(result[1]);
             if (!result[2].equals("NONE")) {
                 zombies = result[2];
             }
@@ -137,7 +141,7 @@ public class MultiplayerMessage {
     }
 
     public String getForSendMessage() {
-        return positionY + "§" + operations + "§" + zombies + "§" +
+        return operations+"§"+ positionY + "§" + zombies + "§" +
                 deadZombies + "§" + bullets + "§" + deadBullets + "§"
                 + weaponID + "§" + wallHealth + "§" + score;
 

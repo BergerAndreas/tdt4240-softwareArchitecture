@@ -335,4 +335,11 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		participants 			= new ArrayList<Participant>();
 		gameMessage 			= new MultiplayerMessage();
 	}
+
+	@Override
+	protected void onPause(){
+		//do whatever you need to on pause
+		sendGameMessage(1+"§");
+		super.onPause();
+	}
 }

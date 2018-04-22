@@ -175,12 +175,12 @@ public class MultiplayerGameState extends PlayState {
 
         if (!ZombieShooter.googleServices.getMultiplayerState().equals(STARTMULTIPLAYER)) {
             String message = "Connecting to server";
-            this.sb.begin();
+            super.sb.begin();
             infoMessage.getData().setScale(2, 2);
             layout.setText(infoMessage, message);
             float width = layout.width;
-            infoMessage.draw(this.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
-            this.sb.end();
+            infoMessage.draw(super.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
+            super.sb.end();
         }
         updateReady(dt);
 
@@ -195,12 +195,12 @@ public class MultiplayerGameState extends PlayState {
                     String host = ZombieShooter.googleServices.getHostId();
                     String myId = ZombieShooter.googleServices.getMyId();
                     //Inform player how much time is left until we can start the game
-                    this.sb.begin();
+                    super.sb.begin();
                     infoMessage.getData().setScale(2, 2);
                     layout.setText(infoMessage, message);
                     float width = layout.width;
-                    infoMessage.draw(this.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
-                    this.sb.end();
+                    infoMessage.draw(super.sb, message, (cam.viewportWidth - width) / 2, cam.viewportHeight - 25);
+                    super.sb.end();
 
                     if (host.equals(myId)) {
                         this.isHost = true;
