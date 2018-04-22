@@ -18,7 +18,6 @@ public class MultiplayerMessage {
     private String zombies;
     private String deadBullets;
     private String deadZombies;
-    private String buttonSpawn;
 
     private int weaponID;
     public MultiplayerMessage() {
@@ -49,17 +48,12 @@ public class MultiplayerMessage {
         zombies = "0#NONE";
         deadBullets = "NONE";
         deadZombies = "NONE";
-        buttonSpawn = "NONE";
         weaponID = 0;
     }
 
     public void resetOperations() {
         // Operation = 00000
         operations = MASK_NO_OPT;
-        zombies = "0#NONE";
-        deadBullets = "NONE";
-        deadZombies = "NONE";
-        buttonSpawn = "NONE";
     }
 
     public void setOperation(int i) {
@@ -95,10 +89,6 @@ public class MultiplayerMessage {
         this.deadZombies = deadZombies;
     }
 
-    public void setButtonSpawn(String buttonSpawn) {
-        this.buttonSpawn = buttonSpawn;
-    }
-
     public String getZombies() {
         return this.zombies;
     }
@@ -107,9 +97,6 @@ public class MultiplayerMessage {
         return this.deadZombies;
     }
 
-    public String getButtonSpawn() {
-        return this.buttonSpawn;
-    }
 
 
     public void setPropertiesFromMessage(String s) {
@@ -119,6 +106,7 @@ public class MultiplayerMessage {
             operations = Integer.parseInt(result[1]);
             if (!result[2].equals("NONE")) {
                 zombies = result[2];
+                System.out.println(zombies);
             }
             if (!result[3].equals("NONE")) {
                 deadZombies = result[3];

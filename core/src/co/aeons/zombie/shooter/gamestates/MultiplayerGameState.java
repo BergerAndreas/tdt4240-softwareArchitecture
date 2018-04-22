@@ -345,7 +345,6 @@ public class MultiplayerGameState extends PlayState {
         if (Integer.parseInt(incomingZombies.split("#")[0]) > spawnZombieFlag){
             incomingZombies = incomingZombies.split("#")[1];
             if (!incomingZombies.equals("NONE")) {
-                System.out.println("Den fucka printen: "+incomingZombies);
                 String[] z = incomingZombies.split(";");
                 for (String s : z) {
                     String type = s.split(":")[0];
