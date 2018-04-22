@@ -132,6 +132,7 @@ public class PlayState extends GameState {
         level = 1;
         zombieSpawnTimer = 100;
         spawnCooldown = 1.0f;
+        effectButtonSpawnTimer = 0;
 
         //spawnZombies();
         currentZombieFlag = 0;
@@ -139,7 +140,7 @@ public class PlayState extends GameState {
         zombieSpawnCount = 10;
 
         //Set up variables for powerups
-        spawnDelay = randInt(0, 10);
+        spawnDelay = randInt(10, 20);
         effectButtonIsClicked = true;
         damageModifier = 1;
         effectTimer = 0;
@@ -216,7 +217,7 @@ public class PlayState extends GameState {
             //Reset variables for next spawning
             //TODO: Change spawndelay range later
             effectButtonIsClicked = false;
-            spawnDelay = randInt(0, 10);
+            spawnDelay = randInt(10, 20);
             effectButtonSpawnTimer = 0;
         }
     }
