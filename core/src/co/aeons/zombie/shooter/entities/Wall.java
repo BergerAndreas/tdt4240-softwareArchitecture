@@ -3,8 +3,10 @@ package co.aeons.zombie.shooter.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.sun.crypto.provider.JceKeyStore;
 
 import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class Wall extends SuperObject {
 
@@ -49,6 +51,14 @@ public class Wall extends SuperObject {
         this.currentWallHealth = currentWallHealth;
     }
 
+    public void increaseWallHealth(int health) {
+        if( (getCurrentWallHealth() + health > getMaxWallHealth()) ){
+            setCurrentWallHealth(getMaxWallHealth());
+        }else{
+            takeDamage(-health);
+        }
+    }
+
     public Texture getBar() {
         return bar;
     }
@@ -59,6 +69,10 @@ public class Wall extends SuperObject {
 
     public int getWidth(){
         return width;
+    }
+
+    public void playSound(){
+        Jukebox.play("wilhelm");
     }
 
 }

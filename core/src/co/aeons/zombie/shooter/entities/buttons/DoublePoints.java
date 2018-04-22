@@ -3,6 +3,7 @@ package co.aeons.zombie.shooter.entities.buttons;
 import com.badlogic.gdx.math.Rectangle;
 
 import co.aeons.zombie.shooter.gamestates.PlayState;
+import co.aeons.zombie.shooter.managers.Jukebox;
 
 public class DoublePoints extends EffectButton {
 
@@ -23,7 +24,7 @@ public class DoublePoints extends EffectButton {
 
     @Override
     public void playSound() {
-
+        Jukebox.play("quickMafs");
     }
 
     @Override

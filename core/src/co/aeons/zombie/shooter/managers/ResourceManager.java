@@ -14,18 +14,18 @@ public class ResourceManager {
     //Trump
     private static Animation<TextureRegion> trumpRunningAnimation;
     private static  Animation<TextureRegion> trumpAttackAnimation;
+    //Sanic
+    private static Animation<TextureRegion> sanicRunningAnimation;
+    private static  Animation<TextureRegion> sanicAttackAnimation;
     //Player texture
     private static  Texture playerTexture;
     //Background
     private static  Texture bg;
-
     //Bullets
     private static  Sprite brBullet;
     private static  Sprite shotGunBullet;
-
     //Wall texture
     private static Texture wallTexture;
-
     //Weapons
     private static  Texture battleRifleTexture;
     private static  Texture pistolTexture;
@@ -37,14 +37,13 @@ public class ResourceManager {
     public static void createZombieRunningAnimation(){
         //Opens textureAtlas containing enemy spritesheet information
         TextureAtlas runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/pack.atlas"));
-        //Fetches all sprites matchin keyword 'spoder'
+        //Fetches all sprites matching keyword 'spoder'
         zombieRunningAnimation =
                 new Animation<TextureRegion>(
                         0.1f,
                         runningAtlas.findRegions("enemies/spoder"),
                         Animation.PlayMode.LOOP
                 );
-
     }
 
     public static void createZombieAttackAnimation(){
@@ -71,6 +70,24 @@ public class ResourceManager {
         trumpAttackAnimation = new Animation<TextureRegion>(
                 0.1f,
                 attackAtlas.findRegions("trump_walk"),
+                Animation.PlayMode.LOOP
+        );
+    }
+
+    public static void createSanicRunningAnimation() {
+        TextureAtlas runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/sanic/sanicrun/sanicrunning.atlas"));
+        sanicRunningAnimation = new Animation<TextureRegion>(
+                0.1f,
+                runningAtlas.findRegions("sanicRun"),
+                Animation.PlayMode.LOOP
+        );
+    }
+
+    public static void createSanicAttackAnimation() {
+        TextureAtlas attackAtlas = new TextureAtlas(Gdx.files.internal("enemies/sanic/sanicattack/sanicattack.atlas"));
+        sanicAttackAnimation = new Animation<TextureRegion>(
+                0.1f,
+                attackAtlas.findRegions("sanicAttack"),
                 Animation.PlayMode.LOOP
         );
     }
@@ -123,10 +140,20 @@ public class ResourceManager {
         return trumpAttackAnimation;
     }
 
+    public static Animation<TextureRegion> getSanicRunningAnimation(){
+        return sanicRunningAnimation;
+    }
+
+    public static Animation<TextureRegion> getSanicAttackAnimation(){
+        return sanicAttackAnimation;
+    }
+
     public static void init() {
         createZombieRunningAnimation();
         createZombieAttackAnimation();
         createTrumpRunningAnimation();
         createTrumpAttackAnimation();
+        createSanicRunningAnimation();
+        createSanicAttackAnimation();
     }
 }

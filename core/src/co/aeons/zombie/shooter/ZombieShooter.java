@@ -60,8 +60,9 @@ public class ZombieShooter extends Game {
 		Jukebox.load("sounds/gameover.mp3", "gameover");
 		Jukebox.load("sounds/Gunshot.mp3", "gunshot");
 		Jukebox.load("sounds/ZombieHitSound.mp3", "zombieHit");
-		Jukebox.load("sounds/Powerup.mp3", "powerup");
+		Jukebox.load("sounds/deezNuts.mp3", "deezNuts");
 		Jukebox.load("sounds/elite.mp3", "elite");
+		Jukebox.load("sounds/wort.mp3", "wort");
 		Jukebox.load("sounds/blyat.mp3", "blyat");
 		Jukebox.load("sounds/drrr.mp3", "drrr");
 		Jukebox.load("sounds/pom.mp3", "pom");
@@ -74,6 +75,9 @@ public class ZombieShooter extends Game {
 		Jukebox.load("sounds/brReload.wav", "brReload");
 		Jukebox.load("sounds/shotgunReload.wav", "shotgunReload");
 		Jukebox.load("sounds/china.mp3", "china");
+		Jukebox.load("sounds/doublePoints.mp3", "doublePoints");
+		Jukebox.load("sounds/repair.mp3", "repair");
+		Jukebox.load("sounds/wilhelm.mp3", "wilhelm");
 
 		//		Initialize background music
 		Jukebox.playIngameMusic();

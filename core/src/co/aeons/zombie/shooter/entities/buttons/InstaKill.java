@@ -27,7 +27,7 @@ public class InstaKill extends EffectButton {
 
     @Override
     public void playSound() {
-        Jukebox.play("quickMafs");
+        Jukebox.play("deezNuts");
     }
 
     @Override
