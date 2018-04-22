@@ -42,6 +42,9 @@ public class MultiplayerGameState extends PlayState {
     //Check if we're host
     boolean isHost;
 
+    //Dead zombie buffer used to sync dead zombies
+    private ArrayList<String> deadZombiesBuffer;
+
     //Max time before the game will start
     private final float MAX_TIME_TO_START_GAME = 5f;
     // Max time to leave the game before it'll start
@@ -97,6 +100,7 @@ public class MultiplayerGameState extends PlayState {
     //Check if the player wants to leave the room or not
     private boolean leaveRoom;
     private EffectButton effectButton;
+    private int deadZombiesBufferlength;
 
     public MultiplayerGameState(GameStateManager gsm, String option) {
         super(gsm);
@@ -125,6 +129,8 @@ public class MultiplayerGameState extends PlayState {
         //FIXME: Remove
         this.stage = new Stage(gamePort, sb);
         this.effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
+        deadZombiesBuffer = new ArrayList<>();
+        deadZombiesBufferlength = 8;
 
         //TODO: Initialize powerups
 
@@ -252,7 +258,6 @@ public class MultiplayerGameState extends PlayState {
     @Override
     protected void checkZombieBulletCollision() {
         //To send bullets and zombies to be removed
-        String oldDeadZombies = deadZombies;
         String oldDeadBullets = deadBullets;
         deadZombies = "";
         deadBullets = "";
@@ -269,6 +274,7 @@ public class MultiplayerGameState extends PlayState {
                     if (a.getHealth() <= 0) {
                         a.deathSound();
                         deadZombies += a.getId() + ",";
+                        deadZombiesBuffer.add(a.getId());
                         zombies.remove(j);
                         j--;
                         this.incrementScore(a.getScore());
@@ -277,12 +283,18 @@ public class MultiplayerGameState extends PlayState {
                 }
             }
         }
+        int iterationStart = 0;
+        if (deadZombiesBuffer.size() - deadZombiesBufferlength >= 0) {
+            iterationStart = deadZombiesBuffer.size() - deadZombiesBufferlength;
+        }
+        deadZombies = "";
+        for(int i = iterationStart;i<deadZombiesBuffer.size();i++){
+            deadZombies+=deadZombiesBuffer.get(i)+",";
+        }
         if (deadZombies.equals("")) {
-            deadZombies = oldDeadZombies;
+            deadZombies = "NONE";
         }
-        if (deadBullets.equals("")) {
-            deadBullets = oldDeadBullets;
-        }
+
     }
 
     public void updateIncomeMessage(float dt) {
