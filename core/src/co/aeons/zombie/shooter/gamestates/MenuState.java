@@ -60,6 +60,7 @@ public class MenuState extends GameState {
         TextButton multiplayerButton = new TextButton("Multiplayer", skin);
         TextButton highscoreButton = new TextButton("Highscore", skin);
         TextButton difficultyButton = new TextButton("Difficulty", skin);
+        TextButton tutorialButton = new TextButton("Tutorial", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         //Add listeners to buttons
@@ -88,6 +89,12 @@ public class MenuState extends GameState {
                 gsm.setState(GameStateManager.DIFFICULTY);
             }
         });
+        tutorialButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gsm.setState(GameStateManager.HELP);
+            }
+        });
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -101,6 +108,8 @@ public class MenuState extends GameState {
         mainTable.add(multiplayerButton).width(150).pad(5);
         mainTable.row();
         mainTable.add(difficultyButton).width(150).pad(5);
+        mainTable.row();
+        mainTable.add(tutorialButton).width(150).pad(5);
         mainTable.row();
         mainTable.add(highscoreButton).width(150).pad(5);
         exitButton.setPosition((cam.viewportWidth - exitButton.getWidth())/2, 50);
