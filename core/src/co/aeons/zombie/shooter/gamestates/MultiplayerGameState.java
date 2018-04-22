@@ -291,6 +291,7 @@ public class MultiplayerGameState extends PlayState {
         for(int i = iterationStart;i<deadZombiesBuffer.size();i++){
             deadZombies+=deadZombiesBuffer.get(i)+",";
         }
+
         if (deadZombies.equals("")) {
             deadZombies = "NONE";
         }
