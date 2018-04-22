@@ -12,11 +12,12 @@ public class Shotgun extends Weapon{
 
     private int pelletCount;
     private static final float RELOAD_TIME = 1.0f;
-
+    private static final float FIRE_RATE = 0.3f;
+    
     public Shotgun(float x, float y) {
         super(x, y);
         clipSize = 4;
-        fireRate = 0.3f;
+        fireRate = FIRE_RATE;
         bullets = new LinkedList<Bullet>();
         pelletCount = 12;
         reload();
@@ -40,7 +41,7 @@ public class Shotgun extends Weapon{
                     Jukebox.play("shotgunReload");
                 }
                 isFired = true;
-                fireRate = 0.3f;
+                fireRate = FIRE_RATE;
             }else reload();
         }
         return output;

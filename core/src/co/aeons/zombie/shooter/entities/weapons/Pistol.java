@@ -12,11 +12,12 @@ import co.aeons.zombie.shooter.managers.ResourceManager;
 public class Pistol extends Weapon {
 
     private static final float RELOAD_TIME = 0.3f;
+    private static final float FIRE_RATE = 0.01f;
 
     public Pistol(float x, float y) {
         super(x, y);
         clipSize = 20;
-        fireRate = 0.01f;
+        fireRate = FIRE_RATE;
 
         texturePath = "weapons/pistol1.png";
         weaponTexture = ResourceManager.getPistolTexture();
@@ -32,7 +33,7 @@ public class Pistol extends Weapon {
             if(!bullets.isEmpty()) {
                 output.add(bullets.poll());
                 isFired = true;
-                fireRate = 0.01f;
+                fireRate = FIRE_RATE;
                 playSound();
                 if (bullets.isEmpty()) {
                     reload();
