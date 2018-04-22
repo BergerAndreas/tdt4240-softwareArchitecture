@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import co.aeons.zombie.shooter.entities.bullets.BRBullet;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class BattleRifle extends Weapon {
 
@@ -21,7 +22,7 @@ public class BattleRifle extends Weapon {
         fireRate = 0.25f;
 
         texturePath = "weapons/assault1.png";
-        weaponTexture = new Texture(texturePath);
+        weaponTexture = ResourceManager.getBattleRifleTexture();
         bullets = new LinkedList<Bullet>();
         reload();
         isReloading = false;

@@ -30,6 +30,7 @@ import co.aeons.zombie.shooter.factories.RandomButtonFactory;
 import co.aeons.zombie.shooter.factories.RandomZombieFactory;
 import co.aeons.zombie.shooter.managers.GameStateManager;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 import co.aeons.zombie.shooter.managers.Save;
 import co.aeons.zombie.shooter.utils.FrameRate;
 
@@ -115,7 +116,7 @@ public class PlayState extends GameState {
         wallHealthFont = new BitmapFont();
         magazineFont = new BitmapFont();
         layout = new GlyphLayout();
-        bg = new Texture(Gdx.files.internal("backgrounds/grasspath2.jpg"));
+        bg = ResourceManager.getBg();
         framerate = new FrameRate();
 
         //sets up camera

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import co.aeons.zombie.shooter.entities.bullets.Bullet;
 import co.aeons.zombie.shooter.entities.bullets.ShotgunBullet;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Shotgun extends Weapon{
 
@@ -21,6 +22,7 @@ public class Shotgun extends Weapon{
         reload();
         isReloading = false;
         texturePath = "weapons/shotgun1.png";
+        weaponTexture = ResourceManager.getShotgunTexture();
     }
 
     @Override

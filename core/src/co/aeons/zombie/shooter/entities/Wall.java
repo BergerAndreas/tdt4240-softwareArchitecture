@@ -7,6 +7,7 @@ import com.sun.crypto.provider.JceKeyStore;
 
 import co.aeons.zombie.shooter.ZombieShooter;
 import co.aeons.zombie.shooter.managers.Jukebox;
+import co.aeons.zombie.shooter.managers.ResourceManager;
 
 public class Wall extends SuperObject {
 
@@ -26,10 +27,10 @@ public class Wall extends SuperObject {
 
         this.bounds = new Rectangle(x,y,width,height);
 
-        this.wallTexture = new Texture("walls/redBrick.jpg");
+        this.wallTexture = ResourceManager.getWallTexture();
+        this.bar = ResourceManager.getHealthBar();
         this.maxWallHealth = 500;
         this.currentWallHealth = maxWallHealth;
-        this.bar = new Texture("walls/bar.png");
     }
 
     public void draw(SpriteBatch batch) {
