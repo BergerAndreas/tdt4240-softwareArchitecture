@@ -45,7 +45,6 @@ public class RandomButtonFactory {
             return new WallHealthButton(bounds);
         }
         return null;
-
     }
 
     private Rectangle getNewBounds(OrthographicCamera cam) {

@@ -404,7 +404,6 @@ public class PlayState extends GameState {
         this.stage.act();
         this.stage.draw();
         framerate.render();
-
     }
 
     public void dispose() {
@@ -519,7 +518,6 @@ public class PlayState extends GameState {
             player.setPosition(player.getx(), tmpVec2.y);
         }
         return true;
-
     }
 
     @Override

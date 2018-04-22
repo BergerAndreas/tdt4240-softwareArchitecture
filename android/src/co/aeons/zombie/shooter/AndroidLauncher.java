@@ -30,6 +30,9 @@ import co.aeons.zombie.shooter.utils.enums.MultiplayerState;
 import java.util.ArrayList;
 import java.util.Collections;
 
+// Code from https://www.programcreek.com/java-api-examples/?code=SpaceGame-ETSII%2Fspacegame%2Fspacegame-master%2Fandroid%2Fsrc%2Fcom%2Ftfg%2Fspacegame%2Fandroid%2FAndroidLauncher.java
+// This shit bang, ok?
+
 public class AndroidLauncher extends AndroidApplication implements IGoogleServices {
 
 	private final static int REQUEST_CODE_UNUSED = 9002;

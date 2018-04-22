@@ -24,7 +24,6 @@ public class RandomZombieFactory {
         float x = utils.randInt(ZombieShooter.WIDTH + 10, ZombieShooter.WIDTH + 50);
         float y = utils.randInt(0, ZombieShooter.HEIGHT - 120);
 
-        // TODO: change to be less uniformly random
         String type = zombieTypes.get(utils.randInt(0, zombieTypes.size() - 1));
 
         if (type.equals("basic")) {

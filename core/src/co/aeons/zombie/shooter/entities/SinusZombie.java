@@ -17,7 +17,6 @@ public class SinusZombie extends Zombie {
         this.dy = 4;
         this.d = (int) y;
         setType("s");
-
     }
 
     private float f(float  y) {

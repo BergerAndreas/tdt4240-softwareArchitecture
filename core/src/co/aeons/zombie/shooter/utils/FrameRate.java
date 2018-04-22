@@ -7,12 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 
-/**
- * A nicer class for showing framerate that doesn't spam the console
- * like Logger.log()
- *
- * @author William Hartman
- */
 public class FrameRate implements Disposable{
     long lastTimeCounted;
     private float sinceChange;

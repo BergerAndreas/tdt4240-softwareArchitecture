@@ -39,7 +39,6 @@ public class Player extends SuperObject {
 		y = ZombieShooter.HEIGHT / 2;
 
 		this.playerTexture = ResourceManager.getPlayerTexture();
-
 	}
 
 	public void setPosition(float x, float y) {

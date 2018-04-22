@@ -56,7 +56,6 @@ public class MultiplayerGameState extends PlayState {
     private final int TIMES_TO_SEND_SAME_OPERATION = 5;
 
     // Number of times we have sent the operation
-    //TODO: change variable name to fit with our game
     private int times_sended_receive_damage_operation;
 
     //Information message to show to the user
@@ -72,25 +71,6 @@ public class MultiplayerGameState extends PlayState {
     private float timeToLeftGame;
 
     private int spawnZombieFlag = 0;
-
-    // FirstPlayer powerups
-    //TODO: change these to fit with our powerups
-    /*
-    public static BurstPowerUp playerBurstPowerUp;
-    private static RegLifePowerUp playerRegLifePowerUp;
-    private static ShieldPowerUp playerShieldPowerUp;
-
-    //SecondPlayer powerups
-    public static BurstPowerUp rivalBurstPowerUp;
-    private static RegLifePowerUp rivalRegLifePowerUp;
-    private static ShieldPowerUp rivalShieldPoweUp;
-    */
-
-    // To know if the FirstPlayer left the game
-    private boolean abandonFirstPlayer;
-
-    // To know if the SecondPlayer left the game
-    private boolean abandonSecondPlayer;
 
     //Game input and output messages
     private MultiplayerMessage outcomeMessage;
@@ -130,16 +110,11 @@ public class MultiplayerGameState extends PlayState {
 
         incomingBulletFlag = 0;
 
-        abandonFirstPlayer = false;
-        abandonSecondPlayer = false;
-
         //FIXME: Remove
         this.stage = new Stage(gamePort, sb);
         this.effectButton = new InstaKill(new Rectangle(0, 0, 0, 0));
         deadZombiesBuffer = new ArrayList<>();
         deadZombiesBufferlength = 8;
-
-        //TODO: Initialize powerups
 
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
@@ -244,12 +219,7 @@ public class MultiplayerGameState extends PlayState {
             super.updatePlayerBullets(dt);
             super.updateZombies(dt);
             secondPlayer.update(dt);
-
-
         }
-
-
-        //Act here
     }
 
     @Override
@@ -309,17 +279,8 @@ public class MultiplayerGameState extends PlayState {
             timeToLeftGame = MAX_TIME_TO_LEFT_GAME;
         }
 
-        //Check if opponent has requested to leave the room
-        /*
-        TODO:Fix win state
-        if(rivalShip.isCompletelyDefeated()){
-            state = GameState.WIN;
-        }
-        */
         //Update logic of the rival
-        //rivalShip.update(delta,incomeMessage.getPositionY());
         if (!isHost) {
-            //TODO: Add to get zombies
             clientSpawnZombies(incomeMessage.getZombies());
             clientDeadZombies(incomeMessage.getDeadZombies());
             clientDeadBullets(incomeMessage.getDeadBullets());
@@ -336,17 +297,8 @@ public class MultiplayerGameState extends PlayState {
         }
         secondPlayerShootBullets(incomeMessage.getBullets());
 
-
-        /*
-        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT)) {
-            secondPlayer.setWeaponId(incomeMessage.getWeaponId());
-            secondPlayer.shoot();
-        }
-        */
         // Reset for next update
         incomeMessage.resetOperations();
-
-
     }
 
     private void secondPlayerShootBullets(String incomingBullets) {
@@ -448,18 +400,12 @@ public class MultiplayerGameState extends PlayState {
 
     public void updateOutComeMessage(float dt) {
         //Update outcome message
-        //Vector2 tmpVec = new Vector2();
-        //stage.getViewport().unproject(tmpVec.set(Gdx.input.getX(), Gdx.input.getY()));
         outcomeMessage.setPositionY(player.gety());
 
         if (isHost) {
             outcomeMessage.setZombies(zombieAPI);
             outcomeMessage.setDeadBullets(deadBullets);
             outcomeMessage.setDeadZombies(deadZombies);
-            //FIXME: Kanskje vi trenger disse
-            //deadZombies = "NONE";
-            //deadBullets = "NONE";
-            //zombieAPI = "NONE";
             outcomeMessage.setScore(super.getScore());
             outcomeMessage.setWallHealth(super.getWall().getCurrentWallHealth());
         }
@@ -470,15 +416,11 @@ public class MultiplayerGameState extends PlayState {
             gsm.setState(GameStateManager.MENU);
         }
 
-        //Finally we send the message
-
-
+        //Send the message
         ZombieShooter.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
 
         //We reset the operations so as not to interfere in the next interaction
         outcomeMessage.resetOperations();
-
-
     }
 
     @Override
@@ -511,11 +453,8 @@ public class MultiplayerGameState extends PlayState {
             }
 
             outcomeMessage.setBullets(bulletAPI);
-
         }
-
     }
-
 
     @Override
     protected void updateWallHealth() {
@@ -530,7 +469,6 @@ public class MultiplayerGameState extends PlayState {
         }
     }
 
-
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.BACK) {
@@ -539,7 +477,6 @@ public class MultiplayerGameState extends PlayState {
         }
         return false;
     }
-
 
     @Override
     public void draw() {
@@ -553,10 +490,8 @@ public class MultiplayerGameState extends PlayState {
         }
         sb.setProjectionMatrix(cam.combined);
         //Draw other player
-        //TODO: Move second player to super spritebatch?
         secondPlayer.draw(sb);
     }
-
 
     @Override
     public void dispose() {

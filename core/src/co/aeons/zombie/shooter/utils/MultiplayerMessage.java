@@ -37,7 +37,6 @@ public class MultiplayerMessage {
     }
 
     public MultiplayerMessage() {
-        // Códigos que representa en binario :
         // 00000
         MASK_NO_OPT = 0;
         // 000001
@@ -53,12 +52,9 @@ public class MultiplayerMessage {
         // 100000
         MASK_GAMEFINISHED = 32;
 
-        // Al principio no realizan ninguna operación
         operations = MASK_NO_OPT;
 
-        // Al principio la posición inicial es la mitad de la altura
-        // TODO Esto deben de recogerlo de cada clase, no puesto aqui
-        positionY = 130;//TODO: FIx ZombieShooter.cam.viewportHeight/2;
+        positionY = 130;
 
         //Assign NONE to set initial state
         zombies = "0#NONE";
@@ -147,7 +143,6 @@ public class MultiplayerMessage {
                 + weaponID + "§" + wallHealth + "§" + score;
 
     }
-
 
     public void setWeaponID(int weaponID) {
         this.weaponID = weaponID;

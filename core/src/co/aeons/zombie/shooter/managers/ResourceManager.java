@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ResourceManager {
 
-
     //Zombies
     private static Animation<TextureRegion> zombieRunningAnimation;
     private static  Animation<TextureRegion> zombieAttackAnimation;
@@ -35,10 +34,7 @@ public class ResourceManager {
     private static  Texture shotgunTexture;
     private static Texture healthBar;
 
-
     //Buttons
-    // TODO: 4/20/2018 Buttons and powerups
-
     private static void createZombieRunningAnimation(){
         //Opens textureAtlas containing enemy spritesheet information
         TextureAtlas runningAtlas = new TextureAtlas(Gdx.files.internal("enemies/pack.atlas"));
