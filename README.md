@@ -1,2 +1,1 @@
-# tdt4240-fuckAksel
-fuck aksel amirite
+# tdt4240-softwareArchitecture
